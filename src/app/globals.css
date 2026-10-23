@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+    background-color: #2f2557;
+  }
+
+  body {
+    @apply bg-ivory font-sans text-charcoal antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: #d5b690;
+    color: #2f2557;
+  }
+
+  :focus-visible {
+    outline: 2px solid #d5b690;
+    outline-offset: 3px;
+  }
+
+  /* Letter-spacing breaks connected Arabic script — reset it for Arabic text only. */
+  *:lang(ar) {
+    letter-spacing: normal !important;
+  }
+
+  /* The small uppercase label sizes suit Latin capitals; Arabic needs a larger size to stay legible. */
+  [class*='text-[0.6']:lang(ar),
+  [class*='text-[0.7']:lang(ar) {
+    font-size: 0.8rem;
+  }
+
+  input,
+  textarea,
+  select {
+    @apply rounded-none;
+  }
+}
+
+@layer components {
+  .container-luxe {
+    @apply mx-auto w-full max-w-content px-5 sm:px-8 lg:px-12;
+  }
+
+  .section-y {
+    @apply py-20 md:py-28 lg:py-32;
+  }
+
+  /* Card frames: one fine Champagne line on every card, warmed to full Champagne on hover where the card is a link. */
+  .card-frame {
+    @apply border border-champagne/50 transition-colors duration-500;
+  }
+
+  .card-frame-dark {
+    @apply border border-champagne/25 transition-colors duration-500;
+  }
+
+  .field-input {
+    @apply mt-2.5 w-full rounded-2xl border border-champagne/50 bg-white/80 px-4 py-3.5 text-base text-indigo transition-[border-color,box-shadow] duration-300 placeholder:text-charcoal-muted/70 hover:border-champagne focus:border-champagne-700 focus:outline-none focus:ring-4 focus:ring-champagne/20;
+  }
+
+  .field-input[aria-invalid='true'] {
+    @apply border-error;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-pulse-ring {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,41 @@
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { ArticleView } from '@/components/blog/ArticleView';
+import { authors, getPost, getRelatedPosts, posts } from '@/lib/data/posts';
+import { img } from '@/lib/images';
+import { postHref } from '@/lib/routes';
+
+type Params = Promise<{ slug: string }>;
+
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return posts.map((post) => ({ slug: post.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getPost(slug);
+  if (!post) return {};
+  return {
+    title: post.title.en,
+    description: post.excerpt.en,
+    alternates: { canonical: postHref(post.slug) },
+    authors: [{ name: authors[post.author].name.en }],
+    openGraph: {
+      type: 'article',
+      title: post.title.en,
+      description: post.excerpt.en,
+      publishedTime: post.date,
+      images: [{ url: img(post.cover, 1200), alt: post.title.en }],
+    },
+  };
+}
+
+export default async function ArticlePage({ params }: { params: Params }) {
+  const { slug } = await params;
+  const post = getPost(slug);
+  if (!post) notFound();
+
+  return <ArticleView post={post} related={getRelatedPosts(slug)} />;
+}
