@@ -13,24 +13,21 @@ import { Highlight } from '@/components/ui/Highlight';
 import { Lightbox } from '@/components/ui/Lightbox';
 import { Reveal } from '@/components/ui/Reveal';
 import { projectSlides } from '@/lib/data/heroes';
-import type { Project } from '@/lib/data/projects';
+import { categoryPropertyType, type Project } from '@/lib/data/projects';
 import { img } from '@/lib/images';
 import { projectHref, routes, serviceHref } from '@/lib/routes';
 import { cn, pad } from '@/lib/utils';
 
 export function ProjectDetail({ project, next }: { project: Project; next: Project }) {
-  const { t, l, locale } = useLanguage();
+  const { t, l } = useLanguage();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const title = l(project.title);
   const images = [project.cover, ...project.gallery].map((src, index) => ({ src, alt: `${title} — ${index + 1}` }));
-  const englishOnly = locale !== 'en';
 
   const facts = [
     { label: t.common.location, value: l(project.location) },
     { label: t.common.category, value: t.categories[project.category] },
-    { label: t.common.area, value: `${project.area.toLocaleString('en-US')} ${t.common.sqm}` },
-    { label: t.common.year, value: String(project.year) },
-    { label: t.common.scope, value: l(project.scope) },
+    { label: t.common.highlights, value: project.highlights.map(l).join(' · ') },
   ];
 
   return (
@@ -48,7 +45,7 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
           {t.project.back}
         </Link>
         <ul className="mt-8 flex flex-wrap gap-2">
-          {[t.categories[project.category], l(project.location)].map((tag) => (
+          {[t.categories[project.category], l(project.location), ...project.highlights.map(l)].map((tag) => (
             <li
               key={tag}
               className="rounded-full border border-champagne/40 px-3.5 py-1.5 text-[0.6rem] font-medium uppercase tracking-luxe text-champagne"
@@ -64,7 +61,7 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
       {/* Overview facts */}
       <section aria-label={t.project.overview} className="bg-ivory pt-12 md:pt-16">
         <div className="container-luxe">
-          <dl className="grid grid-cols-2 gap-3 md:grid-cols-5">
+          <dl className="grid grid-cols-2 gap-3 md:grid-cols-3">
             {facts.map((fact, index) => (
               <div
                 key={fact.label}
@@ -88,27 +85,20 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
             <Reveal>
               <Eyebrow>{t.project.concept}</Eyebrow>
             </Reveal>
-            {englishOnly && (
-              <p className="mt-6 inline-block rounded-2xl border border-champagne/50 bg-linen px-4 py-2 text-sm text-charcoal-soft">
-                {t.common.englishOnly}
-              </p>
-            )}
-            <div lang="en" dir="ltr" className={cn(englishOnly && 'text-left')}>
-              {project.concept.map((paragraph, index) => (
-                <Reveal key={index} delay={0.08 + index * 0.06}>
-                  <p
-                    className={cn(
-                      'mt-8 text-pretty leading-relaxed',
-                      index === 0
-                        ? 'font-serif text-2xl tracking-wide text-indigo md:text-[1.7rem]'
-                        : 'text-lg text-charcoal-soft',
-                    )}
-                  >
-                    {paragraph}
-                  </p>
-                </Reveal>
-              ))}
-            </div>
+            {project.concept.map((paragraph, index) => (
+              <Reveal key={index} delay={0.08 + index * 0.06}>
+                <p
+                  className={cn(
+                    'mt-8 text-pretty leading-relaxed',
+                    index === 0
+                      ? 'font-serif text-2xl tracking-wide text-indigo md:text-[1.7rem]'
+                      : 'text-lg text-charcoal-soft',
+                  )}
+                >
+                  {l(paragraph)}
+                </p>
+              </Reveal>
+            ))}
 
             <Reveal delay={0.2} className="mt-14">
               <h2 className="text-[0.66rem] font-medium uppercase tracking-ultra text-champagne-800">{t.project.services}</h2>
@@ -135,13 +125,13 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
           <Reveal delay={0.1} className="lg:col-span-5">
             <div className="card-frame rounded-[2rem] bg-linen p-5 sm:p-8 md:p-10 lg:sticky lg:top-32">
               <h2 className="font-serif text-2xl tracking-wide text-indigo">{t.project.materials}</h2>
-              <ol lang="en" dir="ltr" className="mt-8 space-y-2 text-left">
+              <ol className="mt-8 space-y-2">
                 {project.materials.map((material, index) => (
-                  <li key={material.name} className="flex gap-4 rounded-2xl bg-ivory px-4 py-4 sm:gap-5 sm:px-5">
+                  <li key={material.name.en} className="flex gap-4 rounded-2xl bg-ivory px-4 py-4 sm:gap-5 sm:px-5">
                     <span className="font-serif text-sm text-champagne-700">{pad(index + 1)}</span>
                     <div className="min-w-0">
-                      <p className="font-medium text-indigo">{material.name}</p>
-                      <p className="mt-0.5 text-sm text-charcoal-soft">{material.detail}</p>
+                      <p className="font-medium text-indigo">{l(material.name)}</p>
+                      <p className="mt-0.5 text-sm text-charcoal-soft">{l(material.detail)}</p>
                     </div>
                   </li>
                 ))}
@@ -212,7 +202,13 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
               </h2>
               <p className="mt-3 max-w-xl text-charcoal-soft">{t.project.ctaBody}</p>
             </div>
-            <ButtonLink href={`/contact/?type=${project.category}#inquiry`} variant="solid-dark" size="lg" arrow className="shrink-0">
+            <ButtonLink
+              href={`/contact/?type=${categoryPropertyType[project.category]}#inquiry`}
+              variant="solid-dark"
+              size="lg"
+              arrow
+              className="shrink-0"
+            >
               {t.project.ctaButton}
             </ButtonLink>
           </div>

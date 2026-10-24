@@ -35,15 +35,17 @@ export function StorySection() {
               </Reveal>
             ))}
 
-            <div className="mt-16 grid gap-4 sm:grid-cols-3">
-              {story.pillars.map((pillar, index) => (
-                <div key={pillar.title} className="card-frame rounded-3xl bg-white/70 p-7">
-                  <span className="font-serif text-sm text-champagne-700">{pad(index + 1)}</span>
-                  <h3 className="mt-6 font-serif text-xl tracking-wide text-indigo">{pillar.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-charcoal-soft">{pillar.body}</p>
-                </div>
+            <dl className="mt-16 grid gap-4 sm:grid-cols-2">
+              {story.facts.map((fact, index) => (
+                <Reveal key={fact.label} delay={0.1 + index * 0.06} className="card-frame rounded-3xl bg-white/70 p-7">
+                  <dt className="flex items-center gap-3 text-[0.64rem] font-medium uppercase tracking-ultra text-champagne-800">
+                    <span className="font-serif text-sm tracking-normal text-champagne-700">{pad(index + 1)}</span>
+                    {fact.label}
+                  </dt>
+                  <dd className="mt-4 font-serif text-xl leading-snug tracking-wide text-indigo">{fact.value}</dd>
+                </Reveal>
               ))}
-            </div>
+            </dl>
           </div>
         </div>
       </div>

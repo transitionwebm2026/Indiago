@@ -24,7 +24,7 @@ const plexArabic = IBM_Plex_Sans_Arabic({
 });
 
 const description =
-  'Indigo Interiors is a Sheikh Zayed interior architecture studio delivering refined residential, commercial and corporate interiors — from concept design and working drawings to turnkey fit-out.';
+  'Indigo Interiors is an interior design, fit-out and finishing company bringing UAE standards of quality to Egypt — residential, hospitality, corporate and healthcare interiors across Abu Dhabi and Greater Cairo.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -41,6 +41,8 @@ export const metadata: Metadata = {
     'luxury interior architecture',
     'villa interior design',
     'commercial fit-out Egypt',
+    'interior finishing works',
+    'fit-out Abu Dhabi',
     'Indigo Interiors',
   ],
   authors: [{ name: site.name, url: site.url }],
@@ -85,7 +87,7 @@ const organizationJsonLd = {
     addressCountry: 'EG',
   },
   founder: { '@type': 'Person', name: site.founder.name.en, jobTitle: site.founder.role.en },
-  areaServed: 'Egypt',
+  areaServed: ['Egypt', 'United Arab Emirates'],
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

@@ -49,7 +49,7 @@ export function ArticleView({ post, related }: { post: Post; related: Post[] }) 
         </h1>
         <p className="mt-5 text-pretty text-base leading-relaxed text-ivory/70 sm:text-lg">{l(post.excerpt)}</p>
         <div className="mt-8 flex items-center gap-4 border-t border-ivory/10 pt-6">
-          <Monogram initials={author.initials} className="h-12 w-12 text-sm" />
+          <Monogram initials={author.initials} src={author.portrait} className="h-12 w-12 text-sm" />
           <div>
             <p className="text-sm text-ivory">
               {t.common.by} {l(author.name)}
@@ -83,7 +83,7 @@ export function ArticleView({ post, related }: { post: Post; related: Post[] }) 
 
             <footer className="mt-16 flex flex-col gap-6 card-frame rounded-3xl bg-linen p-5 sm:flex-row sm:items-center sm:justify-between sm:p-8">
               <div className="flex min-w-0 items-center gap-4">
-                <Monogram initials={author.initials} />
+                <Monogram initials={author.initials} src={author.portrait} />
                 <div>
                   <p className="text-[0.62rem] font-medium uppercase tracking-luxe text-charcoal-muted">{t.article.writtenBy}</p>
                   <p className="mt-1 font-serif text-xl tracking-wide text-indigo">{l(author.name)}</p>

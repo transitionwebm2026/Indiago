@@ -1,4 +1,5 @@
 import type { Localized } from '@/lib/i18n/types';
+import { site } from '@/lib/site';
 
 export type BlogCategory = 'design-trends' | 'material-selection' | 'space-planning' | 'client-guides';
 
@@ -12,11 +13,12 @@ export type ArticleBlock =
 
 export type AuthorId = 'founder' | 'studio';
 
-export const authors: Record<AuthorId, { name: Localized; role: Localized; initials: string }> = {
+export const authors: Record<AuthorId, { name: Localized; role: Localized; initials: string; portrait?: string }> = {
   founder: {
-    name: { en: 'Ahmed Abomosallam', ar: 'أحمد أبومسلم' },
-    role: { en: 'Founder & Managing Director', ar: 'المؤسس والعضو المنتدب' },
-    initials: 'AA',
+    name: site.founder.name,
+    role: site.founder.role,
+    initials: site.founder.initials,
+    portrait: site.founder.portrait,
   },
   studio: {
     name: { en: 'Indigo Design Studio', ar: 'استوديو إنديجو للتصميم' },

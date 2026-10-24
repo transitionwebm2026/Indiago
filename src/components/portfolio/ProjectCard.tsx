@@ -65,21 +65,13 @@ export function ProjectCard({ project, onOpenGallery, className, aspect = 'aspec
         </div>
       </div>
 
-      <div className="mt-5 flex items-start justify-between gap-4 px-2.5 pb-3 sm:gap-6 sm:px-3">
-        <div className="min-w-0">
-          <h3 className="break-words font-serif text-xl leading-snug tracking-wide text-indigo transition-colors duration-500 group-hover:text-champagne-700 min-[400px]:text-2xl">
-            <Link href={projectHref(project.id)} className="after:absolute after:inset-0">
-              {title}
-            </Link>
-          </h3>
-          <p className="mt-1.5 text-sm text-charcoal-soft">{l(project.scope)}</p>
-        </div>
-        <div className="shrink-0 text-end text-[0.64rem] uppercase tracking-luxe text-charcoal-muted">
-          <p>{project.year}</p>
-          <p className="mt-1.5">
-            {project.area.toLocaleString('en-US')} {t.common.sqm}
-          </p>
-        </div>
+      <div className="mt-5 min-w-0 px-2.5 pb-3 sm:px-3">
+        <h3 className="break-words font-serif text-xl leading-snug tracking-wide text-indigo transition-colors duration-500 group-hover:text-champagne-700 min-[400px]:text-2xl">
+          <Link href={projectHref(project.id)} className="after:absolute after:inset-0">
+            {title}
+          </Link>
+        </h3>
+        <p className="mt-1.5 text-sm text-charcoal-soft">{project.highlights.map(l).join(' · ')}</p>
       </div>
     </article>
   );

@@ -1,286 +1,289 @@
 import type { Localized } from '@/lib/i18n/types';
+import type { PropertyType } from '@/lib/inquiry';
 import type { ServiceId } from './services';
 
-export type ProjectCategory = 'residential' | 'commercial' | 'corporate';
+export type ProjectCategory = 'residential' | 'hospitality' | 'government' | 'healthcare';
 
-export const projectCategories: ProjectCategory[] = ['residential', 'commercial', 'corporate'];
+export const projectCategories: ProjectCategory[] = ['residential', 'hospitality', 'government', 'healthcare'];
+
+/** The inquiry-form property type pre-selected by "Start a Similar Project". */
+export const categoryPropertyType: Record<ProjectCategory, PropertyType> = {
+  residential: 'residential',
+  hospitality: 'commercial',
+  government: 'corporate',
+  healthcare: 'commercial',
+};
 
 export interface Project {
   id: string;
   title: Localized;
   category: ProjectCategory;
   location: Localized;
-  year: number;
-  /** Floor area in square metres. */
-  area: number;
-  scope: Localized;
+  /** Signature elements of the space, shown as tags. */
+  highlights: Localized[];
   summary: Localized;
-  /** Long-form design story (English). */
-  concept: string[];
-  materials: { name: string; detail: string }[];
+  /** Long-form design story. */
+  concept: Localized[];
+  materials: { name: Localized; detail: Localized }[];
   services: ServiceId[];
-  /** Image ID or /public path — see lib/images.ts */
+  /** Image ID or /public path — see lib/images.ts. The cover also fills the project's hero, so use a large landscape image. */
   cover: string;
   gallery: string[];
   featured?: boolean;
 }
 
 const locations = {
-  zayed: { en: 'Sheikh Zayed', ar: 'الشيخ زايد' },
-  newCairo: { en: 'New Cairo', ar: 'القاهرة الجديدة' },
-  northCoast: { en: 'North Coast', ar: 'الساحل الشمالي' },
+  abuDhabi: { en: 'Abu Dhabi, UAE', ar: 'أبوظبي، الإمارات' },
+  cairo: { en: 'Cairo, Egypt', ar: 'القاهرة، مصر' },
+  giza: { en: 'Giza, Egypt', ar: 'الجيزة، مصر' },
 } satisfies Record<string, Localized>;
 
 /**
- * Sample portfolio content — replace titles, copy and imagery with the studio's real projects.
+ * Selected projects from the 2026 company profile, in the profile's order.
  * Each entry automatically generates a static page at /portfolio/[id]/.
  */
 export const projects: Project[] = [
   {
-    id: 'al-safa-villa',
-    title: { en: 'Al Safa Villa', ar: 'فيلا الصفا' },
-    category: 'residential',
-    location: locations.zayed,
-    year: 2025,
-    area: 620,
-    scope: { en: 'Concept to turnkey handover', ar: 'من الفكرة حتى التسليم المتكامل' },
+    id: 'mynt-restaurant',
+    title: { en: 'Mynt Restaurant', ar: 'مطعم مينت' },
+    category: 'hospitality',
+    location: locations.abuDhabi,
+    highlights: [
+      { en: 'Lattice Screens', ar: 'شاشات شبكية' },
+      { en: 'Private Dining', ar: 'غرفة طعام خاصة' },
+      { en: 'Feature Bar', ar: 'كاونتر مميّز' },
+    ],
     summary: {
-      en: 'A family villa reorganised around natural light, with honed travertine, smoked oak and bronze detailing throughout.',
-      ar: 'فيلا عائلية أُعيد تنظيمها حول الضوء الطبيعي، بتفاصيل من الترافرتين المصقول والبلوط المدخّن والبرونز.',
+      en: 'A contemporary dining destination defined by warm wood tones, soft ambient lighting and clean modern lines.',
+      ar: 'وجهة طعام معاصرة تميّزها درجات الخشب الدافئة والإضاءة الهادئة والخطوط الحديثة النظيفة.',
     },
     concept: [
-      'The brief was a home that could host large family gatherings yet still feel intimate on an ordinary weekday. We opened the ground floor into a sequence of connected living, dining and kitchen zones, defined by changes in ceiling height and lighting rather than walls.',
-      'A restrained palette of honed travertine, smoked oak and bronze runs throughout, giving the villa a calm continuity. Bespoke joinery conceals storage and services so every surface stays composed, while layered lighting lets each space shift from bright family mornings to soft, intimate evenings.',
+      {
+        en: 'Natural textures meet elegant finishes to create a calm, refined atmosphere. Bronze lattice screens, marble-clad private dining and a timber-faced bar add depth, while a balanced palette of greens and golds keeps the space inviting.',
+        ar: 'تلتقي الخامات الطبيعية بالتشطيبات الأنيقة لتصنع أجواءً هادئة وراقية. تضيف الشاشات الشبكية البرونزية وغرفة الطعام الخاصة المكسوّة بالرخام والكاونتر ذو الواجهة الخشبية عمقًا للمساحة، بينما تحافظ لوحة متوازنة من الأخضر والذهبي على طابعها المرحّب.',
+      },
     ],
     materials: [
-      { name: 'Honed travertine', detail: 'Flooring & feature walls, book-matched' },
-      { name: 'Smoked oak', detail: 'Engineered flooring & wall cladding' },
-      { name: 'Bronze metalwork', detail: 'Handrails, trims & joinery details' },
-      { name: 'Limewash plaster', detail: 'Living & dining walls' },
-      { name: 'Bouclé & linen', detail: 'Upholstery & window treatments' },
+      {
+        name: { en: 'Bronze lattice screens', ar: 'شاشات شبكية من البرونز' },
+        detail: { en: 'Add depth across the dining floor', ar: 'تضيف عمقًا لصالة الطعام' },
+      },
+      {
+        name: { en: 'Marble cladding', ar: 'كسوة رخامية' },
+        detail: { en: 'Private dining room', ar: 'غرفة الطعام الخاصة' },
+      },
+      {
+        name: { en: 'Timber facing', ar: 'واجهة خشبية' },
+        detail: { en: 'Feature bar', ar: 'الكاونتر الرئيسي' },
+      },
+      {
+        name: { en: 'Warm wood tones', ar: 'درجات خشب دافئة' },
+        detail: { en: 'Natural textures throughout', ar: 'خامات طبيعية في كل المساحة' },
+      },
+      {
+        name: { en: 'Greens & golds', ar: 'الأخضر والذهبي' },
+        detail: { en: 'A balanced, inviting palette', ar: 'لوحة ألوان متوازنة ومرحّبة' },
+      },
     ],
-    services: ['concept-design', 'working-drawings', 'turnkey-fit-out', 'ffe-procurement'],
-    cover: '1600585154084-4e5fe7c39198',
+    services: ['interior-design', 'fit-out', 'joinery-styling'],
+    cover: '/images/projects/mynt-restaurant/01.jpg',
     gallery: [
-      '1604014237800-1c9102c219da',
-      '1600607687939-ce8a6c25118c',
-      '1600585152220-90363fe7e115',
-      '1629079447777-1e605162dc8d',
-      '1617098900591-3f90928e8c54',
-      '1600607687920-4e2a09cf159d',
+      '/images/projects/mynt-restaurant/02.jpg',
+      '/images/projects/mynt-restaurant/03.jpg',
+      '/images/projects/mynt-restaurant/04.jpg',
+      '/images/projects/mynt-restaurant/05.jpg',
     ],
     featured: true,
   },
   {
-    id: 'maison-restaurant-lounge',
-    title: { en: 'Maison Restaurant & Lounge', ar: 'مطعم وصالة ميزون' },
-    category: 'commercial',
-    location: locations.zayed,
-    year: 2025,
-    area: 480,
-    scope: { en: 'Brand-led hospitality fit-out', ar: 'تجهيز ضيافة يعبّر عن العلامة التجارية' },
+    id: 'arabian-majlis',
+    title: { en: 'Arabian Majlis', ar: 'المجلس العربي' },
+    category: 'residential',
+    location: locations.abuDhabi,
+    highlights: [
+      { en: 'Arabic Detailing', ar: 'تفاصيل عربية' },
+      { en: 'Bespoke Joinery', ar: 'نجارة مخصّصة' },
+      { en: 'Feature Lighting', ar: 'إضاءة مميّزة' },
+    ],
     summary: {
-      en: 'A hospitality fit-out balancing intimate lounge seating with an efficient, high-capacity dining floor.',
-      ar: 'مشروع ضيافة يوازن بين جلسات صالة حميمة وصالة طعام عالية الكفاءة والسعة.',
+      en: 'A luxurious majlis that honours classic Arabic detailing in a spacious, welcoming layout.',
+      ar: 'مجلس فاخر يحتفي بالتفاصيل العربية الكلاسيكية في تصميم رحب ومرحّب.',
     },
     concept: [
-      'The operator wanted a destination that could serve a busy lunch crowd and transform into an atmospheric lounge in the evening. Zoned lighting scenes, flexible table layouts and careful acoustic treatment make that shift seamless.',
-      'Dark timber, aged brass and deep upholstery create warmth, while a carefully planned back-of-house keeps service fast and discreet. Every guest touchpoint — from the entrance sequence to the bar — was designed around the brand’s story.',
+      {
+        en: 'Soft neutral tones, carved timber screens and arched niches frame generous seating. Traditional rugs and ornate chandeliers complete a setting made for hospitality and family gatherings.',
+        ar: 'تحيط الدرجات المحايدة الهادئة والشاشات الخشبية المنحوتة والكوّات المقوّسة بجلسات واسعة، وتكتمل الأجواء بالسجاد التقليدي والثريات المزخرفة في مساحة صُمّمت للضيافة واللقاءات العائلية.',
+      },
     ],
     materials: [
-      { name: 'Dark-stained ash', detail: 'Wall slats & bar front' },
-      { name: 'Aged brass', detail: 'Bar details & decorative lighting' },
-      { name: 'Terrazzo', detail: 'Dining-floor finish' },
-      { name: 'Velvet & leather', detail: 'Banquettes & lounge seating' },
-      { name: 'Acoustic panels', detail: 'Concealed within the ceiling design' },
+      {
+        name: { en: 'Carved timber screens', ar: 'شاشات خشبية منحوتة' },
+        detail: { en: 'Classic Arabic detailing', ar: 'تفاصيل عربية كلاسيكية' },
+      },
+      {
+        name: { en: 'Arched niches', ar: 'كوّات مقوّسة' },
+        detail: { en: 'Framing generous seating', ar: 'تحيط بالجلسات الواسعة' },
+      },
+      {
+        name: { en: 'Ornate chandeliers', ar: 'ثريات مزخرفة' },
+        detail: { en: 'Feature lighting', ar: 'إضاءة مميّزة' },
+      },
+      {
+        name: { en: 'Traditional rugs', ar: 'سجاد تقليدي' },
+        detail: { en: 'Warmth for family gatherings', ar: 'دفء للّقاءات العائلية' },
+      },
+      {
+        name: { en: 'Soft neutral tones', ar: 'درجات محايدة هادئة' },
+        detail: { en: 'A calm backdrop for hospitality', ar: 'خلفية هادئة للضيافة' },
+      },
     ],
-    services: ['commercial-fit-out', 'concept-design', 'working-drawings', 'turnkey-fit-out'],
-    cover: '1517248135467-4c7edcad34c4',
-    gallery: ['1554118811-1e0d58224f24', '1559329007-40df8a9345d8', '1551298370-9d3d53740c72'],
+    services: ['interior-design', 'finishing', 'joinery-styling'],
+    cover: '/images/projects/arabian-majlis/01.jpg',
+    gallery: ['/images/projects/arabian-majlis/02.jpg', '/images/projects/arabian-majlis/03.jpg'],
+  },
+  {
+    id: 'department-of-finance',
+    title: { en: 'Department of Finance', ar: 'دائرة المالية' },
+    category: 'government',
+    location: locations.abuDhabi,
+    highlights: [
+      { en: 'Reception', ar: 'الاستقبال' },
+      { en: 'Glass Partitions', ar: 'فواصل زجاجية' },
+      { en: 'Feature Screen', ar: 'شاشة فنية مميّزة' },
+    ],
+    summary: {
+      en: 'A modern corporate interior that is professional, secure and welcoming.',
+      ar: 'مساحة إدارية حديثة تجمع بين الطابع المهني والأمان وحسن الاستقبال.',
+    },
+    concept: [
+      {
+        en: 'Sleek glass partitions, warm timber and patterned stone flooring set the tone, with contemporary reception desks and a sculptural Arabic-geometry screen as the centrepiece. Clean lines, soft lighting and metallic accents carry through the public areas.',
+        ar: 'تحدّد الفواصل الزجاجية الأنيقة والأخشاب الدافئة والأرضيات الحجرية المزخرفة طابع المكان، مع مكاتب استقبال معاصرة وشاشة نحتية بزخارف هندسية عربية تتوسّط المساحة. وتمتد الخطوط النظيفة والإضاءة الناعمة واللمسات المعدنية عبر المناطق العامة.',
+      },
+    ],
+    materials: [
+      {
+        name: { en: 'Glass partitions', ar: 'فواصل زجاجية' },
+        detail: { en: 'Sleek, secure public areas', ar: 'مناطق عامة أنيقة وآمنة' },
+      },
+      {
+        name: { en: 'Warm timber', ar: 'أخشاب دافئة' },
+        detail: { en: 'Wall cladding', ar: 'كسوة الحوائط' },
+      },
+      {
+        name: { en: 'Patterned stone flooring', ar: 'أرضيات حجرية مزخرفة' },
+        detail: { en: 'Reception & public areas', ar: 'الاستقبال والمناطق العامة' },
+      },
+      {
+        name: { en: 'Arabic-geometry screen', ar: 'شاشة بزخارف هندسية عربية' },
+        detail: { en: 'Sculptural centrepiece', ar: 'قطعة نحتية تتوسّط المكان' },
+      },
+      {
+        name: { en: 'Contemporary reception desks', ar: 'مكاتب استقبال معاصرة' },
+        detail: { en: 'A welcoming front of house', ar: 'واجهة استقبال مرحّبة' },
+      },
+      {
+        name: { en: 'Metallic accents', ar: 'لمسات معدنية' },
+        detail: { en: 'Carried through the public areas', ar: 'ممتدة عبر المناطق العامة' },
+      },
+    ],
+    services: ['fit-out', 'finishing', 'design-execution'],
+    cover: '/images/projects/department-of-finance/01.jpg',
+    gallery: ['/images/projects/department-of-finance/02.jpg', '/images/projects/department-of-finance/03.jpg'],
     featured: true,
   },
   {
-    id: 'meridian-corporate-hq',
-    title: { en: 'Meridian Corporate Headquarters', ar: 'المقر الرئيسي لميريديان' },
-    category: 'corporate',
-    location: locations.zayed,
-    year: 2024,
-    area: 1350,
-    scope: { en: 'Workplace strategy & full fit-out', ar: 'استراتيجية بيئة العمل والتنفيذ الكامل' },
+    id: 'al-borg-laboratories',
+    title: { en: 'Al Borg Laboratories', ar: 'معامل البرج' },
+    category: 'healthcare',
+    location: locations.cairo,
+    highlights: [
+      { en: 'Brand Integration', ar: 'دمج الهوية البصرية' },
+      { en: 'Reception', ar: 'الاستقبال' },
+      { en: 'Ceilings & Lighting', ar: 'الأسقف والإضاءة' },
+    ],
     summary: {
-      en: 'A headquarters that balances focused work, collaboration and client hospitality across one open floor.',
-      ar: 'مقر رئيسي يوازن بين العمل المركّز والتعاون واستقبال العملاء على طابق مفتوح واحد.',
+      en: 'A clean, modern reception that puts the client’s brand at the center of the patient experience.',
+      ar: 'استقبال عصري ونظيف يضع هوية العميل في قلب تجربة المريض.',
     },
     concept: [
-      'The client’s teams had outgrown a cellular office. We developed a workplace strategy combining open workstations, focus rooms and collaborative zones, organised along a clear central spine that makes wayfinding intuitive.',
-      'Glass-fronted meeting rooms keep daylight flowing deep into the plan, while a refined client suite and boardroom express the brand’s confidence through stone, timber and precise detailing.',
+      {
+        en: 'Back-lit yellow glass panels follow Al Borg’s brand identity, set against crisp white walls, timber cladding and glossy black flooring. A sleek, minimalist reception desk keeps the space efficient and easy to maintain.',
+        ar: 'تتبع ألواح الزجاج الأصفر ذات الإضاءة الخلفية الهوية البصرية لمعامل البرج، على خلفية من الحوائط البيضاء الناصعة والكسوة الخشبية والأرضيات السوداء اللامعة. ويحافظ مكتب الاستقبال الأنيق والبسيط على كفاءة المساحة وسهولة صيانتها.',
+      },
     ],
     materials: [
-      { name: 'Acoustic glass', detail: 'Meeting-room partitions' },
-      { name: 'Carpet tiles', detail: 'Acoustic-grade workspace flooring' },
-      { name: 'Oak veneer', detail: 'Reception & boardroom joinery' },
-      { name: 'Porcelain stone', detail: 'Reception & pantry floors' },
-      { name: 'Linear LED', detail: 'Glare-controlled task lighting' },
+      {
+        name: { en: 'Back-lit yellow glass', ar: 'زجاج أصفر بإضاءة خلفية' },
+        detail: { en: 'Panels in the brand’s colours', ar: 'ألواح بألوان الهوية البصرية' },
+      },
+      {
+        name: { en: 'Timber cladding', ar: 'كسوة خشبية' },
+        detail: { en: 'Reception feature wall', ar: 'حائط الاستقبال' },
+      },
+      {
+        name: { en: 'Glossy black flooring', ar: 'أرضيات سوداء لامعة' },
+        detail: { en: 'Reception & corridors', ar: 'الاستقبال والممرات' },
+      },
+      {
+        name: { en: 'Minimalist reception desk', ar: 'مكتب استقبال بسيط' },
+        detail: { en: 'Efficient and easy to maintain', ar: 'عملي وسهل الصيانة' },
+      },
+      {
+        name: { en: 'Crisp white walls', ar: 'حوائط بيضاء ناصعة' },
+        detail: { en: 'A clean, bright backdrop', ar: 'خلفية نظيفة ومشرقة' },
+      },
     ],
-    services: ['concept-design', 'working-drawings', 'turnkey-fit-out', 'ffe-procurement'],
-    cover: '1462826303086-329426d1aef5',
-    gallery: [
-      '1497366811353-6870744d04b2',
-      '1497366216548-37526070297c',
-      '1524758631624-e2822e304c36',
-      '1504384308090-c894fdcc538d',
+    services: ['fit-out', 'finishing', 'design-execution'],
+    cover: '/images/projects/al-borg-laboratories/01.jpg',
+    gallery: ['/images/projects/al-borg-laboratories/02.jpg', '/images/projects/al-borg-laboratories/03.jpg'],
+  },
+  {
+    id: 'sun-capital-residence',
+    title: { en: 'Sun Capital Residence', ar: 'منزل صن كابيتال' },
+    category: 'residential',
+    location: locations.giza,
+    highlights: [
+      { en: 'Marble Works', ar: 'أعمال الرخام' },
+      { en: 'Feature Wall', ar: 'حائط مميّز' },
+      { en: 'Roof Terrace', ar: 'تراس السطح' },
     ],
+    summary: {
+      en: 'A minimal, inviting home with crafted details from the entrance to the roof terrace.',
+      ar: 'منزل بسيط ومرحّب بتفاصيل مصنوعة بعناية من المدخل وحتى تراس السطح.',
+    },
+    concept: [
+      {
+        en: 'Book-matched marble floors and a floating marble stair lead past a warm illuminated timber feature wall. Modular seating, built-in storage and subtle colour accents shape the living spaces, while a pergola terrace extends the home outdoors.',
+        ar: 'تقود أرضيات الرخام المتطابق العروق والدرج الرخامي المعلّق إلى حائط خشبي مميّز بإضاءة دافئة. وتشكّل الجلسات المرنة ووحدات التخزين المدمجة ولمسات اللون الهادئة مساحات المعيشة، بينما يمتد المنزل إلى الخارج عبر تراس ببرجولا.',
+      },
+    ],
+    materials: [
+      {
+        name: { en: 'Book-matched marble', ar: 'رخام متطابق العروق' },
+        detail: { en: 'Entrance floors', ar: 'أرضيات المدخل' },
+      },
+      {
+        name: { en: 'Floating marble stair', ar: 'درج رخامي معلّق' },
+        detail: { en: 'Entrance hall', ar: 'بهو المدخل' },
+      },
+      {
+        name: { en: 'Illuminated timber feature wall', ar: 'حائط خشبي مضاء' },
+        detail: { en: 'Warm, back-lit joinery', ar: 'نجارة دافئة بإضاءة خلفية' },
+      },
+      {
+        name: { en: 'Built-in storage', ar: 'وحدات تخزين مدمجة' },
+        detail: { en: 'Living spaces', ar: 'مساحات المعيشة' },
+      },
+      {
+        name: { en: 'Pergola', ar: 'برجولا' },
+        detail: { en: 'Roof terrace', ar: 'تراس السطح' },
+      },
+    ],
+    services: ['interior-design', 'finishing', 'joinery-styling'],
+    cover: '/images/projects/sun-capital-residence/01.jpg',
+    gallery: ['/images/projects/sun-capital-residence/02.jpg', '/images/projects/sun-capital-residence/03.jpg'],
     featured: true,
-  },
-  {
-    id: 'katameya-penthouse',
-    title: { en: 'Katameya Heights Penthouse', ar: 'بنتهاوس مرتفعات القطامية' },
-    category: 'residential',
-    location: locations.newCairo,
-    year: 2024,
-    area: 410,
-    scope: { en: 'Interior design, joinery & FF&E', ar: 'تصميم داخلي ونجارة وتوريد أثاث' },
-    summary: {
-      en: 'A double-height penthouse in smoked glass, walnut and charcoal stone, tuned for evening entertaining.',
-      ar: 'بنتهاوس بارتفاع مزدوج من الزجاج المدخّن وخشب الجوز والحجر الفحمي، مُهيّأ لأمسيات الضيافة.',
-    },
-    concept: [
-      'Panoramic views and a double-height living room set the stage. We leaned into a deeper, moodier palette so the penthouse feels most alive at dusk, when layered lighting reveals the textures of walnut, stone and smoked glass.',
-      'A sculptural staircase anchors the plan, while a concealed bar and media wall allow the main living space to move easily between quiet evenings and large gatherings.',
-    ],
-    materials: [
-      { name: 'Nero Marquina marble', detail: 'Kitchen island & bathroom vanities' },
-      { name: 'American walnut', detail: 'Joinery, wall panelling & staircase' },
-      { name: 'Smoked glass', detail: 'Partitions & display cabinetry' },
-      { name: 'Brushed brass', detail: 'Lighting details & hardware' },
-      { name: 'Wool & velvet', detail: 'Upholstery & rugs' },
-    ],
-    services: ['concept-design', 'working-drawings', 'ffe-procurement'],
-    cover: '1564078516393-cf04bd966897',
-    gallery: [
-      '1618219740975-d40978bb7378',
-      '1617104678098-de229db51175',
-      '1588854337236-6889d631faa8',
-      '1604709177225-055f99402ea3',
-    ],
-  },
-  {
-    id: 'zayed-courtyard-residence',
-    title: { en: 'Zayed Courtyard Residence', ar: 'منزل الفناء بالشيخ زايد' },
-    category: 'residential',
-    location: locations.zayed,
-    year: 2023,
-    area: 380,
-    scope: { en: 'Full renovation & modernisation', ar: 'تجديد وتحديث شامل' },
-    summary: {
-      en: 'A complete renovation that opened a dated layout around a light-filled courtyard and a calm ivory palette.',
-      ar: 'تجديد شامل فتح مخططًا قديمًا حول فناء مليء بالضوء ولوحة ألوان عاجية هادئة.',
-    },
-    concept: [
-      'This existing home had good bones but a fragmented layout. We removed non-structural partitions, reorganised circulation around the internal courtyard and introduced generous glazing to bring daylight deep into the plan.',
-      'Classic coffered ceilings were retained and refined, paired with soft ivory walls, pale oak and quiet marble so the renovated home feels both fresh and timeless.',
-    ],
-    materials: [
-      { name: 'Calacatta-look porcelain', detail: 'Kitchen worktops & splashback' },
-      { name: 'Pale European oak', detail: 'Flooring & bespoke joinery' },
-      { name: 'Satin lacquer', detail: 'Kitchen & wardrobe fronts' },
-      { name: 'Carrara marble', detail: 'Bathroom floors & walls' },
-      { name: 'Linen sheers', detail: 'Full-height window treatments' },
-    ],
-    services: ['renovation', 'concept-design', 'working-drawings', 'turnkey-fit-out'],
-    cover: '1598928506311-c55ded91a20c',
-    gallery: [
-      '1600210491892-03d54c0aaf87',
-      '1582582621959-48d27397dc69',
-      '1507089947368-19c1da9775ae',
-      '1600566752355-35792bedcfea',
-      '1618221639244-c1a8502c0eb9',
-    ],
-  },
-  {
-    id: 'sahel-summer-villa',
-    title: { en: 'Sahel Summer Villa', ar: 'فيلا الساحل الصيفية' },
-    category: 'residential',
-    location: locations.northCoast,
-    year: 2025,
-    area: 540,
-    scope: { en: 'Interior architecture & fit-out', ar: 'عمارة داخلية وتنفيذ' },
-    summary: {
-      en: 'A coastal retreat in lime plaster, natural stone and teak, designed for barefoot summers by the sea.',
-      ar: 'ملاذ ساحلي من الجص الجيري والحجر الطبيعي وخشب التيك، صُمّم لصيف هادئ على البحر.',
-    },
-    concept: [
-      'Designed for long summers with extended family, the villa blurs inside and out. Large sliding openings connect the living spaces to the terraces and pool, while deep overhangs keep the interiors cool and shaded.',
-      'Materials were chosen to withstand salt air and sand: textured lime plaster, honed limestone and weathered teak, softened with natural linens and woven lighting.',
-    ],
-    materials: [
-      { name: 'Textured lime plaster', detail: 'Interior & exterior walls' },
-      { name: 'Honed limestone', detail: 'Flooring flowing out to the terraces' },
-      { name: 'Teak', detail: 'Outdoor furniture & pergola details' },
-      { name: 'Woven rattan', detail: 'Pendant lighting & accents' },
-      { name: 'Performance linen', detail: 'Outdoor-grade upholstery' },
-    ],
-    services: ['concept-design', 'working-drawings', 'turnkey-fit-out', 'ffe-procurement'],
-    cover: '1613490493576-7fde63acd811',
-    gallery: [
-      '1600596542815-ffad4c1539a9',
-      '1512917774080-9991f1c4c750',
-      '1597211833712-5e41faa202ea',
-      '1628745277862-bc0b2d68c50c',
-      '1600210492486-724fe5c67fb0',
-    ],
-  },
-  {
-    id: 'atelier-boutique',
-    title: { en: 'Atelier Fashion Boutique', ar: 'بوتيك أتيليه للأزياء' },
-    category: 'commercial',
-    location: locations.newCairo,
-    year: 2023,
-    area: 220,
-    scope: { en: 'Retail concept & fit-out', ar: 'تصميم وتنفيذ منفذ بيع' },
-    summary: {
-      en: 'A retail concept that turns a compact unit into a gallery-like setting for a growing fashion label.',
-      ar: 'تصميم تجاري يحوّل وحدة صغيرة إلى مساحة تشبه المعرض لعلامة أزياء صاعدة.',
-    },
-    concept: [
-      'Working within a compact footprint, we planned the boutique as a clear loop that leads customers past every collection without crowding. Modular display systems let the team restyle the store each season.',
-      'An industrial shell of exposed services and steel is warmed with timber, soft lighting and a neutral backdrop that lets the garments take centre stage.',
-    ],
-    materials: [
-      { name: 'Blackened steel', detail: 'Modular rails & shelving' },
-      { name: 'Natural oak', detail: 'Display tables & fitting rooms' },
-      { name: 'Polished concrete', detail: 'Flooring' },
-      { name: 'Track lighting', detail: 'Adjustable, high-CRI display lighting' },
-    ],
-    services: ['commercial-fit-out', 'concept-design', 'turnkey-fit-out'],
-    cover: '1441986300917-64674bd600d8',
-    gallery: ['1567401893414-76b7b1e5a7a5', '1538688525198-9b88f6f53126'],
-  },
-  {
-    id: 'vertex-executive-offices',
-    title: { en: 'Vertex Executive Offices', ar: 'مكاتب فيرتكس التنفيذية' },
-    category: 'corporate',
-    location: locations.newCairo,
-    year: 2022,
-    area: 760,
-    scope: { en: 'Corporate interiors & MEP coordination', ar: 'تصميم مكاتب وتنسيق كهروميكانيكي' },
-    summary: {
-      en: 'Executive offices and a lounge-style client area, detailed with timber slats and deep, calm tones.',
-      ar: 'مكاتب تنفيذية ومنطقة استقبال بطابع الصالات، بتفاصيل من الشرائح الخشبية وألوان هادئة عميقة.',
-    },
-    concept: [
-      'Designed for a leadership team that frequently hosts clients, these offices behave more like a private members’ club than a typical workplace. Lounge seating, warm lighting and a muted palette create a reassuring first impression.',
-      'Behind the scenes, full MEP coordination and integrated technology keep the spaces flexible for meetings, presentations and quiet, focused work.',
-    ],
-    materials: [
-      { name: 'Timber slats', detail: 'Feature walls & acoustic ceilings' },
-      { name: 'Exposed concrete', detail: 'Selected walls & columns' },
-      { name: 'Wool upholstery', detail: 'Lounge & meeting seating' },
-      { name: 'Integrated AV', detail: 'Concealed within joinery' },
-    ],
-    services: ['concept-design', 'working-drawings', 'turnkey-fit-out'],
-    cover: '1600508774634-4e11d34730e2',
-    gallery: ['1599696848652-f0ff23bc911f', '1600494603989-9650cf6ddd3d', '1551298370-9d3d53740c72'],
   },
 ];
 
@@ -294,34 +297,3 @@ export function getNextProject(id: string) {
   const index = projects.findIndex((project) => project.id === id);
   return projects[(index + 1) % projects.length];
 }
-
-/** Before / after transformation shown on the portfolio page. */
-export const transformation = {
-  before: '1504307651254-35680f356dfd',
-  after: '1600585154084-4e5fe7c39198',
-};
-
-/**
- * Render vs execution pairs. Supply `render` and `photo` from the same camera angle;
- * with only one image the card shows a split "viewport" treatment of the same frame.
- */
-export const renderPairs: { projectId: string; space: Localized; render: string; photo: string }[] = [
-  {
-    projectId: 'al-safa-villa',
-    space: { en: 'Living Room', ar: 'غرفة المعيشة' },
-    render: '1618221195710-dd6b41faaea6',
-    photo: '1618221195710-dd6b41faaea6',
-  },
-  {
-    projectId: 'zayed-courtyard-residence',
-    space: { en: 'Entry Lounge', ar: 'صالة المدخل' },
-    render: '1618219908412-a29a1bb7b86e',
-    photo: '1618219908412-a29a1bb7b86e',
-  },
-  {
-    projectId: 'katameya-penthouse',
-    space: { en: 'Family Lounge', ar: 'صالة العائلة' },
-    render: '1616486338812-3dadae4b4ace',
-    photo: '1616486338812-3dadae4b4ace',
-  },
-];

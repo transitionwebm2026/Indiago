@@ -9,7 +9,7 @@ import { EASE } from '@/lib/motion';
 import { cn, pad } from '@/lib/utils';
 
 /**
- * Interactive 4-step workflow (tabs). Designed for Deep Indigo sections.
+ * Interactive step-by-step workflow (tabs). Designed for Deep Indigo sections.
  * "compact" omits the per-step checklist for the home page preview.
  */
 export function WorkflowTimeline({ variant = 'full' }: { variant?: 'full' | 'compact' }) {
@@ -43,7 +43,7 @@ export function WorkflowTimeline({ variant = 'full' }: { variant?: 'full' | 'com
         role="tablist"
         aria-label={plain(workflow.title)}
         onKeyDown={onKeyDown}
-        className="grid grid-cols-2 gap-x-6 md:grid-cols-4"
+        className="grid grid-cols-2 gap-x-6 sm:grid-cols-3 md:grid-cols-5"
       >
         {workflow.steps.map((item, index) => {
           const selected = index === active;

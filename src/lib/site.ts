@@ -8,25 +8,27 @@ export const site = {
   name: 'Indigo Interiors',
   url: 'https://www.indigoegy.com',
   displayUrl: 'www.indigoegy.com',
-  email: 'a.abomosallam@indigoegy.com',
+  email: 'info@indigoegy.com',
   phone: '+20 111 226 6054',
   phoneHref: 'tel:+201112266054',
+  uaePhone: '+971 50 611 7874',
+  uaePhoneHref: 'tel:+971506117874',
   whatsappNumber: '201112266054',
   address: {
-    en: 'Villa 40 Al Safa St., Sheikh Zayed, Egypt',
+    en: 'Villa 40, Al Safa Street, Sheikh Zayed, Egypt',
     ar: 'فيلا 40، شارع الصفا، الشيخ زايد، مصر',
   } satisfies Localized,
   mapQuery: 'Villa 40 Al Safa St, Sheikh Zayed City, Giza, Egypt',
   founder: {
-    name: { en: 'Ahmed Abomosallam', ar: 'أحمد أبومسلم' } satisfies Localized,
-    role: { en: 'Founder & Managing Director', ar: 'المؤسس والعضو المنتدب' } satisfies Localized,
+    name: { en: 'Ahmed Abo Mosallam', ar: 'أحمد أبو مسلم' } satisfies Localized,
+    role: { en: 'Founder & Principal Interior Designer', ar: 'المؤسس والمصمم الداخلي الرئيسي' } satisfies Localized,
     initials: 'AA',
-    // Drop a portrait into /public/images/team/ and set the path here, e.g. '/images/team/ahmed-abomosallam.jpg'
-    portrait: '',
+    // Path under /public; leave empty to show the initials instead.
+    portrait: '/Engphoto.jpeg',
   },
-  // Replace with the studio's real profile URLs.
+  // Facebook, LinkedIn and Pinterest still point to placeholders — replace with the studio's real profile URLs.
   social: [
-    { id: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/' },
+    { id: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/indigo_interiors_studio/' },
     { id: 'facebook', label: 'Facebook', href: 'https://www.facebook.com/' },
     { id: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/' },
     { id: 'pinterest', label: 'Pinterest', href: 'https://www.pinterest.com/' },

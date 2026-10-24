@@ -53,7 +53,7 @@ export function FeaturedArticle() {
 
               <div className="mt-10 flex flex-wrap items-center justify-between gap-6 border-t border-ivory/10 pt-7">
                 <div className="flex items-center gap-4">
-                  <Monogram initials={author.initials} className="h-12 w-12 text-sm" />
+                  <Monogram initials={author.initials} src={author.portrait} className="h-12 w-12 text-sm" />
                   <div>
                     <p className="text-sm">
                       {t.common.by} {l(author.name)}

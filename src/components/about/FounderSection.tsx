@@ -21,7 +21,7 @@ export function FounderSection() {
           <div aria-hidden className="absolute -bottom-4 -end-4 top-4 start-4 rounded-[2rem] border border-champagne/60 sm:-bottom-6 sm:-end-6 sm:top-6 sm:start-6" />
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-indigo">
             {site.founder.portrait ? (
-              <Image src={site.founder.portrait} alt={name} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
+              <Image src={site.founder.portrait} alt={`${name} — ${l(site.founder.role)}`} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover object-top" />
             ) : (
               // Placeholder until a portrait is supplied (see site.founder.portrait).
               <div className="flex h-full flex-col items-center justify-center gap-6 text-center" role="img" aria-label={founder.portraitNote}>
@@ -42,9 +42,10 @@ export function FounderSection() {
           <Reveal delay={0.08}>
             <h2 className="mt-6 font-serif text-4xl tracking-wide text-indigo sm:text-5xl lg:text-6xl">{name}</h2>
             <p className="mt-4 text-[0.7rem] font-medium uppercase tracking-ultra text-champagne-800">{l(site.founder.role)}</p>
+            <p className="mt-6 font-serif text-xl tracking-wide ltr:italic text-indigo/80 md:text-2xl">{founder.tagline}</p>
           </Reveal>
           {founder.bio.map((paragraph, index) => (
-            <Reveal key={index} delay={0.14 + index * 0.06}>
+            <Reveal key={index} delay={0.14 + index * 0.04}>
               <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-charcoal-soft">{paragraph}</p>
             </Reveal>
           ))}

@@ -1,24 +1,24 @@
 export const serviceIds = [
-  'concept-design',
-  'working-drawings',
-  'turnkey-fit-out',
-  'ffe-procurement',
-  'commercial-fit-out',
+  'interior-design',
+  'fit-out',
+  'finishing',
+  'design-execution',
   'renovation',
+  'joinery-styling',
 ] as const;
 
 export type ServiceId = (typeof serviceIds)[number];
 
 /** The four core services featured on the home page. */
-export const coreServiceIds: ServiceId[] = ['concept-design', 'working-drawings', 'turnkey-fit-out', 'ffe-procurement'];
+export const coreServiceIds: ServiceId[] = ['interior-design', 'fit-out', 'finishing', 'design-execution'];
 
 export const serviceImages: Record<ServiceId, string> = {
-  'concept-design': '1615529182904-14819c35db37',
-  'working-drawings': '1503387762-592deb58ef4e',
-  'turnkey-fit-out': '1541888946425-d81bb19240f5',
-  'ffe-procurement': '1555041469-a586c61ea9bc',
-  'commercial-fit-out': '1554118811-1e0d58224f24',
-  renovation: '1600210491892-03d54c0aaf87',
+  'interior-design': '/images/projects/arabian-majlis/01.jpg',
+  'fit-out': '/images/projects/department-of-finance/01.jpg',
+  finishing: '/images/site/flooring.jpg',
+  'design-execution': '/images/projects/al-borg-laboratories/01.jpg',
+  renovation: '/images/site/ceiling-works.jpg',
+  'joinery-styling': '/images/projects/sun-capital-residence/02.jpg',
 };
 
 export function isServiceId(value: string): value is ServiceId {

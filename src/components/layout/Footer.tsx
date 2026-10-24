@@ -85,6 +85,14 @@ export function Footer() {
                 </dd>
               </div>
               <div>
+                <dt className="sr-only">{t.contact.info.phoneUae}</dt>
+                <dd>
+                  <a href={site.uaePhoneHref} dir="ltr" className={cn(linkClass, 'inline-block')}>
+                    {site.uaePhone}
+                  </a>
+                </dd>
+              </div>
+              <div>
                 <dt className="sr-only">{t.contact.info.email}</dt>
                 <dd>
                   <a href={`mailto:${site.email}`} className={cn(linkClass, 'break-all')}>

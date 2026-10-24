@@ -26,6 +26,7 @@ export function StudioInfo() {
   const cards: InfoCard[] = [
     { icon: MapPin, label: info.address, value: l(site.address), href: mapsDirectionsUrl, external: true },
     { icon: Phone, label: info.phone, value: site.phone, href: site.phoneHref, ltr: true },
+    { icon: Phone, label: info.phoneUae, value: site.uaePhone, href: site.uaePhoneHref, ltr: true },
     { icon: Mail, label: info.email, value: site.email, href: `mailto:${site.email}` },
     { icon: Globe, label: info.website, value: site.displayUrl, href: site.url, external: true },
     {
@@ -42,7 +43,7 @@ export function StudioInfo() {
       <div className="container-luxe">
         <SectionHeading eyebrow={info.eyebrow} title={info.title} />
 
-        <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {cards.map((card, index) => {
             const Icon = card.icon;
             const content = (

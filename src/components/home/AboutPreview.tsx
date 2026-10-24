@@ -49,7 +49,7 @@ export function AboutPreview() {
           </Reveal>
           <Reveal delay={0.25}>
             <div className="mt-10 flex items-center gap-5 border-y border-indigo/10 py-6">
-              <Monogram initials={site.founder.initials} />
+              <Monogram initials={site.founder.initials} src={site.founder.portrait} className="h-16 w-16" />
               <div>
                 <p className="font-serif text-xl tracking-wide text-indigo">{l(site.founder.name)}</p>
                 <p className="mt-1 text-[0.64rem] font-medium uppercase tracking-luxe text-charcoal-muted">
