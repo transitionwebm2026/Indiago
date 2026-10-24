@@ -50,6 +50,7 @@ export const en = {
     healthcare: 'Healthcare',
   },
   blogCategories: {
+    heritage: 'Heritage & Design',
     'design-trends': 'Design Trends',
     'material-selection': 'Material Selection',
     'space-planning': 'Space Planning',

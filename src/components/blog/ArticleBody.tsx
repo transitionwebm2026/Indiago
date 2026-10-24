@@ -1,12 +1,14 @@
 import type { ArticleBlock } from '@/lib/data/posts';
+import type { Locale } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
-/** Typeset renderer for structured article content. */
-export function ArticleBody({ blocks }: { blocks: ArticleBlock[] }) {
+/** Typeset renderer for structured article content, in the language the blocks are written in. */
+export function ArticleBody({ blocks, lang = 'en' }: { blocks: ArticleBlock[]; lang?: Locale }) {
   let paragraphCount = 0;
+  const arabic = lang === 'ar';
 
   return (
-    <div lang="en" dir="ltr" className="text-left">
+    <div lang={lang} dir={arabic ? 'rtl' : 'ltr'} className="text-start">
       {blocks.map((block, index) => {
         switch (block.type) {
           case 'p': {
@@ -35,9 +37,12 @@ export function ArticleBody({ blocks }: { blocks: ArticleBlock[] }) {
             return (
               <blockquote
                 key={index}
-                className="my-10 rounded-3xl border border-champagne/40 bg-linen p-6 font-serif text-xl italic leading-relaxed text-indigo sm:my-12 sm:p-8 sm:text-2xl md:text-[1.7rem]"
+                className={cn(
+                  'my-10 rounded-3xl border border-champagne/40 bg-linen p-6 font-serif text-xl leading-relaxed text-indigo sm:my-12 sm:p-8 sm:text-2xl md:text-[1.7rem]',
+                  !arabic && 'italic',
+                )}
               >
-                “{block.text}”
+                {arabic ? `«${block.text}»` : `“${block.text}”`}
               </blockquote>
             );
           case 'list':

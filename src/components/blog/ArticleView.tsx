@@ -25,6 +25,7 @@ export function ArticleView({ post, related }: { post: Post; related: Post[] }) 
   const author = authors[post.author];
   const title = l(post.title);
   const shareUrl = `${site.url}${postHref(post.slug)}`;
+  const arabicBody = locale === 'ar' ? post.bodyAr : undefined;
 
   return (
     <>
@@ -74,12 +75,18 @@ export function ArticleView({ post, related }: { post: Post; related: Post[] }) 
           </aside>
 
           <article className="lg:col-span-8">
-            {locale !== 'en' && (
-              <p className="mb-10 rounded-2xl border border-champagne/50 bg-linen px-5 py-3 text-sm text-charcoal-soft">
-                {t.common.englishOnly}
-              </p>
+            {arabicBody ? (
+              <ArticleBody blocks={arabicBody} lang="ar" />
+            ) : (
+              <>
+                {locale !== 'en' && (
+                  <p className="mb-10 rounded-2xl border border-champagne/50 bg-linen px-5 py-3 text-sm text-charcoal-soft">
+                    {t.common.englishOnly}
+                  </p>
+                )}
+                <ArticleBody blocks={post.body} />
+              </>
             )}
-            <ArticleBody blocks={post.body} />
 
             <footer className="mt-16 flex flex-col gap-6 card-frame rounded-3xl bg-linen p-5 sm:flex-row sm:items-center sm:justify-between sm:p-8">
               <div className="flex min-w-0 items-center gap-4">

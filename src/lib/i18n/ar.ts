@@ -49,6 +49,7 @@ export const ar: Dictionary = {
     healthcare: 'رعاية صحية',
   },
   blogCategories: {
+    heritage: 'التراث والتصميم',
     'design-trends': 'اتجاهات التصميم',
     'material-selection': 'اختيار الخامات',
     'space-planning': 'تخطيط المساحات',
