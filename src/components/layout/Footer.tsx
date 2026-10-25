@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUp } from 'lucide-react';
 import type { ReactNode } from 'react';
@@ -100,14 +101,6 @@ export function Footer() {
                   </a>
                 </dd>
               </div>
-              <div>
-                <dt className="sr-only">{t.contact.info.website}</dt>
-                <dd>
-                  <a href={site.url} className={linkClass}>
-                    {site.displayUrl}
-                  </a>
-                </dd>
-              </div>
               <div className="border-t border-ivory/10 pt-4">
                 <dt className="text-[0.62rem] uppercase tracking-luxe text-ivory/40">{t.contact.info.management}</dt>
                 <dd className="mt-1.5 text-ivory/80">
@@ -152,6 +145,30 @@ export function Footer() {
             {t.common.backToTop}
             <ArrowUp aria-hidden className="h-3.5 w-3.5" strokeWidth={1.5} />
           </button>
+        </div>
+
+        {/* On phones the extra bottom space keeps the button clear of the fixed WhatsApp/call launchers. */}
+        <div className="flex justify-center border-t border-ivory/10 pb-40 pt-8 sm:pb-8">
+          {/* The gradient runs from champagne behind the label to indigo behind the agency name, in either reading direction. */}
+          <a
+            href={site.credit.href}
+            target="_blank"
+            rel="noopener"
+            aria-label={t.footer.creditLabel}
+            className="group/credit relative isolate inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-gradient-to-l from-indigo-600 to-champagne-600 px-5 py-2 text-[0.8125rem] font-semibold text-white shadow-[0_12px_32px_-12px_rgba(213,182,144,0.55)] ring-1 ring-inset ring-white/20 transition-[transform,box-shadow] duration-500 ease-luxe [text-shadow:0_1px_2px_rgba(23,18,44,0.35)] hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-12px_rgba(213,182,144,0.75)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-champagne rtl:bg-gradient-to-r sm:gap-3.5 sm:px-6 sm:text-[0.95rem]"
+          >
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-y-0 -start-1/3 -z-10 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-0 group-hover/credit:translate-x-[400%] group-hover/credit:duration-1000 group-hover/credit:ease-luxe rtl:group-hover/credit:-translate-x-[400%]"
+            />
+            <span>{t.footer.credit}</span>
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/15 ring-1 ring-inset ring-white/25 transition-transform duration-500 ease-luxe group-hover/credit:scale-110">
+              <Image src={site.credit.logo} alt="" width={240} height={143} className="h-auto w-7" />
+            </span>
+            <span dir="ltr" className="font-bold tracking-wide">
+              {site.credit.name}
+            </span>
+          </a>
         </div>
       </div>
     </footer>

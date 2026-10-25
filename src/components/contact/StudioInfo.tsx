@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowUpRight, Globe, Mail, MapPin, Phone, UserRound, type LucideIcon } from 'lucide-react';
+import { ArrowUpRight, Mail, MapPin, Phone, UserRound, type LucideIcon } from 'lucide-react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
@@ -28,7 +28,6 @@ export function StudioInfo() {
     { icon: Phone, label: info.phone, value: site.phone, href: site.phoneHref, ltr: true },
     { icon: Phone, label: info.phoneUae, value: site.uaePhone, href: site.uaePhoneHref, ltr: true },
     { icon: Mail, label: info.email, value: site.email, href: `mailto:${site.email}` },
-    { icon: Globe, label: info.website, value: site.displayUrl, href: site.url, external: true },
     {
       icon: UserRound,
       label: info.management,
@@ -43,7 +42,8 @@ export function StudioInfo() {
       <div className="container-luxe">
         <SectionHeading eyebrow={info.eyebrow} title={info.title} />
 
-        <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Flex rather than grid so an incomplete last row sits centred. */}
+        <ul className="mt-14 flex flex-wrap justify-center gap-4">
           {cards.map((card, index) => {
             const Icon = card.icon;
             const content = (
@@ -76,7 +76,7 @@ export function StudioInfo() {
               'card-frame group flex h-full flex-col rounded-3xl bg-ivory p-6 hover:border-champagne';
 
             return (
-              <li key={card.label} className="h-full">
+              <li key={card.label} className="w-full sm:w-[calc((100%_-_1rem)/2)] lg:w-[calc((100%_-_2rem)/3)]">
                 <Reveal delay={index * 0.08} className="h-full">
                   {card.href.startsWith('/') ? (
                     <Link href={card.href} className={className}>

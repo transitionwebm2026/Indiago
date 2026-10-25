@@ -42,6 +42,7 @@ export const en = {
     pause: 'Pause slideshow',
     play: 'Play slideshow',
     goTo: 'Show image',
+    follow: 'Follow us',
   },
   categories: {
     residential: 'Residential',
@@ -647,7 +648,6 @@ export const en = {
       phone: 'Phone · Egypt',
       phoneUae: 'Phone · UAE',
       email: 'Email',
-      website: 'Website',
       management: 'Management',
     },
     map: {
@@ -666,6 +666,8 @@ export const en = {
     rights: 'All rights reserved.',
     location: 'Designed in Sheikh Zayed, Egypt',
     ctaTitle: 'Ready to begin your project?',
+    credit: 'Design & Development',
+    creditLabel: 'Website designed and developed by Transition (opens in a new tab)',
   },
   whatsapp: {
     label: 'Chat with Indigo Interiors on WhatsApp',

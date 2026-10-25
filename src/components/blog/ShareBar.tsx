@@ -5,14 +5,19 @@ import { Check, Link2 } from 'lucide-react';
 import { useEffect, useState, type ComponentType, type SVGProps } from 'react';
 import { FacebookIcon, LinkedInIcon, WhatsAppIcon, XIcon } from '@/components/icons/SocialIcons';
 import { useLanguage } from '@/components/providers/LanguageProvider';
+import { site } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
 const buttonClass =
   'grid h-11 w-11 place-items-center rounded-full border border-indigo/15 text-indigo transition-colors duration-300 hover:border-indigo hover:bg-indigo hover:text-champagne';
 
-export function ShareBar({ url, title, className }: { url: string; title: string; className?: string }) {
+export function ShareBar({ path, title, className }: { path: string; title: string; className?: string }) {
   const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
+  const [url, setUrl] = useState(`${site.url}${path}`);
+
+  // Share from the domain the visitor is actually on, so the link always opens this site.
+  useEffect(() => setUrl(`${window.location.origin}${path}`), [path]);
 
   useEffect(() => {
     if (!copied) return;
@@ -20,13 +25,14 @@ export function ShareBar({ url, title, className }: { url: string; title: string
     return () => window.clearTimeout(timer);
   }, [copied]);
 
+  const shareText = `${title} | ${t.brand}`;
   const encodedUrl = encodeURIComponent(url);
-  const encodedTitle = encodeURIComponent(title);
+  const encodedText = encodeURIComponent(shareText);
   const networks: { label: string; href: string; Icon: ComponentType<SVGProps<SVGSVGElement>> }[] = [
-    { label: 'WhatsApp', href: `https://wa.me/?text=${encodeURIComponent(`${title} — ${url}`)}`, Icon: WhatsAppIcon },
+    { label: 'WhatsApp', href: `https://wa.me/?text=${encodeURIComponent(`${shareText}\n${url}`)}`, Icon: WhatsAppIcon },
     { label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`, Icon: FacebookIcon },
     { label: 'LinkedIn', href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`, Icon: LinkedInIcon },
-    { label: 'X', href: `https://x.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`, Icon: XIcon },
+    { label: 'X', href: `https://x.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`, Icon: XIcon },
   ];
 
   const copyLink = async () => {

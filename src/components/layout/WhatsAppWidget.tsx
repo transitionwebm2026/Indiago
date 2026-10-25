@@ -11,7 +11,7 @@ import { site, whatsappLink } from '@/lib/site';
 
 /**
  * Fixed bottom-right launchers: a direct call button stacked above the
- * consultation chat that routes straight to wa.me/201112266054.
+ * consultation chat that routes straight to wa.me/201119777662.
  */
 export function WhatsAppWidget() {
   const { t } = useLanguage();

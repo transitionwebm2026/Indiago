@@ -4,6 +4,7 @@ import { ArticleView } from '@/components/blog/ArticleView';
 import { authors, getPost, getRelatedPosts, posts } from '@/lib/data/posts';
 import { img } from '@/lib/images';
 import { postHref } from '@/lib/routes';
+import { site } from '@/lib/site';
 
 type Params = Promise<{ slug: string }>;
 
@@ -24,6 +25,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     authors: [{ name: authors[post.author].name.en }],
     openGraph: {
       type: 'article',
+      siteName: site.name,
+      url: postHref(post.slug),
       title: post.title.en,
       description: post.excerpt.en,
       publishedTime: post.date,

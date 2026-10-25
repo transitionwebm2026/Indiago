@@ -7,13 +7,12 @@ import type { Localized } from '@/lib/i18n/types';
 export const site = {
   name: 'Indigo Interiors',
   url: 'https://www.indigoegy.com',
-  displayUrl: 'www.indigoegy.com',
   email: 'info@indigoegy.com',
-  phone: '+20 111 226 6054',
-  phoneHref: 'tel:+201112266054',
+  phone: '+20 111 977 7662',
+  phoneHref: 'tel:+201119777662',
   uaePhone: '+971 50 611 7874',
   uaePhoneHref: 'tel:+971506117874',
-  whatsappNumber: '201112266054',
+  whatsappNumber: '201119777662',
   address: {
     en: 'Villa 40, Al Safa Street, Sheikh Zayed, Egypt',
     ar: 'فيلا 40، شارع الصفا، الشيخ زايد، مصر',
@@ -26,13 +25,16 @@ export const site = {
     // Path under /public; leave empty to show the initials instead.
     portrait: '/Engphoto.jpeg',
   },
-  // Facebook, LinkedIn and Pinterest still point to placeholders — replace with the studio's real profile URLs.
   social: [
     { id: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/indigo_interiors_studio/' },
-    { id: 'facebook', label: 'Facebook', href: 'https://www.facebook.com/' },
-    { id: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/' },
-    { id: 'pinterest', label: 'Pinterest', href: 'https://www.pinterest.com/' },
+    { id: 'facebook', label: 'Facebook', href: 'https://www.facebook.com/share/1ERGDLpFSW/' },
   ],
+  // Website design & development credit shown at the very end of the footer.
+  credit: {
+    name: 'Transition',
+    href: 'https://transitioneg.com/',
+    logo: '/transition-mark.png',
+  },
   // Optional: Web3Forms access key (see .env.example). Empty = WhatsApp / mailto fallbacks.
   web3formsKey: process.env.NEXT_PUBLIC_WEB3FORMS_KEY ?? '',
   copyrightYear: 2026,

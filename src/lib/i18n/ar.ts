@@ -41,6 +41,7 @@ export const ar: Dictionary = {
     pause: 'إيقاف العرض',
     play: 'تشغيل العرض',
     goTo: 'عرض الصورة',
+    follow: 'تابعنا',
   },
   categories: {
     residential: 'سكني',
@@ -632,7 +633,6 @@ export const ar: Dictionary = {
       phone: 'الهاتف · مصر',
       phoneUae: 'الهاتف · الإمارات',
       email: 'البريد الإلكتروني',
-      website: 'الموقع الإلكتروني',
       management: 'الإدارة',
     },
     map: {
@@ -651,6 +651,8 @@ export const ar: Dictionary = {
     rights: 'جميع الحقوق محفوظة.',
     location: 'صُمّم في الشيخ زايد، مصر',
     ctaTitle: 'مستعد لبدء مشروعك؟',
+    credit: 'تصميم وتطوير',
+    creditLabel: 'تصميم وتطوير الموقع بواسطة Transition (يفتح في نافذة جديدة)',
   },
   whatsapp: {
     label: 'تواصل مع إنديجو إنتيريورز عبر واتساب',

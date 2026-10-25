@@ -13,7 +13,6 @@ import { heroSlides } from '@/lib/data/heroes';
 import { authors, type Post } from '@/lib/data/posts';
 import { img } from '@/lib/images';
 import { postHref, routes } from '@/lib/routes';
-import { site } from '@/lib/site';
 import { formatDate } from '@/lib/utils';
 import { ArticleBody } from './ArticleBody';
 import { ArticleCard, ReadTimeBadge } from './ArticleCard';
@@ -24,7 +23,6 @@ export function ArticleView({ post, related }: { post: Post; related: Post[] }) 
   const { t, l, locale } = useLanguage();
   const author = authors[post.author];
   const title = l(post.title);
-  const shareUrl = `${site.url}${postHref(post.slug)}`;
   const arabicBody = locale === 'ar' ? post.bodyAr : undefined;
 
   return (
@@ -71,7 +69,7 @@ export function ArticleView({ post, related }: { post: Post; related: Post[] }) 
 
         <div className="container-luxe grid gap-10 py-16 md:py-24 lg:grid-cols-12 lg:gap-12">
           <aside className="lg:col-span-2">
-            <ShareBar url={shareUrl} title={title} className="lg:sticky lg:top-32" />
+            <ShareBar path={postHref(post.slug)} title={title} className="lg:sticky lg:top-32" />
           </aside>
 
           <article className="lg:col-span-8">

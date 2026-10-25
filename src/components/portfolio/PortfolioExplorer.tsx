@@ -49,7 +49,8 @@ export function PortfolioExplorer() {
           </p>
         </div>
 
-        <motion.div layout className="mt-14 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Flex rather than grid so an incomplete last row sits centred. */}
+        <motion.div layout className="mt-14 flex flex-wrap justify-center gap-x-8 gap-y-16">
           <AnimatePresence mode="popLayout" initial={false}>
             {visible.map((project) => (
               <motion.div
@@ -59,6 +60,7 @@ export function PortfolioExplorer() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.97 }}
                 transition={{ duration: 0.55, ease: EASE }}
+                className="w-full sm:w-[calc((100%_-_2rem)/2)] lg:w-[calc((100%_-_4rem)/3)]"
               >
                 <ProjectCard project={project} onOpenGallery={() => setGallery({ project, index: 0 })} />
               </motion.div>

@@ -18,15 +18,21 @@ import { cn, pad } from '@/lib/utils';
 /** Time each project photograph stays on screen. */
 export const SLIDE_INTERVAL = 3000;
 
-/** The studio's social profiles as icons only, pinned to the hero's right edge in both languages. */
-function SocialRail({ label }: { label: string }) {
+/** The studio's social profiles under a "Follow us" label, pinned to the hero's right edge in both languages. */
+function SocialRail({ label, title }: { label: string; title: string }) {
   return (
     // On phones the rail centres in the photo strip left visible between the navbar and the overlapping card.
+    // One frosted capsule keeps the label legible over any photograph.
     <nav
       aria-label={label}
-      className="absolute right-4 top-[calc(50%+1rem)] z-20 -translate-y-1/2 sm:right-6 md:top-1/2 lg:right-8"
+      className="absolute right-4 top-[calc(50%+1rem)] z-20 flex -translate-y-1/2 flex-col items-center gap-2.5 rounded-full border border-champagne/30 bg-indigo/85 px-1 pb-1 pt-4 backdrop-blur-md sm:right-6 sm:gap-3 sm:px-1.5 sm:pb-1.5 sm:pt-5 md:top-1/2 lg:right-8"
     >
-      <ul className="flex flex-col gap-1.5 sm:gap-2.5">
+      {/* Arabic is turned the other way so it, too, reads downwards towards the icons. */}
+      <span className="text-[0.62rem] font-medium uppercase tracking-luxe text-champagne [writing-mode:vertical-rl] rtl:rotate-180">
+        {title}
+      </span>
+      <span aria-hidden className="h-px w-4 bg-champagne/40" />
+      <ul className="flex flex-col gap-1 sm:gap-1.5">
         {site.social.map((social) => {
           const Icon = socialIcons[social.id];
           return (
@@ -36,7 +42,7 @@ function SocialRail({ label }: { label: string }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className="grid h-9 w-9 place-items-center rounded-full border border-champagne/30 bg-indigo/85 text-ivory backdrop-blur-md transition-colors duration-300 hover:border-champagne hover:bg-champagne hover:text-indigo sm:h-11 sm:w-11"
+                className="grid h-9 w-9 place-items-center rounded-full bg-ivory/10 text-ivory transition-colors duration-300 hover:bg-champagne hover:text-indigo sm:h-11 sm:w-11"
               >
                 <Icon className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
               </a>
@@ -184,7 +190,7 @@ export function HeroShell({ slides, size = 'page', showCaption = true, children 
         })}
         {/* Stops short of the social rail on the right. */}
         {count > 1 && controls('absolute bottom-16 left-4 right-[3.75rem] sm:right-[4.5rem] md:hidden')}
-        <SocialRail label={t.footer.follow} />
+        <SocialRail label={t.footer.follow} title={t.hero.follow} />
       </div>
 
       <div
