@@ -31,7 +31,7 @@ export function Footer() {
       <div className="container-luxe">
         <div className="flex flex-col gap-10 border-b border-ivory/10 py-16 md:flex-row md:items-end md:justify-between md:py-20">
           <div>
-            <Logo className="h-12 md:h-14" />
+            <Logo className="h-14 md:h-16" />
             <p className="mt-7 max-w-sm font-serif text-xl leading-snug tracking-wide text-ivory/80">{t.footer.tagline}</p>
           </div>
           <div className="flex flex-col items-start gap-5 md:items-end">

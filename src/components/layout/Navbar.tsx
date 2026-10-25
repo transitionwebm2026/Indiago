@@ -74,7 +74,7 @@ export function Navbar() {
           )}
         >
           <Link href={routes.home} aria-label="Indigo Interiors — Home" className="shrink-0">
-            <Logo className="h-7 min-[360px]:h-8 md:h-9" />
+            <Logo className="h-9 min-[360px]:h-10 md:h-11" />
           </Link>
 
           <ul className="hidden items-center gap-6 lg:flex xl:gap-8">

@@ -32,7 +32,7 @@ export function StudioMap() {
           </div>
 
           <div className="relative -mt-16 mx-4 card-frame-dark rounded-3xl bg-indigo p-7 text-ivory sm:absolute sm:bottom-6 sm:start-6 sm:mx-0 sm:mt-0 sm:w-[22rem]">
-            <Logo className="h-9" />
+            <Logo className="h-11" />
             <p className="mt-6 leading-relaxed text-ivory/80">{l(site.address)}</p>
             <a href={site.phoneHref} dir="ltr" className="mt-2 inline-block text-sm text-champagne transition-colors hover:text-ivory">
               {site.phone}
