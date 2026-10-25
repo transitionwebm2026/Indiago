@@ -649,7 +649,6 @@ export const ar: Dictionary = {
     contact: 'التواصل',
     follow: 'تابع الاستوديو',
     rights: 'جميع الحقوق محفوظة.',
-    location: 'صُمّم في الشيخ زايد، مصر',
     ctaTitle: 'مستعد لبدء مشروعك؟',
     credit: 'تصميم وتطوير',
     creditLabel: 'تصميم وتطوير الموقع بواسطة Transition (يفتح في نافذة جديدة)',

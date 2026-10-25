@@ -664,7 +664,6 @@ export const en = {
     contact: 'Contact',
     follow: 'Follow the Studio',
     rights: 'All rights reserved.',
-    location: 'Designed in Sheikh Zayed, Egypt',
     ctaTitle: 'Ready to begin your project?',
     credit: 'Design & Development',
     creditLabel: 'Website designed and developed by Transition (opens in a new tab)',

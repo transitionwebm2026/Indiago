@@ -132,23 +132,12 @@ export function Footer() {
           </FooterColumn>
         </div>
 
-        <div className="flex flex-col gap-4 border-t border-ivory/10 py-8 text-xs text-ivory/50 sm:flex-row sm:items-center sm:justify-between">
+        {/* From lg up the credit sits centred between the copyright and back-to-top; narrower, the three stack.
+            On phones the extra bottom space keeps them clear of the fixed WhatsApp/call launchers. */}
+        <div className="flex flex-col items-center gap-5 border-t border-ivory/10 pb-40 pt-8 text-center text-xs text-ivory/50 sm:pb-8 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-8 lg:text-start">
           <p>
             © {site.copyrightYear} {t.brand}. {t.footer.rights}
           </p>
-          <p>{t.footer.location}</p>
-          <button
-            type="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="inline-flex w-fit items-center gap-2 uppercase tracking-luxe transition-colors hover:text-champagne"
-          >
-            {t.common.backToTop}
-            <ArrowUp aria-hidden className="h-3.5 w-3.5" strokeWidth={1.5} />
-          </button>
-        </div>
-
-        {/* On phones the extra bottom space keeps the button clear of the fixed WhatsApp/call launchers. */}
-        <div className="flex justify-center border-t border-ivory/10 pb-40 pt-8 sm:pb-8">
           {/* The gradient runs from champagne behind the label to indigo behind the agency name, in either reading direction. */}
           <a
             href={site.credit.href}
@@ -169,6 +158,14 @@ export function Footer() {
               {site.credit.name}
             </span>
           </a>
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="inline-flex w-fit items-center gap-2 uppercase tracking-luxe transition-colors hover:text-champagne lg:justify-self-end"
+          >
+            {t.common.backToTop}
+            <ArrowUp aria-hidden className="h-3.5 w-3.5" strokeWidth={1.5} />
+          </button>
         </div>
       </div>
     </footer>
