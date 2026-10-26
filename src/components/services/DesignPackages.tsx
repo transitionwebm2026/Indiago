@@ -8,8 +8,8 @@ import { Eyebrow } from '@/components/ui/Eyebrow';
 import { Highlight } from '@/components/ui/Highlight';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { useSite } from '@/lib/cms/hooks';
 import type { Dictionary } from '@/lib/i18n';
-import { whatsappLink } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
 /** Indigo Signature, highlighted as the recommended package. */
@@ -38,6 +38,7 @@ function pricingMessage(packages: Packages, item: Packages['items'][number]) {
 /** Three design packages, the fixed supervision fee and a feature-by-feature comparison. */
 export function DesignPackages() {
   const { t } = useLanguage();
+  const { whatsappLink } = useSite();
   const packages = t.services.packages;
   const compare = packages.compare;
 

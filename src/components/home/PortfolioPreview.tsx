@@ -5,12 +5,15 @@ import { useLanguage } from '@/components/providers/LanguageProvider';
 import { ButtonLink } from '@/components/ui/Button';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { featuredProjects } from '@/lib/data/projects';
+import { useProjects } from '@/lib/cms/hooks';
+import { getFeaturedProjects } from '@/lib/data/projects';
 import { routes } from '@/lib/routes';
 import { cn } from '@/lib/utils';
 
 export function PortfolioPreview() {
   const { t } = useLanguage();
+  const projects = useProjects();
+  const featuredProjects = getFeaturedProjects(projects);
   const copy = t.home.portfolio;
 
   return (

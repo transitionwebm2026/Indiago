@@ -6,12 +6,14 @@ import { useId, useState } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { useProcessSteps } from '@/lib/cms/hooks';
 import { EASE } from '@/lib/motion';
 import { cn, pad } from '@/lib/utils';
 
 export function DeliverablesAccordion() {
-  const { t } = useLanguage();
+  const { t, l } = useLanguage();
   const deliverables = t.services.deliverables;
+  const stages = useProcessSteps().filter((step) => step.deliverables.length > 0);
   const [open, setOpen] = useState<number | null>(0);
   const baseId = useId();
 
@@ -26,12 +28,12 @@ export function DeliverablesAccordion() {
 
         <Reveal className="lg:col-span-8">
           <ul className="space-y-3">
-            {deliverables.stages.map((stage, index) => {
+            {stages.map((stage, index) => {
               const expanded = open === index;
               const panelId = `${baseId}-panel-${index}`;
               const buttonId = `${baseId}-button-${index}`;
               return (
-                <li key={stage.title} className="card-frame rounded-3xl bg-white/70 px-4 sm:px-7">
+                <li key={`${stage.title.en}-${index}`} className="card-frame rounded-3xl bg-white/70 px-4 sm:px-7">
                   <h3>
                     <button
                       id={buttonId}
@@ -50,10 +52,10 @@ export function DeliverablesAccordion() {
                         {pad(index + 1)}
                       </span>
                       <span className="min-w-0 flex-1 break-words font-serif text-xl tracking-wide text-indigo min-[400px]:text-2xl md:text-3xl">
-                        {stage.title}
+                        {l(stage.title)}
                       </span>
                       <span className="hidden text-[0.62rem] font-medium uppercase tracking-luxe text-charcoal-muted sm:block">
-                        {stage.items.length} {deliverables.itemsLabel}
+                        {stage.deliverables.length} {deliverables.itemsLabel}
                       </span>
                       <span
                         aria-hidden
@@ -81,10 +83,10 @@ export function DeliverablesAccordion() {
                         className="overflow-hidden"
                       >
                         <ul className="grid gap-3 pb-6 sm:grid-cols-2 sm:pb-8 md:ps-12">
-                          {stage.items.map((item) => (
-                            <li key={item} className="flex items-start gap-3 rounded-2xl bg-linen px-4 py-3.5 text-sm text-indigo">
+                          {stage.deliverables.map((item, itemIndex) => (
+                            <li key={`${item.en}-${itemIndex}`} className="flex items-start gap-3 rounded-2xl bg-linen px-4 py-3.5 text-sm text-indigo">
                               <CheckCircle2 aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-champagne-700" strokeWidth={1.5} />
-                              {item}
+                              {l(item)}
                             </li>
                           ))}
                         </ul>

@@ -1,22 +1,22 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { ProjectDetail } from '@/components/portfolio/ProjectDetail';
-import { getNextProject, getProject, projects } from '@/lib/data/projects';
+import { ProjectRoute } from '@/components/portfolio/ProjectRoute';
+import { getProject, projects } from '@/lib/data/projects';
 import { img } from '@/lib/images';
-import { projectHref } from '@/lib/routes';
+import { projectHref, SHELL_SLUG } from '@/lib/routes';
 
 type Params = Promise<{ id: string }>;
 
 export const dynamicParams = false;
 
+/** One page per built-in project, plus the shell that serves projects added in the CMS later. */
 export function generateStaticParams() {
-  return projects.map((project) => ({ id: project.id }));
+  return [...projects.map((project) => ({ id: project.id })), { id: SHELL_SLUG }];
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { id } = await params;
   const project = getProject(id);
-  if (!project) return {};
+  if (!project) return { title: 'Project', robots: { index: false } };
   return {
     title: `${project.title.en} — ${project.location.en}`,
     description: project.summary.en,
@@ -31,8 +31,5 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 export default async function ProjectPage({ params }: { params: Params }) {
   const { id } = await params;
-  const project = getProject(id);
-  if (!project) notFound();
-
-  return <ProjectDetail project={project} next={getNextProject(id)} />;
+  return <ProjectRoute slug={id} />;
 }

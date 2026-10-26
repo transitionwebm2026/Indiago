@@ -4,11 +4,13 @@ import Image from 'next/image';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { img, pageImages } from '@/lib/images';
+import { useMedia } from '@/lib/cms/hooks';
+import { img } from '@/lib/images';
 import { pad } from '@/lib/utils';
 
 export function StorySection() {
   const { t } = useLanguage();
+  const { image } = useMedia('about.story');
   const story = t.about.story;
   const [lead, ...paragraphs] = story.paragraphs;
 
@@ -20,7 +22,7 @@ export function StorySection() {
             <div className="lg:sticky lg:top-32">
               <SectionHeading eyebrow={story.eyebrow} title={story.title} />
               <Reveal delay={0.2} className="relative mt-12 hidden aspect-[4/5] overflow-hidden rounded-[2rem] bg-linen-dark lg:block">
-                <Image src={img(pageImages.aboutStory, 1000)} alt="" fill sizes="35vw" className="object-cover" />
+                <Image src={img(image, 1000)} alt="" fill sizes="35vw" className="object-cover" />
               </Reveal>
             </div>
           </div>

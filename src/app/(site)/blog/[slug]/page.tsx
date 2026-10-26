@@ -1,23 +1,23 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { ArticleView } from '@/components/blog/ArticleView';
-import { authors, getPost, getRelatedPosts, posts } from '@/lib/data/posts';
+import { ArticleRoute } from '@/components/blog/ArticleRoute';
+import { authors, getPost, posts } from '@/lib/data/posts';
 import { img } from '@/lib/images';
-import { postHref } from '@/lib/routes';
+import { postHref, SHELL_SLUG } from '@/lib/routes';
 import { site } from '@/lib/site';
 
 type Params = Promise<{ slug: string }>;
 
 export const dynamicParams = false;
 
+/** One page per built-in article, plus the shell that serves articles published in the CMS later. */
 export function generateStaticParams() {
-  return posts.map((post) => ({ slug: post.slug }));
+  return [...posts.map((post) => ({ slug: post.slug })), { slug: SHELL_SLUG }];
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
   const post = getPost(slug);
-  if (!post) return {};
+  if (!post) return { title: 'Article', robots: { index: false } };
   return {
     title: post.title.en,
     description: post.excerpt.en,
@@ -37,8 +37,5 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 export default async function ArticlePage({ params }: { params: Params }) {
   const { slug } = await params;
-  const post = getPost(slug);
-  if (!post) notFound();
-
-  return <ArticleView post={post} related={getRelatedPosts(slug)} />;
+  return <ArticleRoute slug={slug} />;
 }

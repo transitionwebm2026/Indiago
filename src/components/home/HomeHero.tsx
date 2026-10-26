@@ -5,15 +5,16 @@ import { ButtonLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/Eyebrow';
 import { HeroShell } from '@/components/ui/HeroShell';
 import { Highlight } from '@/components/ui/Highlight';
-import { heroSlides } from '@/lib/data/heroes';
+import { useMedia } from '@/lib/cms/hooks';
 import { routes } from '@/lib/routes';
 
 export function HomeHero() {
   const { t } = useLanguage();
+  const { slides } = useMedia('home.hero');
   const hero = t.home.hero;
 
   return (
-    <HeroShell slides={heroSlides.home} size="full">
+    <HeroShell slides={slides} size="full">
       <Eyebrow surface="dark">{hero.eyebrow}</Eyebrow>
       {/* On large screens the headline also scales with screen height, so the hero always fits one screen. */}
       <h1 className="mt-5 text-balance font-serif text-[1.9rem] leading-[1.08] sm:mt-6 tracking-wide text-ivory sm:text-5xl lg:text-[length:min(3.75rem,7.4svh)] xl:text-[length:min(4.1rem,8.2svh)]">

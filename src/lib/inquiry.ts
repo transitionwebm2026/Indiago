@@ -1,4 +1,4 @@
-import type { ServiceId } from '@/lib/data/services';
+import type { Service } from '@/lib/data/services';
 import { en } from '@/lib/i18n/en';
 
 const options = en.contact.form.options;
@@ -16,7 +16,8 @@ export interface InquiryData {
   status: PropertyStatus | '';
   area: string;
   location: string;
-  services: ServiceId[];
+  /** Service IDs — see lib/data/services.ts */
+  services: string[];
   budget: BudgetRange | '';
   timeline: StartTimeline | '';
   references: string;
@@ -38,13 +39,27 @@ export const emptyInquiry: InquiryData = {
   notes: '',
 };
 
-const serviceTitle = (id: ServiceId) => en.services.items.find((item) => item.id === id)?.title ?? id;
+/** English label for a stored option key, e.g. budget "2m-5m" → "EGP 2M – 5M". */
+export function optionLabel(group: keyof typeof options, value: string) {
+  const labels: Record<string, string> = options[group];
+  return labels[value] ?? value;
+}
+
+const serviceTitle = (services: Service[], id: string) => services.find((item) => item.id === id)?.title.en ?? id;
+
+/** One reference link per line, blank lines dropped. */
+export function referenceLinks(references: string) {
+  return references
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
 
 /**
  * Field values for the studio, always in English so every brief reads the same
  * regardless of the language the visitor browsed in.
  */
-export function inquiryFields(data: InquiryData): Record<string, string> {
+export function inquiryFields(data: InquiryData, services: Service[]): Record<string, string> {
   return {
     Name: data.name.trim(),
     'Phone / WhatsApp': data.phone.trim(),
@@ -53,7 +68,7 @@ export function inquiryFields(data: InquiryData): Record<string, string> {
     'Property status': data.status ? options.status[data.status] : '—',
     Area: data.area ? `${data.area.trim()} sqm` : '—',
     Location: data.location.trim() || '—',
-    Services: data.services.map(serviceTitle).join(', ') || '—',
+    Services: data.services.map((id) => serviceTitle(services, id)).join(', ') || '—',
     Budget: data.budget ? options.budget[data.budget] : '—',
     'Preferred start': data.timeline ? options.timeline[data.timeline] : '—',
     References: data.references.trim() || '—',
@@ -62,8 +77,8 @@ export function inquiryFields(data: InquiryData): Record<string, string> {
 }
 
 /** Formats the brief as a WhatsApp message (WhatsApp renders *text* as bold). */
-export function buildInquiryMessage(data: InquiryData) {
-  const f = inquiryFields(data);
+export function buildInquiryMessage(data: InquiryData, services: Service[], fileCount = 0) {
+  const f = inquiryFields(data, services);
   const line = (label: string) => (f[label] && f[label] !== '—' ? `${label}: ${f[label]}` : null);
 
   return [
@@ -87,6 +102,7 @@ export function buildInquiryMessage(data: InquiryData) {
     '*4. Timeline & References*',
     line('Preferred start'),
     f.References !== '—' ? `References:\n${f.References}` : null,
+    fileCount > 0 ? `Reference files: ${fileCount} attached (see the studio dashboard)` : null,
     line('Notes'),
   ]
     .filter((entry): entry is string => entry !== null)

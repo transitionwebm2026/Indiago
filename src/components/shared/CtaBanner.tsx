@@ -8,9 +8,9 @@ import { ButtonLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/Eyebrow';
 import { Highlight } from '@/components/ui/Highlight';
 import { Reveal } from '@/components/ui/Reveal';
+import { useSite } from '@/lib/cms/hooks';
 import type { PropertyType } from '@/lib/inquiry';
 import { routes } from '@/lib/routes';
-import { site, whatsappLink } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
 interface CtaBannerProps {
@@ -22,6 +22,7 @@ interface CtaBannerProps {
 /** Deep Indigo inquiry banner used to close most pages. */
 export function CtaBanner({ background = 'linen', interactive = false }: CtaBannerProps) {
   const { t, locale } = useLanguage();
+  const { site, whatsappLink } = useSite();
   const [type, setType] = useState<PropertyType | null>(null);
   const typeOptions = t.contact.form.options.propertyType;
 
@@ -87,12 +88,14 @@ export function CtaBanner({ background = 'linen', interactive = false }: CtaBann
                   <WhatsAppIcon className="h-4 w-4" />
                   {t.cta.whatsapp}
                 </ButtonLink>
-                <p className="mt-2 text-sm text-ivory/60">
-                  {t.cta.callLabel}{' '}
-                  <a href={site.phoneHref} dir="ltr" className="inline-block text-champagne transition-colors hover:text-ivory">
-                    {site.phone}
-                  </a>
-                </p>
+                {site.phone && (
+                  <p className="mt-2 text-sm text-ivory/60">
+                    {t.cta.callLabel}{' '}
+                    <a href={site.phoneHref} dir="ltr" className="inline-block text-champagne transition-colors hover:text-ivory">
+                      {site.phone}
+                    </a>
+                  </p>
+                )}
               </div>
             </div>
           </div>

@@ -1,6 +1,5 @@
 import type { Localized } from '@/lib/i18n/types';
 import type { PropertyType } from '@/lib/inquiry';
-import type { ServiceId } from './services';
 
 export type ProjectCategory = 'residential' | 'hospitality' | 'government' | 'healthcare';
 
@@ -14,21 +13,47 @@ export const categoryPropertyType: Record<ProjectCategory, PropertyType> = {
   healthcare: 'commercial',
 };
 
+export function isProjectCategory(value: string): value is ProjectCategory {
+  return (projectCategories as string[]).includes(value);
+}
+
+/** A before/after photograph pair, compared with a slider on the project page. */
+export interface BeforeAfterPair {
+  before: string;
+  after: string;
+  caption: Localized;
+}
+
+/** A 3D render shown against the photograph of the finished space. */
+export interface RenderRealPair {
+  render: string;
+  real: string;
+  caption: Localized;
+}
+
 export interface Project {
+  /** URL slug: /portfolio/[id]/ */
   id: string;
   title: Localized;
   category: ProjectCategory;
   location: Localized;
+  /** Short scope line, e.g. "Design & turnkey fit-out · 420 sqm". */
+  scope?: Localized;
+  /** ISO date (YYYY-MM-DD) the project was completed. */
+  completed?: string;
   /** Signature elements of the space, shown as tags. */
   highlights: Localized[];
   summary: Localized;
   /** Long-form design story. */
   concept: Localized[];
   materials: { name: Localized; detail: Localized }[];
-  services: ServiceId[];
+  /** IDs of the services delivered — see lib/data/services.ts */
+  services: string[];
   /** Image ID or /public path — see lib/images.ts. The cover also fills the project's hero, so use a large landscape image. */
   cover: string;
   gallery: string[];
+  beforeAfter?: BeforeAfterPair[];
+  renderReal?: RenderRealPair[];
   featured?: boolean;
 }
 
@@ -287,13 +312,17 @@ export const projects: Project[] = [
   },
 ];
 
-export const featuredProjects = projects.filter((project) => project.featured).slice(0, 3);
-
-export function getProject(id: string) {
-  return projects.find((project) => project.id === id);
+/** Up to three featured projects for the home page, topped up with the first others when fewer are flagged. */
+export function getFeaturedProjects(list: Project[], count = 3) {
+  const featured = list.filter((project) => project.featured);
+  return [...featured, ...list.filter((project) => !project.featured)].slice(0, Math.min(count, list.length));
 }
 
-export function getNextProject(id: string) {
-  const index = projects.findIndex((project) => project.id === id);
-  return projects[(index + 1) % projects.length];
+export function getProject(id: string, list: Project[] = projects) {
+  return list.find((project) => project.id === id);
+}
+
+export function getNextProject(id: string, list: Project[] = projects) {
+  const index = list.findIndex((project) => project.id === id);
+  return list[(index + 1) % list.length];
 }

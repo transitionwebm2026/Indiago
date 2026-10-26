@@ -1,9 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { IBM_Plex_Sans_Arabic, Inter, Noto_Naskh_Arabic } from 'next/font/google';
 import type { ReactNode } from 'react';
-import { Footer } from '@/components/layout/Footer';
-import { Navbar } from '@/components/layout/Navbar';
-import { WhatsAppWidget } from '@/components/layout/WhatsAppWidget';
+import { CmsProvider } from '@/components/providers/CmsProvider';
 import { LanguageProvider } from '@/components/providers/LanguageProvider';
 import { img, pageImages } from '@/lib/images';
 import { site } from '@/lib/site';
@@ -99,14 +97,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${inter.variable} ${naskh.variable} ${plexArabic.variable}`}
     >
       <body>
-        <LanguageProvider>
-          <Navbar />
-          <main id="main" tabIndex={-1} className="outline-none">
-            {children}
-          </main>
-          <Footer />
-          <WhatsAppWidget />
-        </LanguageProvider>
+        <CmsProvider>
+          <LanguageProvider>{children}</LanguageProvider>
+        </CmsProvider>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}

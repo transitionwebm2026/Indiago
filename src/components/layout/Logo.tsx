@@ -1,3 +1,6 @@
+'use client';
+
+import { useSiteSettings } from '@/lib/cms/hooks';
 import { cn } from '@/lib/utils';
 
 interface LogoProps {
@@ -13,8 +16,16 @@ const INTERIORS_PATH = 'M23.7 76L23.7 75.9Q23.8 75.7 23.8 75.2Q23.9 74.8 24.0 74
 /**
  * Responsive SVG lockup: a heavy flared "INDIGO" with dots set in the counters of the D and O,
  * and the lighter "INTERIORS" descriptor centred underneath.
+ * A logo uploaded in Global Settings replaces it on dark surfaces.
  */
 export function Logo({ className, variant = 'onDark' }: LogoProps) {
+  const { logo, name } = useSiteSettings();
+
+  if (logo && variant === 'onDark') {
+    // A plain <img> keeps any aspect ratio, sized by height like the SVG.
+    return <img src={logo} alt={name} className={cn('h-10 w-auto object-contain', className)} />;
+  }
+
   const primary = variant === 'onDark' ? '#D5B690' : '#2F2557';
   const accent = variant === 'onDark' ? '#A89282' : '#A07C4E';
 

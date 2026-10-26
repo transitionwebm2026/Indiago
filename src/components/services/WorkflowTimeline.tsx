@@ -5,6 +5,7 @@ import { Check } from 'lucide-react';
 import { useId, useRef, useState, type KeyboardEvent } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { plain } from '@/components/ui/Highlight';
+import { useProcessSteps } from '@/lib/cms/hooks';
 import { EASE } from '@/lib/motion';
 import { cn, pad } from '@/lib/utils';
 
@@ -13,15 +14,18 @@ import { cn, pad } from '@/lib/utils';
  * "compact" omits the per-step checklist for the home page preview.
  */
 export function WorkflowTimeline({ variant = 'full' }: { variant?: 'full' | 'compact' }) {
-  const { t, dir } = useLanguage();
+  const { t, l, dir } = useLanguage();
   const workflow = t.services.workflow;
-  const [active, setActive] = useState(0);
+  const steps = useProcessSteps();
+  const [requested, setActive] = useState(0);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const baseId = useId();
-  const step = workflow.steps[active];
+  // Steps edited in the CMS can shrink the list under the current tab.
+  const active = Math.min(requested, Math.max(steps.length - 1, 0));
+  const step = steps[active];
 
   const select = (index: number) => {
-    const next = (index + workflow.steps.length) % workflow.steps.length;
+    const next = (index + steps.length) % steps.length;
     setActive(next);
     tabRefs.current[next]?.focus();
   };
@@ -32,10 +36,15 @@ export function WorkflowTimeline({ variant = 'full' }: { variant?: 'full' | 'com
     if (event.key === forward) select(active + 1);
     else if (event.key === backward) select(active - 1);
     else if (event.key === 'Home') select(0);
-    else if (event.key === 'End') select(workflow.steps.length - 1);
+    else if (event.key === 'End') select(steps.length - 1);
     else return;
     event.preventDefault();
   };
+
+  if (!step) return null;
+
+  // Five steps fill one row on desktop; other counts wrap evenly.
+  const columns = steps.length === 4 ? 'md:grid-cols-4' : steps.length === 6 ? 'md:grid-cols-6' : 'md:grid-cols-5';
 
   return (
     <div>
@@ -43,14 +52,14 @@ export function WorkflowTimeline({ variant = 'full' }: { variant?: 'full' | 'com
         role="tablist"
         aria-label={plain(workflow.title)}
         onKeyDown={onKeyDown}
-        className="grid grid-cols-2 gap-x-6 sm:grid-cols-3 md:grid-cols-5"
+        className={cn('grid grid-cols-2 gap-x-6 sm:grid-cols-3', columns)}
       >
-        {workflow.steps.map((item, index) => {
+        {steps.map((item, index) => {
           const selected = index === active;
           const reached = index <= active;
           return (
             <button
-              key={item.title}
+              key={`${item.title.en}-${index}`}
               ref={(node) => {
                 tabRefs.current[index] = node;
               }}
@@ -92,9 +101,9 @@ export function WorkflowTimeline({ variant = 'full' }: { variant?: 'full' | 'com
                   selected ? 'text-ivory' : 'text-ivory/55 group-hover:text-ivory/80',
                 )}
               >
-                {item.title}
+                {l(item.title)}
               </span>
-              <span className="mt-1.5 block text-xs text-ivory/40">{item.duration}</span>
+              <span className="mt-1.5 block text-xs text-ivory/40">{l(item.duration)}</span>
             </button>
           );
         })}
@@ -117,17 +126,17 @@ export function WorkflowTimeline({ variant = 'full' }: { variant?: 'full' | 'com
           >
             <div>
               <p className="text-[0.64rem] font-medium uppercase tracking-ultra text-champagne">
-                {workflow.stepLabel} {pad(active + 1)} · {step.duration}
+                {workflow.stepLabel} {pad(active + 1)} · {l(step.duration)}
               </p>
-              <h3 className="mt-4 font-serif text-3xl tracking-wide text-ivory md:text-4xl">{step.title}</h3>
-              <p className="mt-4 max-w-xl leading-relaxed text-ivory/70">{step.summary}</p>
+              <h3 className="mt-4 font-serif text-3xl tracking-wide text-ivory md:text-4xl">{l(step.title)}</h3>
+              <p className="mt-4 max-w-xl leading-relaxed text-ivory/70">{l(step.summary)}</p>
             </div>
             {variant === 'full' && (
               <ul className="space-y-3 self-center">
-                {step.points.map((point) => (
-                  <li key={point} className="flex items-start gap-3 border-b border-ivory/10 pb-3 text-sm text-ivory/85">
+                {step.points.map((point, index) => (
+                  <li key={`${point.en}-${index}`} className="flex items-start gap-3 border-b border-ivory/10 pb-3 text-sm text-ivory/85">
                     <Check aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-champagne" strokeWidth={1.5} />
-                    {point}
+                    {l(point)}
                   </li>
                 ))}
               </ul>

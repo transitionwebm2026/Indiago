@@ -5,8 +5,8 @@ import { ArrowUpRight, Mail, MapPin, Phone, UserRound, type LucideIcon } from 'l
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { useSite } from '@/lib/cms/hooks';
 import { routes } from '@/lib/routes';
-import { mapsDirectionsUrl, site } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
 interface InfoCard {
@@ -21,10 +21,12 @@ interface InfoCard {
 
 export function StudioInfo() {
   const { t, l } = useLanguage();
+  const { site } = useSite();
   const info = t.contact.info;
 
+  // Details cleared in Global Settings drop out of the grid.
   const cards: InfoCard[] = [
-    { icon: MapPin, label: info.address, value: l(site.address), href: mapsDirectionsUrl, external: true },
+    { icon: MapPin, label: info.address, value: l(site.address), href: site.mapsDirectionsUrl, external: true },
     { icon: Phone, label: info.phone, value: site.phone, href: site.phoneHref, ltr: true },
     { icon: Phone, label: info.phoneUae, value: site.uaePhone, href: site.uaePhoneHref, ltr: true },
     { icon: Mail, label: info.email, value: site.email, href: `mailto:${site.email}` },
@@ -35,7 +37,7 @@ export function StudioInfo() {
       detail: l(site.founder.role),
       href: routes.about,
     },
-  ];
+  ].filter((card) => card.value);
 
   return (
     <section className="section-y bg-linen">

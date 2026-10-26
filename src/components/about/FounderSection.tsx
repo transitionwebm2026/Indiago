@@ -6,11 +6,12 @@ import { useLanguage } from '@/components/providers/LanguageProvider';
 import { ButtonLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/Eyebrow';
 import { Reveal } from '@/components/ui/Reveal';
+import { useSiteSettings } from '@/lib/cms/hooks';
 import { routes } from '@/lib/routes';
-import { site } from '@/lib/site';
 
 export function FounderSection() {
   const { t, l } = useLanguage();
+  const site = useSiteSettings();
   const founder = t.about.founder;
   const name = l(site.founder.name);
 
@@ -44,15 +45,15 @@ export function FounderSection() {
             <p className="mt-4 text-[0.7rem] font-medium uppercase tracking-ultra text-champagne-800">{l(site.founder.role)}</p>
             <p className="mt-6 font-serif text-xl tracking-wide ltr:italic text-indigo/80 md:text-2xl">{founder.tagline}</p>
           </Reveal>
-          {founder.bio.map((paragraph, index) => (
+          {founder.bio.filter(Boolean).map((paragraph, index) => (
             <Reveal key={index} delay={0.14 + index * 0.04}>
               <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-charcoal-soft">{paragraph}</p>
             </Reveal>
           ))}
           <Reveal delay={0.26}>
             <ul className="mt-10 grid gap-3 sm:grid-cols-3">
-              {founder.highlights.map((highlight) => (
-                <li key={highlight} className="flex items-start gap-3 card-frame rounded-2xl bg-ivory p-4 text-sm leading-relaxed text-indigo">
+              {founder.highlights.filter(Boolean).map((highlight, index) => (
+                <li key={`${highlight}-${index}`} className="flex items-start gap-3 card-frame rounded-2xl bg-ivory p-4 text-sm leading-relaxed text-indigo">
                   <Check aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-champagne-700" strokeWidth={1.5} />
                   {highlight}
                 </li>

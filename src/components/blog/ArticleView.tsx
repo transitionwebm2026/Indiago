@@ -9,8 +9,8 @@ import { Eyebrow } from '@/components/ui/Eyebrow';
 import { HeroShell } from '@/components/ui/HeroShell';
 import { Monogram } from '@/components/ui/Monogram';
 import { Reveal } from '@/components/ui/Reveal';
-import { heroSlides } from '@/lib/data/heroes';
-import { authors, type Post } from '@/lib/data/posts';
+import { useAuthors, useMedia } from '@/lib/cms/hooks';
+import type { Post, PostSummary } from '@/lib/data/posts';
 import { img } from '@/lib/images';
 import { postHref, routes } from '@/lib/routes';
 import { formatDate } from '@/lib/utils';
@@ -19,15 +19,16 @@ import { ArticleCard, ReadTimeBadge } from './ArticleCard';
 import { NewsletterSignup } from './NewsletterSignup';
 import { ShareBar } from './ShareBar';
 
-export function ArticleView({ post, related }: { post: Post; related: Post[] }) {
+export function ArticleView({ post, related }: { post: Post; related: PostSummary[] }) {
   const { t, l, locale } = useLanguage();
-  const author = authors[post.author];
+  const { slides } = useMedia('blog.hero');
+  const author = useAuthors()[post.author];
   const title = l(post.title);
-  const arabicBody = locale === 'ar' ? post.bodyAr : undefined;
+  const arabicBody = locale === 'ar' && post.bodyAr?.length ? post.bodyAr : undefined;
 
   return (
     <>
-      <HeroShell slides={heroSlides.journal}>
+      <HeroShell slides={slides}>
         <Link
           href={routes.blog}
           className="group inline-flex items-center gap-2 text-[0.64rem] font-medium uppercase tracking-luxe text-ivory/70 transition-colors hover:text-champagne"
@@ -62,9 +63,11 @@ export function ArticleView({ post, related }: { post: Post; related: Post[] }) 
 
       <div className="bg-ivory">
         <div className="container-luxe pt-12 md:pt-20">
-          <Reveal className="relative aspect-[16/10] overflow-hidden rounded-[2rem] bg-linen-dark md:aspect-[16/8]">
-            <Image src={img(post.cover, 2000)} alt={title} fill sizes="(min-width: 1320px) 1240px, 100vw" className="object-cover" />
-          </Reveal>
+          {post.cover && (
+            <Reveal className="relative aspect-[16/10] overflow-hidden rounded-[2rem] bg-linen-dark md:aspect-[16/8]">
+              <Image src={img(post.cover, 2000)} alt={title} fill sizes="(min-width: 1320px) 1240px, 100vw" className="object-cover" />
+            </Reveal>
+          )}
         </div>
 
         <div className="container-luxe grid gap-10 py-16 md:py-24 lg:grid-cols-12 lg:gap-12">

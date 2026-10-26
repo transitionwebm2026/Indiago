@@ -1,8 +1,11 @@
 'use client';
 
 import { MotionConfig } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { dictionaries, type Dictionary, type Locale, type Localized } from '@/lib/i18n';
+import { buildDictionary } from '@/lib/cms/content';
+import { useContentRows, useSiteSettings } from '@/lib/cms/hooks';
+import type { Dictionary, Locale, Localized } from '@/lib/i18n';
 
 const STORAGE_KEY = 'indigo-locale';
 
@@ -31,11 +34,20 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  // The admin dashboard is always English and left-to-right, whatever the visitor's site language.
+  const isAdmin = (usePathname() ?? '').startsWith('/admin');
+
   useEffect(() => {
     const root = document.documentElement;
-    root.lang = locale;
-    root.dir = locale === 'ar' ? 'rtl' : 'ltr';
-  }, [locale]);
+    const active = isAdmin ? 'en' : locale;
+    root.lang = active;
+    root.dir = active === 'ar' ? 'rtl' : 'ltr';
+  }, [locale, isAdmin]);
+
+  // Page copy edited in the CMS is layered over the built-in dictionaries.
+  const rows = useContentRows();
+  const { nav } = useSiteSettings();
+  const t = useMemo(() => buildDictionary(locale, rows, nav), [locale, rows, nav]);
 
   const setLocale = useCallback((next: Locale) => {
     setLocaleState(next);
@@ -52,12 +64,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     () => ({
       locale,
       dir: locale === 'ar' ? 'rtl' : 'ltr',
-      t: dictionaries[locale],
-      l: (entry: Localized) => entry[locale],
+      t,
+      // Untranslated CMS entries fall back to English rather than showing nothing.
+      l: (entry: Localized) => entry[locale] || entry.en,
       setLocale,
       toggleLocale,
     }),
-    [locale, setLocale, toggleLocale],
+    [locale, t, setLocale, toggleLocale],
   );
 
   return (

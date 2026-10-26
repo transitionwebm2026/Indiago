@@ -5,11 +5,12 @@ import { useLanguage } from '@/components/providers/LanguageProvider';
 import { ButtonLink } from '@/components/ui/Button';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { posts } from '@/lib/data/posts';
+import { usePosts } from '@/lib/cms/hooks';
 import { routes } from '@/lib/routes';
 
 export function JournalPreview() {
   const { t } = useLanguage();
+  const posts = usePosts();
   const copy = t.home.journal;
 
   return (

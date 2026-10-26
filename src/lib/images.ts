@@ -4,8 +4,13 @@
  * a path starting with "/" (e.g. "/images/projects/al-safa/cover.jpg") anywhere an ID is used.
  */
 export function img(source: string, width = 1600, quality = 80) {
-  if (source.startsWith('/') || source.startsWith('http')) return source;
+  if (source.startsWith('/') || source.startsWith('http') || source.startsWith('blob:')) return source;
   return `https://images.unsplash.com/photo-${source}?auto=format&fit=crop&w=${width}&q=${quality}`;
+}
+
+/** Uploaded hero media can be a video; everything else on the site is a photograph. */
+export function isVideo(source: string) {
+  return /\.(mp4|webm|mov)(\?.*)?$/i.test(source);
 }
 
 export const pageImages = {

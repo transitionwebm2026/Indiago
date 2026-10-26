@@ -7,8 +7,8 @@ import type { ReactNode } from 'react';
 import { socialIcons } from '@/components/icons/SocialIcons';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { ButtonLink } from '@/components/ui/Button';
-import { primaryNav, routes, serviceHref } from '@/lib/routes';
-import { mapsDirectionsUrl, site } from '@/lib/site';
+import { useServices, useSite } from '@/lib/cms/hooks';
+import { routes, serviceHref } from '@/lib/routes';
 import { cn } from '@/lib/utils';
 import { Logo } from './Logo';
 
@@ -25,6 +25,8 @@ const linkClass = 'text-sm text-ivory/70 transition-colors duration-300 hover:te
 
 export function Footer() {
   const { t, l } = useLanguage();
+  const { site } = useSite();
+  const services = useServices();
 
   return (
     <footer className="relative isolate overflow-hidden rounded-t-[2rem] bg-indigo text-ivory md:rounded-t-[3rem]">
@@ -45,22 +47,30 @@ export function Footer() {
         <div className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
           <FooterColumn title={t.footer.explore} className="lg:col-span-2">
             <ul className="space-y-3">
-              {primaryNav.map((item) => (
-                <li key={item.key}>
-                  <Link href={item.href} className={linkClass}>
-                    {t.nav[item.key]}
-                  </Link>
-                </li>
-              ))}
+              {site.nav
+                .filter((link) => link.visible)
+                .map((link) => (
+                  <li key={link.id}>
+                    {/^https?:/.test(link.href) ? (
+                      <a href={link.href} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                        {l(link.label)}
+                      </a>
+                    ) : (
+                      <Link href={link.href} className={linkClass}>
+                        {l(link.label)}
+                      </Link>
+                    )}
+                  </li>
+                ))}
             </ul>
           </FooterColumn>
 
           <FooterColumn title={t.footer.services} className="lg:col-span-3">
             <ul className="space-y-3">
-              {t.services.items.map((service) => (
+              {services.map((service) => (
                 <li key={service.id}>
                   <Link href={serviceHref(service.id)} className={linkClass}>
-                    {service.title}
+                    {l(service.title)}
                   </Link>
                 </li>
               ))}
@@ -72,7 +82,7 @@ export function Footer() {
               <div>
                 <dt className="sr-only">{t.contact.info.address}</dt>
                 <dd>
-                  <a href={mapsDirectionsUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                  <a href={site.mapsDirectionsUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
                     {l(site.address)}
                   </a>
                 </dd>
@@ -85,14 +95,16 @@ export function Footer() {
                   </a>
                 </dd>
               </div>
-              <div>
-                <dt className="sr-only">{t.contact.info.phoneUae}</dt>
-                <dd>
-                  <a href={site.uaePhoneHref} dir="ltr" className={cn(linkClass, 'inline-block')}>
-                    {site.uaePhone}
-                  </a>
-                </dd>
-              </div>
+              {site.uaePhone && (
+                <div>
+                  <dt className="sr-only">{t.contact.info.phoneUae}</dt>
+                  <dd>
+                    <a href={site.uaePhoneHref} dir="ltr" className={cn(linkClass, 'inline-block')}>
+                      {site.uaePhone}
+                    </a>
+                  </dd>
+                </div>
+              )}
               <div>
                 <dt className="sr-only">{t.contact.info.email}</dt>
                 <dd>
@@ -112,7 +124,7 @@ export function Footer() {
 
           <FooterColumn title={t.footer.follow} className="lg:col-span-3">
             <ul className="flex flex-wrap gap-3">
-              {site.social.map((social) => {
+              {site.social.filter((social) => social.visible).map((social) => {
                 const Icon = socialIcons[social.id];
                 return (
                   <li key={social.id}>
@@ -139,25 +151,31 @@ export function Footer() {
             © {site.copyrightYear} {t.brand}. {t.footer.rights}
           </p>
           {/* The gradient runs from champagne behind the label to indigo behind the agency name, in either reading direction. */}
-          <a
-            href={site.credit.href}
-            target="_blank"
-            rel="noopener"
-            aria-label={t.footer.creditLabel}
-            className="group/credit relative isolate inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-gradient-to-l from-indigo-600 to-champagne-600 px-5 py-2 text-[0.8125rem] font-semibold text-white shadow-[0_12px_32px_-12px_rgba(213,182,144,0.55)] ring-1 ring-inset ring-white/20 transition-[transform,box-shadow] duration-500 ease-luxe [text-shadow:0_1px_2px_rgba(23,18,44,0.35)] hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-12px_rgba(213,182,144,0.75)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-champagne rtl:bg-gradient-to-r sm:gap-3.5 sm:px-6 sm:text-[0.95rem]"
-          >
-            <span
-              aria-hidden
-              className="pointer-events-none absolute inset-y-0 -start-1/3 -z-10 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-0 group-hover/credit:translate-x-[400%] group-hover/credit:duration-1000 group-hover/credit:ease-luxe rtl:group-hover/credit:-translate-x-[400%]"
-            />
-            <span>{t.footer.credit}</span>
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/15 ring-1 ring-inset ring-white/25 transition-transform duration-500 ease-luxe group-hover/credit:scale-110">
-              <Image src={site.credit.logo} alt="" width={240} height={143} className="h-auto w-7" />
-            </span>
-            <span dir="ltr" className="font-bold tracking-wide">
-              {site.credit.name}
-            </span>
-          </a>
+          {site.credit.visible && site.credit.name ? (
+            <a
+              href={site.credit.href}
+              target="_blank"
+              rel="noopener"
+              aria-label={t.footer.creditLabel}
+              className="group/credit relative isolate inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-gradient-to-l from-indigo-600 to-champagne-600 px-5 py-2 text-[0.8125rem] font-semibold text-white shadow-[0_12px_32px_-12px_rgba(213,182,144,0.55)] ring-1 ring-inset ring-white/20 transition-[transform,box-shadow] duration-500 ease-luxe [text-shadow:0_1px_2px_rgba(23,18,44,0.35)] hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-12px_rgba(213,182,144,0.75)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-champagne rtl:bg-gradient-to-r sm:gap-3.5 sm:px-6 sm:text-[0.95rem]"
+            >
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-y-0 -start-1/3 -z-10 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-0 group-hover/credit:translate-x-[400%] group-hover/credit:duration-1000 group-hover/credit:ease-luxe rtl:group-hover/credit:-translate-x-[400%]"
+              />
+              <span>{t.footer.credit}</span>
+              {site.credit.logo && (
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/15 ring-1 ring-inset ring-white/25 transition-transform duration-500 ease-luxe group-hover/credit:scale-110">
+                  <Image src={site.credit.logo} alt="" width={240} height={143} className="h-auto w-7" />
+                </span>
+              )}
+              <span dir="ltr" className="font-bold tracking-wide">
+                {site.credit.name}
+              </span>
+            </a>
+          ) : (
+            <span aria-hidden />
+          )}
           <button
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

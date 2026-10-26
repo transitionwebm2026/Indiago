@@ -45,7 +45,32 @@ export function XIcon(props: IconProps) {
   );
 }
 
+export function YouTubeIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden {...props}>
+      <path
+        fillRule="evenodd"
+        d="M21.58 7.19a2.5 2.5 0 0 0-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42a2.5 2.5 0 0 0-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81a2.5 2.5 0 0 0 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42a2.5 2.5 0 0 0 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81ZM10 15V9l5.2 3-5.2 3Z"
+      />
+    </svg>
+  );
+}
+
+export function WebsiteIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18M12 3c2.5 2.6 3.75 5.6 3.75 9S14.5 18.4 12 21c-2.5-2.6-3.75-5.6-3.75-9S9.5 5.6 12 3Z" />
+    </svg>
+  );
+}
+
 export const socialIcons: Record<SocialId, ComponentType<IconProps>> = {
   instagram: InstagramIcon,
   facebook: FacebookIcon,
+  linkedin: LinkedInIcon,
+  x: XIcon,
+  youtube: YouTubeIcon,
+  whatsapp: WhatsAppIcon,
+  website: WebsiteIcon,
 };

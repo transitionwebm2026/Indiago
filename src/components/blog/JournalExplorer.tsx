@@ -5,21 +5,27 @@ import { useMemo, useState } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { FilterBar, type FilterOption } from '@/components/ui/FilterBar';
 import { Eyebrow } from '@/components/ui/Eyebrow';
-import { blogCategories, featuredPost, posts, type BlogCategory } from '@/lib/data/posts';
+import { usePosts } from '@/lib/cms/hooks';
+import { blogCategories, getFeaturedPost, type BlogCategory } from '@/lib/data/posts';
 import { EASE } from '@/lib/motion';
 import { ArticleCard } from './ArticleCard';
 
 type Filter = 'all' | BlogCategory;
 
-const gridPosts = posts.filter((post) => post.slug !== featuredPost.slug);
-
 export function JournalExplorer() {
   const { t } = useLanguage();
+  const posts = usePosts();
   const [filter, setFilter] = useState<Filter>('all');
+
+  // The featured article has its own spotlight above the grid.
+  const gridPosts = useMemo(() => {
+    const featured = getFeaturedPost(posts);
+    return posts.filter((post) => post.slug !== featured?.slug);
+  }, [posts]);
 
   const visible = useMemo(
     () => (filter === 'all' ? gridPosts : gridPosts.filter((post) => post.category === filter)),
-    [filter],
+    [filter, gridPosts],
   );
 
   const options: FilterOption<Filter>[] = [

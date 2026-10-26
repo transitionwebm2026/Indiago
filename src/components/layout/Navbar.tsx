@@ -3,21 +3,49 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { ButtonLink } from '@/components/ui/Button';
 import { GridLines } from '@/components/ui/GridLines';
+import { useSite } from '@/lib/cms/hooks';
 import { EASE } from '@/lib/motion';
-import { primaryNav, routes } from '@/lib/routes';
-import { site } from '@/lib/site';
+import { routes } from '@/lib/routes';
+import type { NavLink, ResolvedSite } from '@/lib/site';
 import { cn, pad } from '@/lib/utils';
 import { LanguageToggle } from './LanguageToggle';
 import { Logo } from './Logo';
 
 const normalize = (path: string) => (path.length > 1 ? path.replace(/\/+$/, '') : path);
 
+interface NavAnchorProps {
+  link: NavLink;
+  active: boolean;
+  className: string;
+  onClick?: () => void;
+  children: ReactNode;
+}
+
+/** Site pages use client navigation; links added in the CMS to other sites open in a new tab. */
+function NavAnchor({ link, active, className, onClick, children }: NavAnchorProps) {
+  if (/^(https?:|mailto:|tel:)/.test(link.href)) {
+    const newTab = link.href.startsWith('http');
+    return (
+      <a href={link.href} onClick={onClick} className={className} {...(newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+        {children}
+      </a>
+    );
+  }
+  return (
+    <Link href={link.href} onClick={onClick} aria-current={active ? 'page' : undefined} className={className}>
+      {children}
+    </Link>
+  );
+}
+
 export function Navbar() {
-  const { t } = useLanguage();
+  const { t, l } = useLanguage();
+  const { site } = useSite();
+  const links = site.nav.filter((link) => link.visible);
   const pathname = usePathname() ?? '/';
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -45,8 +73,9 @@ export function Navbar() {
 
   const isActive = useCallback(
     (href: string) => {
+      if (!href.startsWith('/')) return false;
       const current = normalize(pathname);
-      const target = normalize(href);
+      const target = normalize(href.split('#')[0]);
       return target === '/' ? current === '/' : current === target || current.startsWith(`${target}/`);
     },
     [pathname],
@@ -73,24 +102,24 @@ export function Navbar() {
             compact ? 'h-16 bg-indigo/95' : 'h-[68px] bg-indigo/90 md:h-[76px]',
           )}
         >
-          <Link href={routes.home} aria-label="Indigo Interiors — Home" className="shrink-0">
+          <Link href={routes.home} aria-label={`${site.name} — ${t.nav.home}`} className="shrink-0">
             <Logo className="h-9 min-[360px]:h-10 md:h-11" />
           </Link>
 
           <ul className="hidden items-center gap-6 lg:flex xl:gap-8">
-            {primaryNav.map((item) => {
-              const active = isActive(item.href);
+            {links.map((link) => {
+              const active = isActive(link.href);
               return (
-                <li key={item.key}>
-                  <Link
-                    href={item.href}
-                    aria-current={active ? 'page' : undefined}
+                <li key={link.id}>
+                  <NavAnchor
+                    link={link}
+                    active={active}
                     className={cn(
                       'relative block py-2 text-[0.68rem] font-medium uppercase tracking-luxe transition-colors duration-300',
                       active ? 'text-champagne' : 'text-ivory/75 hover:text-ivory',
                     )}
                   >
-                    {t.nav[item.key]}
+                    {l(link.label)}
                     {active && (
                       <motion.span
                         layoutId="nav-active"
@@ -98,7 +127,7 @@ export function Navbar() {
                         transition={{ type: 'spring', stiffness: 380, damping: 32 }}
                       />
                     )}
-                  </Link>
+                  </NavAnchor>
                 </li>
               );
             })}
@@ -106,9 +135,11 @@ export function Navbar() {
 
           <div className="flex items-center gap-2">
             <LanguageToggle id="header" />
-            <ButtonLink href={routes.inquiry} size="sm" className="hidden md:inline-flex lg:hidden xl:inline-flex">
-              {t.nav.cta}
-            </ButtonLink>
+            {site.showNavCta && (
+              <ButtonLink href={routes.inquiry} size="sm" className="hidden md:inline-flex lg:hidden xl:inline-flex">
+                {t.nav.cta}
+              </ButtonLink>
+            )}
             <button
               type="button"
               onClick={() => setOpen((value) => !value)}
@@ -135,13 +166,22 @@ export function Navbar() {
           </div>
         </nav>
       </header>
-      <AnimatePresence>{open && <MobileMenu isActive={isActive} onClose={() => setOpen(false)} />}</AnimatePresence>
+      <AnimatePresence>
+        {open && <MobileMenu links={links} site={site} isActive={isActive} onClose={() => setOpen(false)} />}
+      </AnimatePresence>
     </>
   );
 }
 
-function MobileMenu({ isActive, onClose }: { isActive: (href: string) => boolean; onClose: () => void }) {
-  const { t } = useLanguage();
+interface MobileMenuProps {
+  links: NavLink[];
+  site: ResolvedSite;
+  isActive: (href: string) => boolean;
+  onClose: () => void;
+}
+
+function MobileMenu({ links, site, isActive, onClose }: MobileMenuProps) {
+  const { t, l } = useLanguage();
 
   return (
     <motion.div
@@ -155,25 +195,25 @@ function MobileMenu({ isActive, onClose }: { isActive: (href: string) => boolean
       <GridLines />
       <nav aria-label="Mobile" className="container-luxe relative flex flex-1 flex-col">
         <ul className="border-t border-ivory/10">
-          {primaryNav.map((item, index) => {
-            const active = isActive(item.href);
+          {links.map((link, index) => {
+            const active = isActive(link.href);
             return (
               <motion.li
-                key={item.key}
+                key={link.id}
                 className="border-b border-ivory/10"
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.08 + index * 0.06, duration: 0.6, ease: EASE }}
               >
-                <Link
-                  href={item.href}
+                <NavAnchor
+                  link={link}
+                  active={active}
                   onClick={onClose}
-                  aria-current={active ? 'page' : undefined}
                   className="flex items-baseline justify-between py-4 font-serif text-[1.75rem] tracking-wide text-ivory min-[400px]:py-5 min-[400px]:text-3xl sm:text-4xl"
                 >
-                  <span className={cn(active && 'text-champagne')}>{t.nav[item.key]}</span>
+                  <span className={cn(active && 'text-champagne')}>{l(link.label)}</span>
                   <span className="font-sans text-[0.62rem] tracking-luxe text-ivory/40">{pad(index + 1)}</span>
-                </Link>
+                </NavAnchor>
               </motion.li>
             );
           })}
@@ -186,16 +226,22 @@ function MobileMenu({ isActive, onClose }: { isActive: (href: string) => boolean
           transition={{ delay: 0.5, duration: 0.6, ease: EASE }}
         >
           <p className="max-w-xs text-sm leading-relaxed text-ivory/60">{t.nav.menuTagline}</p>
-          <ButtonLink href={routes.inquiry} onClick={onClose} arrow className="w-full">
-            {t.nav.cta}
-          </ButtonLink>
+          {site.showNavCta && (
+            <ButtonLink href={routes.inquiry} onClick={onClose} arrow className="w-full">
+              {t.nav.cta}
+            </ButtonLink>
+          )}
           <div className="flex flex-col gap-2 text-sm text-ivory/70">
-            <a href={site.phoneHref} dir="ltr" className="w-fit transition-colors hover:text-champagne">
-              {site.phone}
-            </a>
-            <a href={`mailto:${site.email}`} className="w-fit break-all transition-colors hover:text-champagne">
-              {site.email}
-            </a>
+            {site.phone && (
+              <a href={site.phoneHref} dir="ltr" className="w-fit transition-colors hover:text-champagne">
+                {site.phone}
+              </a>
+            )}
+            {site.email && (
+              <a href={`mailto:${site.email}`} className="w-fit break-all transition-colors hover:text-champagne">
+                {site.email}
+              </a>
+            )}
           </div>
         </motion.div>
       </nav>

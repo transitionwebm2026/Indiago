@@ -2,17 +2,18 @@
 
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { PageHero } from '@/components/ui/PageHero';
-import { heroSlides } from '@/lib/data/heroes';
+import { useMedia } from '@/lib/cms/hooks';
 
 export function BlogHero() {
   const { t } = useLanguage();
+  const { slides } = useMedia('blog.hero');
   const hero = t.blog.hero;
   return (
     <PageHero
       eyebrow={hero.eyebrow}
       title={hero.title}
       body={hero.body}
-      slides={heroSlides.journal}
+      slides={slides}
       crumbs={[{ label: t.nav.journal }]}
     />
   );

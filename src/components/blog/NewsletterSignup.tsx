@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/Eyebrow';
 import { Highlight } from '@/components/ui/Highlight';
 import { Reveal } from '@/components/ui/Reveal';
+import { useSite } from '@/lib/cms/hooks';
 import { hasWeb3Forms, mailtoLink, submitToWeb3Forms } from '@/lib/forms';
 import { isValidEmail } from '@/lib/utils';
 
@@ -19,6 +20,7 @@ type Status = 'idle' | 'sending' | 'success' | 'fallback' | 'error' | 'invalid';
  */
 export function NewsletterSignup() {
   const { t } = useLanguage();
+  const { site } = useSite();
   const copy = t.blog.newsletter;
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<Status>('idle');
@@ -34,15 +36,16 @@ export function NewsletterSignup() {
 
     if (!hasWeb3Forms) {
       window.location.href = mailtoLink(
+        site.email,
         'Blog newsletter subscription',
-        `Please add ${email.trim()} to the Indigo Interiors blog newsletter.`,
+        `Please add ${email.trim()} to the ${site.name} blog newsletter.`,
       );
       setStatus('fallback');
       return;
     }
 
     setStatus('sending');
-    const ok = await submitToWeb3Forms('New blog newsletter subscriber', { Email: email.trim(), email: email.trim() });
+    const ok = await submitToWeb3Forms('New blog newsletter subscriber', { Email: email.trim(), email: email.trim() }, site.name);
     setStatus(ok ? 'success' : 'error');
     if (ok) setEmail('');
   };

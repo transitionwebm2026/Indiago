@@ -5,13 +5,15 @@ import { ClipboardCheck, Handshake, Layers, type LucideIcon } from 'lucide-react
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { img, pageImages } from '@/lib/images';
+import { useMedia } from '@/lib/cms/hooks';
+import { img } from '@/lib/images';
 import { cn } from '@/lib/utils';
 
 const icons: LucideIcon[] = [ClipboardCheck, Handshake, Layers];
 
 export function CraftSection() {
   const { t } = useLanguage();
+  const { images } = useMedia('about.craft');
   const craft = t.about.craft;
 
   return (
@@ -20,9 +22,9 @@ export function CraftSection() {
         <SectionHeading surface="dark" eyebrow={craft.eyebrow} title={craft.title} body={craft.body} />
 
         <div className="mt-16 grid grid-cols-3 gap-3 md:gap-5">
-          {pageImages.craft.map((image, index) => (
+          {images.slice(0, 3).map((image, index) => (
             <Reveal
-              key={image}
+              key={`${image}-${index}`}
               delay={index * 0.1}
               className={cn('relative isolate overflow-hidden rounded-2xl bg-indigo-900 md:rounded-3xl', index === 1 ? 'aspect-[3/4] md:-mt-10' : 'aspect-[3/4]')}
             >
@@ -39,7 +41,7 @@ export function CraftSection() {
 
         <div className="mt-16 grid gap-12 md:grid-cols-3 md:gap-10">
           {craft.items.map((item, index) => {
-            const Icon = icons[index];
+            const Icon = icons[index % icons.length];
             return (
               <Reveal key={item.title} delay={index * 0.12} className="card-frame-dark h-full rounded-3xl bg-indigo-700/30 p-8">
                 <Icon aria-hidden className="h-7 w-7 text-champagne" strokeWidth={1.2} />

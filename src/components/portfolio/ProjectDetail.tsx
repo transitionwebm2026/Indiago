@@ -12,23 +12,37 @@ import { HeroShell } from '@/components/ui/HeroShell';
 import { Highlight } from '@/components/ui/Highlight';
 import { Lightbox } from '@/components/ui/Lightbox';
 import { Reveal } from '@/components/ui/Reveal';
+import { useServices } from '@/lib/cms/hooks';
 import { projectSlides } from '@/lib/data/heroes';
 import { categoryPropertyType, type Project } from '@/lib/data/projects';
 import { img } from '@/lib/images';
 import { projectHref, routes, serviceHref } from '@/lib/routes';
 import { cn, pad } from '@/lib/utils';
+import { CompareSlider } from './CompareSlider';
 
 export function ProjectDetail({ project, next }: { project: Project; next: Project }) {
-  const { t, l } = useLanguage();
+  const { t, l, locale } = useLanguage();
+  const services = useServices();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const title = l(project.title);
-  const images = [project.cover, ...project.gallery].map((src, index) => ({ src, alt: `${title} — ${index + 1}` }));
+  const images = [project.cover, ...project.gallery].filter(Boolean).map((src, index) => ({ src, alt: `${title} — ${index + 1}` }));
+  const beforeAfter = project.beforeAfter ?? [];
+  const renderReal = project.renderReal ?? [];
+  const delivered = project.services.flatMap((id) => services.find((service) => service.id === id) ?? []);
+
+  const completed = project.completed
+    ? new Intl.DateTimeFormat(locale === 'ar' ? 'ar-EG-u-nu-latn' : 'en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(
+        new Date(`${project.completed}T00:00:00Z`),
+      )
+    : '';
 
   const facts = [
     { label: t.common.location, value: l(project.location) },
     { label: t.common.category, value: t.categories[project.category] },
+    { label: t.project.scope, value: project.scope ? l(project.scope) : '' },
+    { label: t.project.completed, value: completed },
     { label: t.common.highlights, value: project.highlights.map(l).join(' · ') },
-  ];
+  ].filter((fact) => fact.value);
 
   return (
     <>
@@ -67,7 +81,7 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
                 key={fact.label}
                 className={cn(
                   'card-frame min-w-0 rounded-2xl bg-white/70 px-4 py-5 sm:px-5 sm:py-6',
-                  index === facts.length - 1 && 'col-span-2 md:col-span-1',
+                  index === facts.length - 1 && facts.length % 2 === 1 && 'col-span-2 md:col-span-1',
                 )}
               >
                 <dt className="text-[0.62rem] font-medium uppercase tracking-luxe text-charcoal-muted">{fact.label}</dt>
@@ -100,44 +114,44 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
               </Reveal>
             ))}
 
-            <Reveal delay={0.2} className="mt-14">
-              <h2 className="text-[0.66rem] font-medium uppercase tracking-ultra text-champagne-800">{t.project.services}</h2>
-              <ul className="mt-5 flex flex-wrap gap-2">
-                {project.services.map((id) => {
-                  const service = t.services.items.find((item) => item.id === id);
-                  if (!service) return null;
-                  return (
-                    <li key={id}>
+            {delivered.length > 0 && (
+              <Reveal delay={0.2} className="mt-14">
+                <h2 className="text-[0.66rem] font-medium uppercase tracking-ultra text-champagne-800">{t.project.services}</h2>
+                <ul className="mt-5 flex flex-wrap gap-2">
+                  {delivered.map((service) => (
+                    <li key={service.id}>
                       <Link
-                        href={serviceHref(id)}
+                        href={serviceHref(service.id)}
                         className="inline-flex items-center gap-2.5 rounded-full border border-indigo/15 px-4 py-2.5 text-sm text-indigo transition-colors hover:border-indigo hover:bg-indigo hover:text-ivory"
                       >
-                        <ServiceIcon id={id} className="h-4 w-4" />
-                        {service.title}
+                        <ServiceIcon icon={service.icon} className="h-4 w-4" />
+                        {l(service.title)}
                       </Link>
                     </li>
-                  );
-                })}
-              </ul>
-            </Reveal>
+                  ))}
+                </ul>
+              </Reveal>
+            )}
           </div>
 
-          <Reveal delay={0.1} className="lg:col-span-5">
-            <div className="card-frame rounded-[2rem] bg-linen p-5 sm:p-8 md:p-10 lg:sticky lg:top-32">
-              <h2 className="font-serif text-2xl tracking-wide text-indigo">{t.project.materials}</h2>
-              <ol className="mt-8 space-y-2">
-                {project.materials.map((material, index) => (
-                  <li key={material.name.en} className="flex gap-4 rounded-2xl bg-ivory px-4 py-4 sm:gap-5 sm:px-5">
-                    <span className="font-serif text-sm text-champagne-700">{pad(index + 1)}</span>
-                    <div className="min-w-0">
-                      <p className="font-medium text-indigo">{l(material.name)}</p>
-                      <p className="mt-0.5 text-sm text-charcoal-soft">{l(material.detail)}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </Reveal>
+          {project.materials.length > 0 && (
+            <Reveal delay={0.1} className="lg:col-span-5">
+              <div className="card-frame rounded-[2rem] bg-linen p-5 sm:p-8 md:p-10 lg:sticky lg:top-32">
+                <h2 className="font-serif text-2xl tracking-wide text-indigo">{t.project.materials}</h2>
+                <ol className="mt-8 space-y-2">
+                  {project.materials.map((material, index) => (
+                    <li key={`${material.name.en}-${index}`} className="flex gap-4 rounded-2xl bg-ivory px-4 py-4 sm:gap-5 sm:px-5">
+                      <span className="font-serif text-sm text-champagne-700">{pad(index + 1)}</span>
+                      <div className="min-w-0">
+                        <p className="font-medium text-indigo">{l(material.name)}</p>
+                        <p className="mt-0.5 text-sm text-charcoal-soft">{l(material.detail)}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </Reveal>
+          )}
         </div>
       </section>
 
@@ -192,6 +206,32 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
         <Lightbox images={images} index={lightboxIndex} onClose={() => setLightboxIndex(null)} onIndexChange={setLightboxIndex} />
       </section>
 
+      {beforeAfter.length > 0 && (
+        <ComparisonSection
+          eyebrow={t.project.beforeAfter}
+          title={t.project.beforeAfterTitle}
+          pairs={beforeAfter.map((pair) => ({ first: pair.before, second: pair.after, caption: l(pair.caption) }))}
+          firstLabel={t.project.before}
+          secondLabel={t.project.after}
+          label={t.project.compareLabel}
+          alt={title}
+          className="bg-ivory"
+        />
+      )}
+
+      {renderReal.length > 0 && (
+        <ComparisonSection
+          eyebrow={t.project.renderReal}
+          title={t.project.renderRealTitle}
+          pairs={renderReal.map((pair) => ({ first: pair.render, second: pair.real, caption: l(pair.caption) }))}
+          firstLabel={t.project.render}
+          secondLabel={t.project.real}
+          label={t.project.compareLabel}
+          alt={title}
+          className={beforeAfter.length > 0 ? 'bg-linen' : 'bg-ivory'}
+        />
+      )}
+
       {/* Similar project CTA */}
       <section className="bg-ivory py-16 md:py-20">
         <div className="container-luxe">
@@ -244,5 +284,49 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
         </div>
       </section>
     </>
+  );
+}
+
+interface ComparisonSectionProps {
+  eyebrow: string;
+  title: string;
+  pairs: { first: string; second: string; caption: string }[];
+  firstLabel: string;
+  secondLabel: string;
+  label: string;
+  alt: string;
+  className: string;
+}
+
+/** Before/after or render/reality pairs, each compared with a draggable divider. */
+function ComparisonSection({ eyebrow, title, pairs, firstLabel, secondLabel, label, alt, className }: ComparisonSectionProps) {
+  return (
+    <section className={cn('section-y', className)}>
+      <div className="container-luxe">
+        <Reveal>
+          <Eyebrow>{eyebrow}</Eyebrow>
+          <h2 className="mt-5 text-balance font-serif text-3xl tracking-wide text-indigo sm:text-4xl">
+            <Highlight text={title} />
+          </h2>
+        </Reveal>
+        <div className={cn('mt-12 grid gap-8', pairs.length > 1 && 'lg:grid-cols-2')}>
+          {pairs.map((pair, index) => (
+            <Reveal key={`${pair.first}-${index}`} delay={(index % 2) * 0.1}>
+              <figure>
+                <CompareSlider
+                  first={pair.first}
+                  second={pair.second}
+                  firstLabel={firstLabel}
+                  secondLabel={secondLabel}
+                  label={`${label}: ${pair.caption || alt}`}
+                  alt={pair.caption || alt}
+                />
+                {pair.caption && <figcaption className="mt-4 text-sm leading-relaxed text-charcoal-soft">{pair.caption}</figcaption>}
+              </figure>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }

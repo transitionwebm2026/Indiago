@@ -8,16 +8,14 @@ import { WorkflowTimeline } from '@/components/services/WorkflowTimeline';
 import { ButtonLink } from '@/components/ui/Button';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { coreServiceIds } from '@/lib/data/services';
+import { useServices } from '@/lib/cms/hooks';
 import { routes, serviceHref } from '@/lib/routes';
 import { pad } from '@/lib/utils';
 
 export function ServicesPreview() {
-  const { t } = useLanguage();
+  const { t, l } = useLanguage();
   const copy = t.home.services;
-  const services = coreServiceIds
-    .map((id) => t.services.items.find((item) => item.id === id))
-    .filter((item): item is (typeof t.services.items)[number] => Boolean(item));
+  const services = useServices().filter((service) => service.core);
 
   return (
     <section className="section-y relative isolate overflow-hidden bg-indigo text-ivory">
@@ -40,12 +38,12 @@ export function ServicesPreview() {
               >
                 <div className="flex items-center justify-between">
                   <span className="grid h-14 w-14 place-items-center rounded-2xl bg-indigo-900/60 text-champagne">
-                    <ServiceIcon id={service.id} className="h-7 w-7" />
+                    <ServiceIcon icon={service.icon} className="h-7 w-7" />
                   </span>
                   <span className="font-serif text-sm text-ivory/30">{pad(index + 1)}</span>
                 </div>
-                <h3 className="mt-12 font-serif text-2xl leading-snug tracking-wide text-ivory">{service.title}</h3>
-                <p className="mt-4 text-sm leading-relaxed text-ivory/60">{service.summary}</p>
+                <h3 className="mt-12 font-serif text-2xl leading-snug tracking-wide text-ivory">{l(service.title)}</h3>
+                <p className="mt-4 text-sm leading-relaxed text-ivory/60">{l(service.summary)}</p>
                 <span className="mt-auto inline-flex items-center gap-2 pt-8 text-[0.62rem] font-medium uppercase tracking-luxe text-champagne">
                   {t.common.readMore}
                   <ArrowRight

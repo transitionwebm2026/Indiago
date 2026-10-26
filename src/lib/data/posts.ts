@@ -13,21 +13,35 @@ export type ArticleBlock =
 
 export type AuthorId = 'founder' | 'studio';
 
-export const authors: Record<AuthorId, { name: Localized; role: Localized; initials: string; portrait?: string }> = {
-  founder: {
-    name: site.founder.name,
-    role: site.founder.role,
-    initials: site.founder.initials,
-    portrait: site.founder.portrait,
-  },
-  studio: {
-    name: { en: 'Indigo Design Studio', ar: 'استوديو إنديجو للتصميم' },
-    role: { en: 'Editorial team', ar: 'فريق التحرير' },
-    initials: 'ID',
-  },
-};
+export const authorIds: AuthorId[] = ['founder', 'studio'];
 
-export interface Post {
+export interface Author {
+  name: Localized;
+  role: Localized;
+  initials: string;
+  portrait?: string;
+}
+
+/** The founder's byline follows the studio settings, so it changes with them in the CMS. */
+export function buildAuthors(founder: Author): Record<AuthorId, Author> {
+  return {
+    founder,
+    studio: {
+      name: { en: 'Indigo Design Studio', ar: 'استوديو إنديجو للتصميم' },
+      role: { en: 'Editorial team', ar: 'فريق التحرير' },
+      initials: 'ID',
+    },
+  };
+}
+
+export const authors = buildAuthors(site.founder);
+
+export function isBlogCategory(value: string): value is BlogCategory {
+  return (blogCategories as string[]).includes(value);
+}
+
+/** What article cards and listings need — everything except the body. */
+export interface PostSummary {
   slug: string;
   title: Localized;
   excerpt: Localized;
@@ -38,11 +52,14 @@ export interface Post {
   /** Minutes */
   readTime: number;
   cover: string;
+  featured?: boolean;
+}
+
+export interface Post extends PostSummary {
   /** Long-form article body (English). */
   body: ArticleBlock[];
   /** Arabic translation of the body. Without one, Arabic readers see the English body with a notice. */
   bodyAr?: ArticleBlock[];
-  featured?: boolean;
 }
 
 /**
@@ -1257,17 +1274,24 @@ export const posts: Post[] = [
   },
 ];
 
-export const featuredPost = posts.find((post) => post.featured) ?? posts[0];
+export function getFeaturedPost<T extends PostSummary>(list: T[]): T | undefined {
+  return list.find((post) => post.featured) ?? list[0];
+}
 
 export function getPost(slug: string) {
   return posts.find((post) => post.slug === slug);
 }
 
-export function getRelatedPosts(slug: string, limit = 3) {
-  const current = getPost(slug);
-  if (!current) return posts.slice(0, limit);
-  const others = posts.filter((post) => post.slug !== slug);
+export function getRelatedPosts<T extends PostSummary>(list: T[], slug: string, limit = 3) {
+  const current = list.find((post) => post.slug === slug);
+  const others = list.filter((post) => post.slug !== slug);
+  if (!current) return others.slice(0, limit);
   const sameCategory = others.filter((post) => post.category === current.category);
   const rest = others.filter((post) => post.category !== current.category);
   return [...sameCategory, ...rest].slice(0, limit);
+}
+
+/** Strips the article bodies, which only the article page needs. */
+export function toSummary({ body: _body, bodyAr: _bodyAr, ...summary }: Post): PostSummary {
+  return summary;
 }

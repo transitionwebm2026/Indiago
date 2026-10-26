@@ -6,15 +6,16 @@ import { useEffect, useId, useState } from 'react';
 import { WhatsAppIcon } from '@/components/icons/SocialIcons';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { buttonClasses } from '@/components/ui/Button';
+import { useSite } from '@/lib/cms/hooks';
 import { EASE } from '@/lib/motion';
-import { site, whatsappLink } from '@/lib/site';
 
 /**
  * Fixed bottom-right launchers: a direct call button stacked above the
- * consultation chat that routes straight to wa.me/201119777662.
+ * consultation chat that routes straight to the studio's WhatsApp number.
  */
 export function WhatsAppWidget() {
   const { t } = useLanguage();
+  const { site, whatsappLink } = useSite();
   const [open, setOpen] = useState(false);
   // The call button's first entrance waits for the page to settle; later show/hide toggles are instant.
   const [callIntroDone, setCallIntroDone] = useState(false);
@@ -102,7 +103,7 @@ export function WhatsAppWidget() {
       </AnimatePresence>
 
       <AnimatePresence>
-        {!open && (
+        {!open && site.phoneHref && (
           <motion.a
             key="call"
             href={site.phoneHref}

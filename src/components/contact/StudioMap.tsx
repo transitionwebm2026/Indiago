@@ -6,11 +6,12 @@ import { useLanguage } from '@/components/providers/LanguageProvider';
 import { ButtonLink } from '@/components/ui/Button';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { mapsDirectionsUrl, mapsEmbedUrl, site } from '@/lib/site';
+import { useSite } from '@/lib/cms/hooks';
 
-/** Google Maps embed (no API key required) centred on Villa 40, Al Safa St., Sheikh Zayed. */
+/** Google Maps embed (no API key required) centred on the studio address set in Global Settings → Map. */
 export function StudioMap() {
   const { t, l } = useLanguage();
+  const { site } = useSite();
   const map = t.contact.map;
 
   return (
@@ -22,7 +23,7 @@ export function StudioMap() {
           <div className="relative isolate aspect-[4/5] overflow-hidden card-frame rounded-[2rem] bg-linen-dark sm:aspect-[16/10] lg:aspect-[21/9]">
             <iframe
               title={map.mapTitle}
-              src={mapsEmbedUrl}
+              src={site.mapsEmbedUrl}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               allowFullScreen
@@ -34,10 +35,12 @@ export function StudioMap() {
           <div className="relative -mt-16 mx-4 card-frame-dark rounded-3xl bg-indigo p-7 text-ivory sm:absolute sm:bottom-6 sm:start-6 sm:mx-0 sm:mt-0 sm:w-[22rem]">
             <Logo className="h-11" />
             <p className="mt-6 leading-relaxed text-ivory/80">{l(site.address)}</p>
-            <a href={site.phoneHref} dir="ltr" className="mt-2 inline-block text-sm text-champagne transition-colors hover:text-ivory">
-              {site.phone}
-            </a>
-            <ButtonLink href={mapsDirectionsUrl} size="sm" className="mt-6 w-full">
+            {site.phone && (
+              <a href={site.phoneHref} dir="ltr" className="mt-2 inline-block text-sm text-champagne transition-colors hover:text-ivory">
+                {site.phone}
+              </a>
+            )}
+            <ButtonLink href={site.mapsDirectionsUrl} size="sm" className="mt-6 w-full">
               <Navigation aria-hidden className="h-3.5 w-3.5" strokeWidth={1.75} />
               {map.directions}
             </ButtonLink>

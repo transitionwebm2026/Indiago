@@ -4,18 +4,14 @@ import Image from 'next/image';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { img, pageImages } from '@/lib/images';
+import { useMedia } from '@/lib/cms/hooks';
+import { img } from '@/lib/images';
 import { pad } from '@/lib/utils';
-
-const materialImages = [
-  pageImages.materials.stone,
-  pageImages.materials.timber,
-  pageImages.materials.metal,
-  pageImages.materials.sustainable,
-];
 
 export function MaterialsSection() {
   const { t } = useLanguage();
+  // One photo per card, in order; extra cards added in the CMS reuse the photos from the start.
+  const { images: materialImages } = useMedia('about.materials');
   const materials = t.about.materials;
 
   return (
@@ -29,7 +25,7 @@ export function MaterialsSection() {
               <article className="card-frame group h-full rounded-[1.75rem] bg-white/70 p-2.5 hover:border-champagne">
                 <div className="relative isolate aspect-[3/4] overflow-hidden rounded-[1.25rem] bg-linen-dark">
                   <Image
-                    src={img(materialImages[index], 800)}
+                    src={img(materialImages[index % materialImages.length], 800)}
                     alt={item.title}
                     fill
                     sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"

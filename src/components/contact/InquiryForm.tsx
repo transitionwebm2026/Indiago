@@ -7,7 +7,9 @@ import { WhatsAppIcon } from '@/components/icons/SocialIcons';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { Button, ButtonLink } from '@/components/ui/Button';
 import { Highlight } from '@/components/ui/Highlight';
-import type { ServiceId } from '@/lib/data/services';
+import { useServices, useSite } from '@/lib/cms/hooks';
+import { uuid } from '@/lib/cms/ids';
+import { saveInquiry, uploadInquiryFile } from '@/lib/cms/inquiries';
 import { hasWeb3Forms, mailtoLink, submitToWeb3Forms } from '@/lib/forms';
 import { en } from '@/lib/i18n/en';
 import {
@@ -21,9 +23,10 @@ import {
   type StartTimeline,
 } from '@/lib/inquiry';
 import { EASE } from '@/lib/motion';
-import { whatsappLink } from '@/lib/site';
+import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { cn, isValidEmail, isValidPhone, pad } from '@/lib/utils';
 import { ChoiceGroup, TextField } from './FormFields';
+import { ReferenceFiles, type AttachedFile } from './ReferenceFiles';
 
 type Errors = Partial<Record<keyof InquiryData, string>>;
 type Result = 'whatsapp' | 'email' | 'mailto' | null;
@@ -43,9 +46,13 @@ function toOptions<T extends string>(record: Record<T, string>) {
 /**
  * Four-step project brief. Static hosting has no server, so the completed brief is
  * delivered as a pre-filled WhatsApp message, or via Web3Forms / the visitor's email app.
+ * With the CMS configured, every brief (and its reference files) also lands in the
+ * dashboard's Project Inquiries inbox.
  */
 export function InquiryForm() {
-  const { t, dir } = useLanguage();
+  const { t, l, dir, locale } = useLanguage();
+  const { site, whatsappLink } = useSite();
+  const services = useServices();
   const form = t.contact.form;
   const baseId = useId();
   const fieldId = (key: keyof InquiryData) => `${baseId}-${key}`;
@@ -57,10 +64,40 @@ export function InquiryForm() {
   const [result, setResult] = useState<Result>(null);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState(false);
+  const [files, setFiles] = useState<AttachedFile[]>([]);
 
   const cardRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const hasNavigated = useRef(false);
+  // One ID per brief, created on first use: it names the folder its reference files upload to.
+  const inquiryIdRef = useRef<string | null>(null);
+  const savedRef = useRef(false);
+  const inquiryId = () => (inquiryIdRef.current ??= uuid());
+
+  const uploading = files.some((file) => file.status === 'uploading');
+  const storedFiles = files.flatMap((file) => (file.status === 'done' && file.stored ? [file.stored] : []));
+
+  const addFiles = (chosen: File[]) => {
+    const entries = chosen.map((file) => ({ key: uuid(), file }));
+    setFiles((current) => [
+      ...current,
+      ...entries.map(({ key, file }) => ({ key, name: file.name, size: file.size, status: 'uploading' as const, progress: 0 })),
+    ]);
+    const patch = (key: string, change: Partial<AttachedFile>) =>
+      setFiles((current) => current.map((item) => (item.key === key ? { ...item, ...change } : item)));
+    for (const { key, file } of entries) {
+      uploadInquiryFile(inquiryId(), file, (progress) => patch(key, { progress }))
+        .then((stored) => patch(key, { status: 'done', progress: 1, stored }))
+        .catch(() => patch(key, { status: 'error' }));
+    }
+  };
+
+  /** Copies the brief into the CMS inbox once, alongside whichever channel the visitor chose. */
+  const recordInquiry = () => {
+    if (savedRef.current || !isSupabaseConfigured) return;
+    savedRef.current = true;
+    void saveInquiry(inquiryId(), data, storedFiles, locale);
+  };
 
   // Pre-select the property type when arriving from a "?type=residential" link.
   useEffect(() => {
@@ -82,7 +119,7 @@ export function InquiryForm() {
     setErrors((current) => (current[key] ? { ...current, [key]: undefined } : current));
   };
 
-  const toggleService = (id: ServiceId) =>
+  const toggleService = (id: string) =>
     update('services', data.services.includes(id) ? data.services.filter((item) => item !== id) : [...data.services, id]);
 
   const validate = (index: number): Errors => {
@@ -150,27 +187,33 @@ export function InquiryForm() {
     scrollCardIntoView();
   };
 
+  const message = () => buildInquiryMessage(data, services, storedFiles.length);
+
   const sendWhatsApp = () => {
-    if (!validateAll()) return;
-    window.open(whatsappLink(buildInquiryMessage(data)), '_blank', 'noopener,noreferrer');
+    if (uploading || !validateAll()) return;
+    window.open(whatsappLink(message()), '_blank', 'noopener,noreferrer');
+    recordInquiry();
     finish('whatsapp');
   };
 
   const sendEmail = async () => {
-    if (!validateAll()) return;
+    if (uploading || !validateAll()) return;
     const subject = `Project inquiry — ${data.name.trim()}`;
     if (!hasWeb3Forms) {
-      window.location.href = mailtoLink(subject, buildInquiryMessage(data).replace(/\*/g, ''));
+      window.location.href = mailtoLink(site.email, subject, message().replace(/\*/g, ''));
+      recordInquiry();
       finish('mailto');
       return;
     }
     setSending(true);
     setSendError(false);
-    const fields = inquiryFields(data);
-    const ok = await submitToWeb3Forms(subject, data.email.trim() ? { ...fields, email: data.email.trim() } : fields);
+    const fields = inquiryFields(data, services);
+    const ok = await submitToWeb3Forms(subject, data.email.trim() ? { ...fields, email: data.email.trim() } : fields, site.name);
     setSending(false);
-    if (ok) finish('email');
-    else setSendError(true);
+    if (ok) {
+      recordInquiry();
+      finish('email');
+    } else setSendError(true);
   };
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -181,6 +224,9 @@ export function InquiryForm() {
 
   const reset = () => {
     setData(emptyInquiry);
+    setFiles([]);
+    inquiryIdRef.current = null;
+    savedRef.current = false;
     setErrors({});
     setResult(null);
     setSendError(false);
@@ -208,7 +254,7 @@ export function InquiryForm() {
           </h3>
           <p className="mx-auto mt-5 max-w-md leading-relaxed text-charcoal-soft">{body}</p>
           <div className="mt-10 flex flex-col items-center justify-center gap-5 sm:flex-row">
-            <ButtonLink href={whatsappLink(buildInquiryMessage(data))} variant="primary">
+            <ButtonLink href={whatsappLink(message())} variant="primary">
               <WhatsAppIcon className="h-4 w-4" />
               {form.reopenWhatsapp}
             </ButtonLink>
@@ -371,11 +417,11 @@ export function InquiryForm() {
 
               {step === 2 && (
                 <>
-                  <ChoiceGroup<ServiceId>
+                  <ChoiceGroup<string>
                     id={fieldId('services')}
                     label={form.fields.services}
                     hint={form.fields.servicesHint}
-                    options={t.services.items.map((service) => ({ value: service.id as ServiceId, label: service.title }))}
+                    options={services.map((service) => ({ value: service.id, label: l(service.title) }))}
                     values={data.services}
                     onToggle={toggleService}
                     error={errors.services}
@@ -412,6 +458,16 @@ export function InquiryForm() {
                     multiline
                     ltr
                   />
+                  {isSupabaseConfigured && (
+                    <ReferenceFiles
+                      id={`${baseId}-files`}
+                      files={files}
+                      copy={form.fields}
+                      optional={form.optional}
+                      onAdd={addFiles}
+                      onRemove={(key) => setFiles((current) => current.filter((file) => file.key !== key))}
+                    />
+                  )}
                   <TextField
                     id={fieldId('notes')}
                     label={form.fields.notes}
@@ -460,11 +516,11 @@ export function InquiryForm() {
             </Button>
           ) : (
             <div className="flex flex-col gap-3 sm:flex-row">
-              <Button type="submit" variant="primary">
+              <Button type="submit" variant="primary" disabled={uploading}>
                 <WhatsAppIcon className="h-4 w-4" />
                 {form.sendWhatsapp}
               </Button>
-              <Button variant="outline-dark" onClick={sendEmail} disabled={sending}>
+              <Button variant="outline-dark" onClick={sendEmail} disabled={sending || uploading}>
                 {sending ? form.sending : form.sendEmail}
               </Button>
             </div>

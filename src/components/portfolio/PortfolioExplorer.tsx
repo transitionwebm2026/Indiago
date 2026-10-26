@@ -5,7 +5,8 @@ import { useMemo, useState } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { FilterBar, type FilterOption } from '@/components/ui/FilterBar';
 import { Lightbox } from '@/components/ui/Lightbox';
-import { projectCategories, projects, type Project, type ProjectCategory } from '@/lib/data/projects';
+import { useProjects } from '@/lib/cms/hooks';
+import { projectCategories, type Project, type ProjectCategory } from '@/lib/data/projects';
 import { EASE } from '@/lib/motion';
 import { pad } from '@/lib/utils';
 import { ProjectCard } from './ProjectCard';
@@ -15,12 +16,13 @@ type Filter = 'all' | ProjectCategory;
 /** Section 2 of the portfolio page: category filter, project grid and quick-view galleries. */
 export function PortfolioExplorer() {
   const { t, l } = useLanguage();
+  const projects = useProjects();
   const [filter, setFilter] = useState<Filter>('all');
   const [gallery, setGallery] = useState<{ project: Project; index: number } | null>(null);
 
   const visible = useMemo(
     () => (filter === 'all' ? projects : projects.filter((project) => project.category === filter)),
-    [filter],
+    [filter, projects],
   );
 
   const options: FilterOption<Filter>[] = [

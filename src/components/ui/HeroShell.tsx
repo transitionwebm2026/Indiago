@@ -7,12 +7,12 @@ import { Pause, Play } from 'lucide-react';
 import { useEffect, useState, type ReactNode } from 'react';
 import { socialIcons } from '@/components/icons/SocialIcons';
 import { useLanguage } from '@/components/providers/LanguageProvider';
+import { useProjects, useSite } from '@/lib/cms/hooks';
 import type { HeroSlide } from '@/lib/data/heroes';
 import { getProject } from '@/lib/data/projects';
-import { img } from '@/lib/images';
+import { img, isVideo } from '@/lib/images';
 import { EASE } from '@/lib/motion';
 import { projectHref } from '@/lib/routes';
-import { site } from '@/lib/site';
 import { cn, pad } from '@/lib/utils';
 
 /** Time each project photograph stays on screen. */
@@ -20,6 +20,10 @@ export const SLIDE_INTERVAL = 3000;
 
 /** The studio's social profiles under a "Follow us" label, pinned to the hero's right edge in both languages. */
 function SocialRail({ label, title }: { label: string; title: string }) {
+  const { site } = useSite();
+  const profiles = site.social.filter((social) => social.visible);
+  if (profiles.length === 0) return null;
+
   return (
     // On phones the rail centres in the photo strip left visible between the navbar and the overlapping card.
     // One frosted capsule keeps the label legible over any photograph.
@@ -33,7 +37,7 @@ function SocialRail({ label, title }: { label: string; title: string }) {
       </span>
       <span aria-hidden className="h-px w-4 bg-champagne/40" />
       <ul className="flex flex-col gap-1 sm:gap-1.5">
-        {site.social.map((social) => {
+        {profiles.map((social) => {
           const Icon = socialIcons[social.id];
           return (
             <li key={social.id}>
@@ -70,10 +74,16 @@ interface HeroShellProps {
  */
 export function HeroShell({ slides, size = 'page', showCaption = true, children }: HeroShellProps) {
   const { t, l } = useLanguage();
+  const projects = useProjects();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const count = slides.length;
   const full = size === 'full';
+
+  // Slides edited in the CMS can shrink the list under the current position.
+  useEffect(() => {
+    if (index >= count && count > 0) setIndex(0);
+  }, [index, count]);
 
   // Restarting the timer on every index change also resets it after a manual jump.
   useEffect(() => {
@@ -82,7 +92,7 @@ export function HeroShell({ slides, size = 'page', showCaption = true, children 
     return () => window.clearTimeout(timer);
   }, [index, paused, count]);
 
-  const current = getProject(slides[index]?.projectId ?? '');
+  const current = getProject(slides[index]?.projectId ?? '', projects);
 
   const controls = (className: string) => (
     <div
@@ -164,7 +174,7 @@ export function HeroShell({ slides, size = 'page', showCaption = true, children 
       >
         {slides.map((slide, slideIndex) => {
           const active = slideIndex === index;
-          const project = getProject(slide.projectId);
+          const project = getProject(slide.projectId, projects);
           return (
             <div
               key={`${slide.image}-${slideIndex}`}
@@ -172,19 +182,31 @@ export function HeroShell({ slides, size = 'page', showCaption = true, children 
               className="absolute inset-0 transition-opacity duration-1200 ease-in-out"
               style={{ opacity: active ? 1 : 0 }}
             >
-              <Image
-                src={img(slide.image, 2400)}
-                alt={project ? l(project.title) : ''}
-                fill
-                sizes="100vw"
-                priority={slideIndex === 0}
-                loading={slideIndex === 0 ? undefined : 'eager'}
-                className={cn(
-                  'object-cover transition-transform ease-out motion-reduce:transition-none',
-                  active ? 'motion-safe:scale-[1.06]' : 'scale-100',
-                )}
-                style={{ transitionDuration: active ? '4500ms' : '1200ms' }}
-              />
+              {isVideo(slide.image) ? (
+                <video
+                  src={slide.image}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload={slideIndex === 0 ? 'auto' : 'metadata'}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              ) : (
+                <Image
+                  src={img(slide.image, 2400)}
+                  alt={project ? l(project.title) : ''}
+                  fill
+                  sizes="100vw"
+                  priority={slideIndex === 0}
+                  loading={slideIndex === 0 ? undefined : 'eager'}
+                  className={cn(
+                    'object-cover transition-transform ease-out motion-reduce:transition-none',
+                    active ? 'motion-safe:scale-[1.06]' : 'scale-100',
+                  )}
+                  style={{ transitionDuration: active ? '4500ms' : '1200ms' }}
+                />
+              )}
             </div>
           );
         })}

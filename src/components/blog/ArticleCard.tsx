@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Clock } from 'lucide-react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
-import type { Post } from '@/lib/data/posts';
+import type { PostSummary } from '@/lib/data/posts';
 import { img } from '@/lib/images';
 import { postHref } from '@/lib/routes';
 import { cn, formatDate } from '@/lib/utils';
@@ -24,7 +24,7 @@ export function ReadTimeBadge({ minutes, className }: { minutes: number; classNa
   );
 }
 
-export function ArticleCard({ post, className }: { post: Post; className?: string }) {
+export function ArticleCard({ post, className }: { post: PostSummary; className?: string }) {
   const { t, l, locale } = useLanguage();
 
   return (

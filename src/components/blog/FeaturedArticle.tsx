@@ -7,7 +7,8 @@ import { useLanguage } from '@/components/providers/LanguageProvider';
 import { buttonClasses } from '@/components/ui/Button';
 import { Monogram } from '@/components/ui/Monogram';
 import { Reveal } from '@/components/ui/Reveal';
-import { authors, featuredPost } from '@/lib/data/posts';
+import { useAuthors, usePosts } from '@/lib/cms/hooks';
+import { getFeaturedPost } from '@/lib/data/posts';
 import { img } from '@/lib/images';
 import { postHref } from '@/lib/routes';
 import { formatDate } from '@/lib/utils';
@@ -16,7 +17,9 @@ import { ReadTimeBadge } from './ArticleCard';
 /** Spotlight card for the blog's lead article. */
 export function FeaturedArticle() {
   const { t, l, locale } = useLanguage();
-  const post = featuredPost;
+  const post = getFeaturedPost(usePosts());
+  const authors = useAuthors();
+  if (!post) return null;
   const author = authors[post.author];
 
   return (

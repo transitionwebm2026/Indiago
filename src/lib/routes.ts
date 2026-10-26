@@ -13,6 +13,23 @@ export const projectHref = (id: string) => `/portfolio/${id}/`;
 export const postHref = (slug: string) => `/blog/${slug}/`;
 export const serviceHref = (id: string) => `/services/#${id}`;
 
+/**
+ * Projects and articles published in the CMS after the last build have no page of their own.
+ * The host serves this pre-built shell for them instead (see public/.htaccess), and the shell
+ * reads the real slug from the address bar. Slugs are lowercase words, so "_" can't clash.
+ */
+export const SHELL_SLUG = '_';
+
+/** "/portfolio/new-villa/" → "new-villa" */
+export function slugFromPath(pathname: string) {
+  const segment = pathname.split('/').filter(Boolean).pop() ?? '';
+  try {
+    return decodeURIComponent(segment);
+  } catch {
+    return segment;
+  }
+}
+
 export const primaryNav = [
   { key: 'home', href: routes.home },
   { key: 'about', href: routes.about },
