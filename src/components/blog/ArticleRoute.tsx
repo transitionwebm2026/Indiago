@@ -3,15 +3,18 @@
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { RouteStatus, useDocumentTitle, useRouteSlug } from '@/components/shared/RouteStatus';
 import { usePost, usePosts } from '@/lib/cms/hooks';
-import { getRelatedPosts } from '@/lib/data/posts';
+import { getRelatedPosts, type Post } from '@/lib/data/posts';
 import { routes, SHELL_SLUG } from '@/lib/routes';
 import { ArticleView } from './ArticleView';
 
-/** An article page, live from the CMS — including articles published since the last build. */
-export function ArticleRoute({ slug }: { slug: string }) {
+/**
+ * An article page, live from the CMS — including articles published since the last build.
+ * `builtIn` is the built-in article for this slug, if there is one.
+ */
+export function ArticleRoute({ slug, builtIn }: { slug: string; builtIn?: Post }) {
   const { t, l } = useLanguage();
   const resolved = useRouteSlug(slug);
-  const { post, settled } = usePost(resolved);
+  const { post, settled } = usePost(resolved, builtIn);
   const posts = usePosts();
 
   useDocumentTitle(slug === SHELL_SLUG && post ? `${l(post.title)} · ${t.brand}` : null);

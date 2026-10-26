@@ -114,9 +114,9 @@ export function Footer() {
                 </dd>
               </div>
               <div className="border-t border-ivory/10 pt-4">
-                <dt className="text-[0.62rem] uppercase tracking-luxe text-ivory/40">{t.contact.info.management}</dt>
+                <dt className="text-[0.62rem] uppercase tracking-luxe text-ivory/60">{t.contact.info.management}</dt>
                 <dd className="mt-1.5 text-ivory/80">
-                  {l(site.founder.name)} <span className="text-ivory/50">— {l(site.founder.role)}</span>
+                  {l(site.founder.name)} <span className="text-ivory/60">— {l(site.founder.role)}</span>
                 </dd>
               </div>
             </dl>
@@ -146,7 +146,7 @@ export function Footer() {
 
         {/* From lg up the credit sits centred between the copyright and back-to-top; narrower, the three stack.
             On phones the extra bottom space keeps them clear of the fixed WhatsApp/call launchers. */}
-        <div className="flex flex-col items-center gap-5 border-t border-ivory/10 pb-40 pt-8 text-center text-xs text-ivory/50 sm:pb-8 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-8 lg:text-start">
+        <div className="flex flex-col items-center gap-5 border-t border-ivory/10 pb-40 pt-8 text-center text-xs text-ivory/60 sm:pb-8 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-8 lg:text-start">
           <p>
             © {site.copyrightYear} {t.brand}. {t.footer.rights}
           </p>
@@ -156,7 +156,6 @@ export function Footer() {
               href={site.credit.href}
               target="_blank"
               rel="noopener"
-              aria-label={t.footer.creditLabel}
               className="group/credit relative isolate inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-gradient-to-l from-indigo-600 to-champagne-600 px-5 py-2 text-[0.8125rem] font-semibold text-white shadow-[0_12px_32px_-12px_rgba(213,182,144,0.55)] ring-1 ring-inset ring-white/20 transition-[transform,box-shadow] duration-500 ease-luxe [text-shadow:0_1px_2px_rgba(23,18,44,0.35)] hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-12px_rgba(213,182,144,0.75)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-champagne rtl:bg-gradient-to-r sm:gap-3.5 sm:px-6 sm:text-[0.95rem]"
             >
               <span
@@ -166,12 +165,14 @@ export function Footer() {
               <span>{t.footer.credit}</span>
               {site.credit.logo && (
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/15 ring-1 ring-inset ring-white/25 transition-transform duration-500 ease-luxe group-hover/credit:scale-110">
-                  <Image src={site.credit.logo} alt="" width={240} height={143} className="h-auto w-7" />
+                  <Image src={site.credit.logo} alt="" width={240} height={143} unoptimized className="h-auto w-7" />
                 </span>
               )}
               <span dir="ltr" className="font-bold tracking-wide">
                 {site.credit.name}
               </span>
+              {/* Spoken after the visible words, so voice-control users can say what they see. */}
+              <span className="sr-only"> {t.footer.newTab}</span>
             </a>
           ) : (
             <span aria-hidden />

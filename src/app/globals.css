@@ -68,6 +68,24 @@
   .field-input[aria-invalid='true'] {
     @apply border-error;
   }
+
+  /* Scroll-in reveal (components/ui/Reveal.tsx). An animation rather than a transition, so it never
+     clashes with an element's own hover transitions. */
+  .reveal:not([data-shown]) {
+    opacity: 0;
+    transform: translateY(var(--reveal-y, 24px));
+  }
+
+  .reveal[data-shown] {
+    animation: reveal-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s) backwards;
+  }
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--reveal-y, 24px));
+  }
 }
 
 @layer utilities {
@@ -95,5 +113,13 @@
 
   .animate-pulse-ring {
     animation: none !important;
+  }
+
+  .reveal:not([data-shown]) {
+    transform: none;
+  }
+
+  .reveal[data-shown] {
+    animation-name: none;
   }
 }

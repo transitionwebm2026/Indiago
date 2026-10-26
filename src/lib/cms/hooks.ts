@@ -2,11 +2,11 @@
 
 import { useMemo, useSyncExternalStore } from 'react';
 import useSWR from 'swr';
-import { buildAuthors, posts as builtInPosts, toSummary, type Post, type PostSummary } from '@/lib/data/posts';
+import { buildAuthors, postSummaries as builtInSummaries, type Post, type PostSummary } from '@/lib/data/posts';
 import { projects as builtInProjects, type Project } from '@/lib/data/projects';
 import { processSteps as builtInSteps, services as builtInServices, type ProcessStep, type Service } from '@/lib/data/services';
 import { buildWhatsappLink, defaultSiteSettings, resolveSite, type SiteSettings } from '@/lib/site';
-import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { cmsKeys, fetchContent, fetchPost, fetchPosts, fetchProjects, fetchServices, fetchSettings, fetchSteps } from './api';
 import { buildMedia } from './content';
 import type { MediaMap, MediaSection } from './sections';
@@ -20,8 +20,6 @@ import type { ContentRow } from './types';
  * cached from the visitor's last visit, then to fresh data from Supabase — and
  * Realtime (see CmsProvider) refreshes it whenever the studio saves a change.
  */
-
-const builtInSummaries: PostSummary[] = builtInPosts.map(toSummary);
 
 const noopSubscribe = () => () => {};
 
@@ -109,13 +107,15 @@ export function usePosts(): PostSummary[] {
   return usePostList().posts;
 }
 
-/** One full article. While the live copy loads, a built-in article with the same slug stands in. */
-export function usePost(slug: string | null) {
+/**
+ * One full article. While the live copy loads, `builtIn` (the pre-rendered article, passed in by its
+ * page so the article text isn't bundled into every page) stands in.
+ */
+export function usePost(slug: string | null, builtIn?: Post) {
   const status = useCmsStatus();
   const { data, pending } = useCmsData(slug ? cmsKeys.post(slug) : null, () => (slug ? fetchPost(slug) : Promise.resolve(null)));
-  const builtIn = slug ? builtInPosts.find((post) => post.slug === slug) : undefined;
 
-  let post: Post | undefined = builtIn;
+  let post: Post | undefined = builtIn?.slug === slug ? builtIn : undefined;
   if (status.live && data !== undefined && data !== null) post = data === false ? undefined : data;
 
   return { post, settled: !status.pending && (!status.live || !pending) };

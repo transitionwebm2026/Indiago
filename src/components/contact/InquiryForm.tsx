@@ -23,7 +23,7 @@ import {
   type StartTimeline,
 } from '@/lib/inquiry';
 import { EASE } from '@/lib/motion';
-import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { cn, isValidEmail, isValidPhone, pad } from '@/lib/utils';
 import { ChoiceGroup, TextField } from './FormFields';
 import { ReferenceFiles, type AttachedFile } from './ReferenceFiles';

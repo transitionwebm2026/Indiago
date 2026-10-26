@@ -1,6 +1,6 @@
 import type { Locale } from '@/lib/i18n';
 import { referenceLinks, type InquiryData } from '@/lib/inquiry';
-import { getSupabase, supabaseAnonKey } from '@/lib/supabase/client';
+import { loadSupabase, supabaseAnonKey } from '@/lib/supabase/config';
 import { INQUIRY_BUCKET, safeFileName, uploadToStorage } from './storage';
 import type { InquiryFile } from './types';
 
@@ -25,7 +25,7 @@ export function uploadInquiryFile(inquiryId: string, file: File, onProgress?: (f
  * already gone out by WhatsApp or email, so the visitor isn't blocked.
  */
 export async function saveInquiry(id: string, data: InquiryData, files: InquiryFile[], locale: Locale): Promise<boolean> {
-  const supabase = getSupabase();
+  const supabase = await loadSupabase();
   if (!supabase) return false;
   const area = Number(data.area);
   const { error } = await supabase.from('project_inquiries').insert({

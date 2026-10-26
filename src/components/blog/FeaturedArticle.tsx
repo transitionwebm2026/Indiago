@@ -61,7 +61,7 @@ export function FeaturedArticle() {
                     <p className="text-sm">
                       {t.common.by} {l(author.name)}
                     </p>
-                    <p className="mt-0.5 text-xs text-ivory/50">
+                    <p className="mt-0.5 text-xs text-ivory/60">
                       {l(author.role)} · <time dateTime={post.date}>{formatDate(post.date, locale)}</time>
                     </p>
                   </div>

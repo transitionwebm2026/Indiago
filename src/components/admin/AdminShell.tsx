@@ -27,7 +27,8 @@ import { toast, Toaster } from 'sonner';
 import { Logo } from '@/components/layout/Logo';
 import { GridLines } from '@/components/ui/GridLines';
 import { adminKeys, countNewInquiries, fetchSettingsRow } from '@/lib/cms/admin';
-import { getSupabase, isSupabaseConfigured } from '@/lib/supabase/client';
+import { getSupabase } from '@/lib/supabase/client';
+import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { cn } from '@/lib/utils';
 import { AdminButton, Field, Spinner, TextInput } from './ui';
 

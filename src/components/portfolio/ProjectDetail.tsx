@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Expand } from 'lucide-react';
 import { useState } from 'react';
@@ -10,7 +11,6 @@ import { ButtonLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/Eyebrow';
 import { HeroShell } from '@/components/ui/HeroShell';
 import { Highlight } from '@/components/ui/Highlight';
-import { Lightbox } from '@/components/ui/Lightbox';
 import { Reveal } from '@/components/ui/Reveal';
 import { useServices } from '@/lib/cms/hooks';
 import { projectSlides } from '@/lib/data/heroes';
@@ -19,6 +19,9 @@ import { img } from '@/lib/images';
 import { projectHref, routes, serviceHref } from '@/lib/routes';
 import { cn, pad } from '@/lib/utils';
 import { CompareSlider } from './CompareSlider';
+
+// The gallery viewer only opens on a click, so its code loads after the page.
+const Lightbox = dynamic(() => import('@/components/ui/Lightbox').then((module) => module.Lightbox), { ssr: false });
 
 export function ProjectDetail({ project, next }: { project: Project; next: Project }) {
   const { t, l, locale } = useLanguage();

@@ -3,26 +3,26 @@ import { IBM_Plex_Sans_Arabic, Inter, Noto_Naskh_Arabic } from 'next/font/google
 import type { ReactNode } from 'react';
 import { CmsProvider } from '@/components/providers/CmsProvider';
 import { LanguageProvider } from '@/components/providers/LanguageProvider';
-import { img, pageImages } from '@/lib/images';
+import { shareImage, siteDescription as description } from '@/lib/seo';
 import { site } from '@/lib/site';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
+// The Arabic faces load only once Arabic text is on screen, so English visits don't download them.
 const naskh = Noto_Naskh_Arabic({
   subsets: ['arabic'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-naskh',
   display: 'swap',
+  preload: false,
 });
 const plexArabic = IBM_Plex_Sans_Arabic({
   subsets: ['arabic'],
   weight: ['300', '400', '500', '600'],
   variable: '--font-plex-arabic',
   display: 'swap',
+  preload: false,
 });
-
-const description =
-  'Indigo Interiors is an interior design, fit-out and finishing company bringing UAE standards of quality to Egypt — residential, hospitality, corporate and healthcare interiors across Abu Dhabi and Greater Cairo.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -32,6 +32,24 @@ export const metadata: Metadata = {
   },
   description,
   applicationName: site.name,
+  creator: site.name,
+  publisher: site.name,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1, 'max-video-preview': -1 },
+  },
+  // Google Search Console → Settings → Ownership verification → HTML tag: set the content value at build time.
+  verification: { google: process.env.GOOGLE_SITE_VERIFICATION || undefined },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+  },
   keywords: [
     'interior design Egypt',
     'interior design Sheikh Zayed',
@@ -44,21 +62,21 @@ export const metadata: Metadata = {
     'Indigo Interiors',
   ],
   authors: [{ name: site.name, url: site.url }],
+  // Defaults for pages without their own (404, dashboard). Public pages set theirs with pageMetadata().
   openGraph: {
     type: 'website',
     siteName: site.name,
     title: 'Indigo Interiors — Interior Architecture & Turnkey Fit-out',
     description,
-    url: site.url,
     locale: 'en_US',
     alternateLocale: ['ar_EG'],
-    images: [{ url: img(pageImages.homeHero, 1200), width: 1200, height: 800, alt: 'Indigo Interiors' }],
+    images: [shareImage],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Indigo Interiors',
+    title: 'Indigo Interiors — Interior Architecture & Turnkey Fit-out',
     description,
-    images: [img(pageImages.homeHero, 1200)],
+    images: [shareImage],
   },
   formatDetection: { telephone: false },
 };
@@ -74,9 +92,12 @@ const organizationJsonLd = {
   '@type': 'HomeAndConstructionBusiness',
   name: site.name,
   url: site.url,
+  description,
   email: site.email,
   telephone: site.phone,
-  image: img(pageImages.homeHero, 1200),
+  image: `${site.url}${shareImage.url}`,
+  logo: `${site.url}/icon-512.png`,
+  sameAs: site.social.filter((social) => social.visible).map((social) => social.href),
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Villa 40, Al Safa St.',

@@ -45,7 +45,8 @@ const config: Config = {
       charcoal: {
         DEFAULT: '#2E2E2E',
         soft: '#55524C',
-        muted: '#86827A',
+        // Dark enough for small labels to meet WCAG AA (4.5:1) on white, Ivory, Linen and Linen dark.
+        muted: '#67635B',
       },
       error: '#A3463B',
     },

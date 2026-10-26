@@ -44,6 +44,8 @@ export function PortfolioExplorer() {
   return (
     <section className="section-y bg-ivory">
       <div className="container-luxe">
+        {/* Keeps the heading outline in order (h1 hero → h2 → the cards' h3) for screen readers. */}
+        <h2 className="sr-only">{t.portfolio.hero.eyebrow}</h2>
         <div className="flex flex-col gap-6 border-b border-indigo/10 pb-8 md:flex-row md:items-center md:justify-between">
           <FilterBar id="portfolio-filter" label={t.portfolio.filterLabel} options={options} value={filter} onChange={setFilter} />
           <p className="text-[0.66rem] font-medium uppercase tracking-luxe text-charcoal-muted" aria-live="polite">

@@ -581,7 +581,7 @@ export const en = {
     rights: 'All rights reserved.',
     ctaTitle: 'Ready to begin your project?',
     credit: 'Design & Development',
-    creditLabel: 'Website designed and developed by Transition (opens in a new tab)',
+    newTab: '(opens in a new tab)',
   },
   whatsapp: {
     label: 'Chat with Indigo Interiors on WhatsApp',
@@ -613,6 +613,13 @@ export const en = {
     body: 'The page you’re looking for doesn’t exist or has moved.',
     cta: 'Return Home',
     secondary: 'View Portfolio',
+  },
+  error: {
+    eyebrow: 'Something went wrong',
+    title: 'This page didn’t *load properly*',
+    body: 'A temporary problem stopped this page from loading. Please try again, or head back to the homepage.',
+    retry: 'Try Again',
+    home: 'Return Home',
   },
 };
 

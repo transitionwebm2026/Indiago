@@ -49,12 +49,12 @@ Without Supabase credentials the website runs exactly as before on its built-in 
 4. **Lock down sign-ups**: Authentication → Sign In / Providers → turn off *Allow new users to sign
    up*. (Admins are added by you, never by the public.)
 5. **Password reset links**: Authentication → URL Configuration → set *Site URL* to
-   `https://www.indigoegy.com` and add `https://www.indigoegy.com/admin/` to *Redirect URLs*.
+   `https://indigoegy.com` and add `https://indigoegy.com/admin/` to *Redirect URLs*.
 6. **Connect the website**: copy `.env.example` to `.env.local` and fill in
    `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (Project Settings → API
    Keys — the *publishable* key, never a *secret* or *service_role* key). Then `npm run build` and
    deploy (below).
-7. **Open `https://www.indigoegy.com/admin/`**, sign in, and click **Import website content**. Every
+7. **Open `https://indigoegy.com/admin/`**, sign in, and click **Import website content**. Every
    project, article, service, process step and studio detail is copied into the dashboard.
 
 After this, the only reason to rebuild is code changes — content never needs one.
@@ -94,7 +94,7 @@ the **media library** in any image field.
 | What | Where |
 | --- | --- |
 | SQL schema, RLS, storage, realtime | `supabase/migrations/` |
-| Supabase client | `src/lib/supabase/client.ts` |
+| Supabase settings / client (the public site loads it on demand) | `src/lib/supabase/config.ts`, `src/lib/supabase/client.ts` |
 | Live-content hooks (`useSite`, `useProjects`, `usePosts`, `useServices`, `useMedia`…) | `src/lib/cms/hooks.ts` |
 | Public fetchers / dashboard data access | `src/lib/cms/api.ts`, `src/lib/cms/admin.ts` |
 | Editable page sections (drives the Pages Content screen) | `src/lib/cms/sections.ts` |
@@ -109,12 +109,34 @@ a section listed in `src/lib/cms/sections.ts`.
 
 1. Run `npm run build`. Next.js writes the complete site to `out/` (one `index.html` per route,
    e.g. `out/about/index.html`, `out/portfolio/mynt-restaurant/index.html`).
-2. In hPanel open **File Manager → public_html** (or connect over FTP).
-3. Upload the **contents** of `out/` (not the folder itself), including the hidden `.htaccess` file —
-   it also routes projects and articles created after the build.
-4. Once SSL is active, uncomment the HTTPS redirect in `.htaccess`.
+2. In hPanel, check **Security → SSL** shows an active certificate for `indigoegy.com` and `www.indigoegy.com`.
+   The `.htaccess` sends every visitor to `https://indigoegy.com` (301), so without a certificate
+   the site shows a browser warning.
+3. In hPanel open **File Manager → public_html** (or connect over FTP). Delete the old files, then
+   upload the **contents** of `out/` (not the folder itself), including the hidden `.htaccess` file —
+   it also routes projects and articles created after the build. (Or upload a zip of `out/`'s
+   contents and use **Extract** in File Manager.)
+4. Open the site, then `/robots.txt`, `/sitemap.xml` and an unknown address (e.g. `/test-404/`) to check
+   the redirects, the SEO files and the 404 page.
 
 No Node.js server is needed — the browser talks to Supabase, WhatsApp and Web3Forms directly.
+
+`.htaccess` also sets the security headers (HSTS, `X-Frame-Options`, `X-Content-Type-Options`,
+`Referrer-Policy`, `Permissions-Policy`), caches hashed files (`/_next/static`, `/_img`) for a year and
+compresses text files. Building on Windows works, but Next.js 15 skips the `<link rel="preload">` for
+the Inter font there (a path bug in Next); a Linux build such as Vercel's includes it.
+
+### Search engines
+
+- Every page has a canonical URL on `https://indigoegy.com`, Open Graph and Twitter card tags,
+  and `index, follow` robots tags (`/admin/` is `noindex`). Page titles and descriptions live in each
+  `src/app/(site)/**/page.tsx`; the shared helper is `src/lib/seo.ts`.
+- `/sitemap.xml`, `/robots.txt` and `/manifest.webmanifest` are generated at build time.
+- **Google Search Console:** add the property, choose **HTML tag**, put the `content` value in
+  `GOOGLE_SITE_VERIFICATION` (`.env.local`, and in Vercel if you deploy there), rebuild and upload,
+  then click **Verify** and submit `https://indigoegy.com/sitemap.xml`.
+- Icons: `public/favicon.ico`, `icon.svg`, `favicon-16x16.png`, `favicon-32x32.png`,
+  `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`. Social share image: `public/og-image.jpg`.
 
 ## Forms
 
@@ -139,7 +161,7 @@ These files hold the built-in content — what the site shows without Supabase, 
 | Phone, email, address, social links, founder | `src/lib/site.ts` |
 | All page copy (English & Arabic) | `src/lib/i18n/en.ts`, `src/lib/i18n/ar.ts` |
 | Portfolio projects (each creates `/portfolio/[id]/`) | `src/lib/data/projects.ts` |
-| Blog articles (each creates `/blog/[slug]/`) | `src/lib/data/posts.ts` |
+| Blog articles (each creates `/blog/[slug]/`) | `src/lib/data/posts.ts` (titles, excerpts), `src/lib/data/post-bodies.ts` (article text) |
 | Services and process steps | `src/lib/data/services.ts` |
 | Hero sliders (three project photos per page, 3 s each) | `src/lib/data/heroes.ts` |
 | Section images | `src/lib/images.ts` |
@@ -152,6 +174,11 @@ In headings, wrap words in `*asterisks*` to render them as Champagne highlights.
 Placeholder photography is loaded from Unsplash by photo ID. To use the studio's own photos, upload
 them in the dashboard, or put them in `public/images/…` and use the path (e.g.
 `/images/projects/al-safa/cover.jpg`) wherever an ID appears.
+
+A static site has no image server, so after adding or replacing a photo in `public/` run
+`npm run images`. It writes WebP copies in several widths to `public/_img/` (listed in
+`src/lib/image-variants.json`), and phones then download a small copy instead of the full photo.
+Commit both. A photo without copies still works — it is just served full size.
 
 ## Language (EN / AR)
 

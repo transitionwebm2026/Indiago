@@ -3,6 +3,7 @@ import { ProjectRoute } from '@/components/portfolio/ProjectRoute';
 import { getProject, projects } from '@/lib/data/projects';
 import { img } from '@/lib/images';
 import { projectHref, SHELL_SLUG } from '@/lib/routes';
+import { pageMetadata } from '@/lib/seo';
 
 type Params = Promise<{ id: string }>;
 
@@ -17,16 +18,12 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { id } = await params;
   const project = getProject(id);
   if (!project) return { title: 'Project', robots: { index: false } };
-  return {
+  return pageMetadata({
     title: `${project.title.en} — ${project.location.en}`,
     description: project.summary.en,
-    alternates: { canonical: projectHref(project.id) },
-    openGraph: {
-      title: `${project.title.en} · Indigo Interiors`,
-      description: project.summary.en,
-      images: [{ url: img(project.cover, 1200), alt: project.title.en }],
-    },
-  };
+    path: projectHref(project.id),
+    image: { url: img(project.cover, 1200), alt: project.title.en },
+  });
 }
 
 export default async function ProjectPage({ params }: { params: Params }) {

@@ -5,12 +5,23 @@ Options -MultiViews -Indexes
 DirectoryIndex index.html
 ErrorDocument 404 /404.html
 
+AddType application/manifest+json .webmanifest
+AddType image/webp .webp
+AddType image/avif .avif
+AddType font/woff2 .woff2
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # Uncomment once the SSL certificate is active in hPanel to force HTTPS:
-  # RewriteCond %{HTTPS} off
-  # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  # One address for the whole site: https://indigoegy.com (no www). 301 (permanent) redirects tell
+  # search engines to merge the variants. Each variant gets there in a single hop; other hostnames
+  # (e.g. a temporary Hostinger preview domain) are left alone.
+  RewriteCond %{HTTP_HOST} ^www\.indigoegy\.com$ [NC]
+  RewriteRule ^ https://indigoegy.com%{REQUEST_URI} [L,R=301]
+  RewriteCond %{HTTP_HOST} ^indigoegy\.com$ [NC]
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://indigoegy.com%{REQUEST_URI} [L,R=301]
 
   # Add the trailing slash to page URLs (matches next.config `trailingSlash: true`).
   RewriteCond %{REQUEST_FILENAME} !-f
@@ -32,25 +43,40 @@ ErrorDocument 404 /404.html
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresDefault "access plus 1 month"
+  # Pages are re-checked on every visit, so a new upload shows immediately.
   ExpiresByType text/html "access plus 0 seconds"
   ExpiresByType text/plain "access plus 0 seconds"
   ExpiresByType application/xml "access plus 1 day"
+  ExpiresByType application/manifest+json "access plus 1 week"
   ExpiresByType text/css "access plus 1 year"
   ExpiresByType application/javascript "access plus 1 year"
   ExpiresByType text/javascript "access plus 1 year"
   ExpiresByType font/woff2 "access plus 1 year"
   ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType image/x-icon "access plus 1 month"
+  ExpiresByType image/avif "access plus 1 month"
   ExpiresByType image/webp "access plus 1 month"
   ExpiresByType image/jpeg "access plus 1 month"
   ExpiresByType image/png "access plus 1 month"
 </IfModule>
 
 <IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript application/javascript application/json application/xml image/svg+xml
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript application/javascript application/json application/manifest+json application/xml image/svg+xml image/x-icon
 </IfModule>
 
 <IfModule mod_headers.c>
+  # Build files (/_next/static) and photo copies (/_img) carry a content hash in their names,
+  # so browsers may keep them for a year without re-checking.
+  <IfModule mod_setenvif.c>
+    SetEnvIf Request_URI "^/(_next/static|_img)/" immutable_asset
+    Header set Cache-Control "public, max-age=31536000, immutable" env=immutable_asset
+  </IfModule>
+
+  Header always set Strict-Transport-Security "max-age=31536000"
   Header always set X-Content-Type-Options "nosniff"
-  Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Content-Security-Policy "frame-ancestors 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
 </IfModule>

@@ -1,20 +1,11 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { isSupabaseConfigured, supabaseAnonKey, supabaseUrl } from './config';
 
 /**
  * Browser Supabase client, shared by the public site (anonymous reads, realtime,
  * inquiry submissions) and the admin dashboard (authenticated writes).
- * Both values are public by design — Row Level Security protects the data.
+ * The public site reaches it through loadSupabase() in ./config, so this module loads on demand.
  */
-export const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? '').replace(/\/+$/, '');
-/** The publishable key (sb_publishable_…), or the legacy anon key on projects that still use it. */
-export const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-
-/** Without credentials the site runs on its built-in content, exactly as before the CMS. */
-export const isSupabaseConfigured = supabaseUrl.length > 0 && supabaseAnonKey.length > 0;
-
-/** Set NEXT_PUBLIC_CMS_REALTIME=false to rely on refresh-on-focus instead of a live connection. */
-export const isRealtimeEnabled = process.env.NEXT_PUBLIC_CMS_REALTIME !== 'false';
-
 let client: SupabaseClient | null = null;
 
 export function getSupabase(): SupabaseClient | null {

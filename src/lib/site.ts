@@ -72,7 +72,7 @@ export interface ResolvedSite extends SiteSettings {
  */
 export const defaultSiteSettings: SiteSettings = {
   name: 'Indigo Interiors',
-  url: 'https://www.indigoegy.com',
+  url: 'https://indigoegy.com',
   logo: '',
   nav: primaryNav.map((item) => ({
     id: item.key,

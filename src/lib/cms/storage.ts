@@ -1,4 +1,4 @@
-import { getSupabase, supabaseAnonKey, supabaseUrl } from '@/lib/supabase/client';
+import { loadSupabase, supabaseAnonKey, supabaseUrl } from '@/lib/supabase/config';
 import { uuid } from './ids';
 
 export const MEDIA_BUCKET = 'media';
@@ -119,7 +119,7 @@ export async function uploadMedia(
   folder: MediaFolder,
   options: { onProgress?: (fraction: number) => void; signal?: AbortSignal; optimize?: boolean } = {},
 ): Promise<string> {
-  const supabase = getSupabase();
+  const supabase = await loadSupabase();
   if (!supabase) throw new UploadError('Supabase is not configured.');
   const { data } = await supabase.auth.getSession();
   const token = data.session?.access_token;
@@ -151,7 +151,7 @@ export interface MediaItem {
 
 /** The media library: every uploaded file, newest first. */
 export async function listMedia(): Promise<MediaItem[]> {
-  const supabase = getSupabase();
+  const supabase = await loadSupabase();
   if (!supabase) return [];
   const lists = await Promise.all(
     mediaFolders.map(async (folder) => {
@@ -180,7 +180,7 @@ export async function listMedia(): Promise<MediaItem[]> {
 }
 
 export async function deleteMedia(paths: string[]) {
-  const supabase = getSupabase();
+  const supabase = await loadSupabase();
   if (!supabase || paths.length === 0) return;
   const { error } = await supabase.storage.from(MEDIA_BUCKET).remove(paths);
   if (error) throw new Error(error.message);

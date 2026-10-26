@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { posts } from '@/lib/data/posts';
+import { postSummaries as posts } from '@/lib/data/posts';
 import { projects } from '@/lib/data/projects';
 import { postHref, projectHref, routes } from '@/lib/routes';
 import { site } from '@/lib/site';

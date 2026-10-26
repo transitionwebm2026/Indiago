@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#2F2557"/>
+  <path transform="translate(26.6 6) scale(0.79)" fill="#D5B690" stroke="#D5B690" stroke-width="3" stroke-linejoin="round" d="M3.5 44L3.5 43.9Q3.7 43.3 3.8 42.4Q3.9 41.6 4.1 40.3Q4.2 39.0 4.2 37.2Q4.3 35.5 4.3 33.1L4.3 14.9Q4.3 12.6 4.2 10.8Q4.2 9.0 4.1 7.7Q3.9 6.4 3.8 5.6Q3.7 4.7 3.5 4.1L3.5 4L10.2 4L10.2 4.1Q10.0 4.7 9.8 5.6Q9.7 6.4 9.6 7.7Q9.5 9.0 9.4 10.8Q9.4 12.6 9.4 14.9L9.4 33.1Q9.4 35.5 9.4 37.2Q9.5 39.0 9.6 40.3Q9.7 41.6 9.8 42.4Q10.0 43.3 10.2 43.9L10.2 44Z"/>
+  <line x1="20" x2="44" y1="49" y2="49" stroke="#D5B690" stroke-width="1.5" stroke-opacity="0.6"/>
+</svg>

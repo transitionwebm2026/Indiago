@@ -1,0 +1,204 @@
+{
+  "/Engphoto.jpeg": {
+    "base": "/_img/Engphoto.ba8aa7ae",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1122
+    ]
+  },
+  "/images/projects/al-borg-laboratories/01.jpg": {
+    "base": "/_img/images/projects/al-borg-laboratories/01.84893db2",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1280,
+      1659
+    ]
+  },
+  "/images/projects/al-borg-laboratories/02.jpg": {
+    "base": "/_img/images/projects/al-borg-laboratories/02.c49e33bf",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      840
+    ]
+  },
+  "/images/projects/al-borg-laboratories/03.jpg": {
+    "base": "/_img/images/projects/al-borg-laboratories/03.fbd07bcb",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      840
+    ]
+  },
+  "/images/projects/arabian-majlis/01.jpg": {
+    "base": "/_img/images/projects/arabian-majlis/01.c4a0fc45",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1280,
+      1554
+    ]
+  },
+  "/images/projects/arabian-majlis/02.jpg": {
+    "base": "/_img/images/projects/arabian-majlis/02.c749228c",
+    "widths": [
+      256,
+      384,
+      640,
+      770
+    ]
+  },
+  "/images/projects/arabian-majlis/03.jpg": {
+    "base": "/_img/images/projects/arabian-majlis/03.029441b6",
+    "widths": [
+      256,
+      384,
+      640,
+      770
+    ]
+  },
+  "/images/projects/department-of-finance/01.jpg": {
+    "base": "/_img/images/projects/department-of-finance/01.39fc8063",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1280,
+      1554
+    ]
+  },
+  "/images/projects/department-of-finance/02.jpg": {
+    "base": "/_img/images/projects/department-of-finance/02.90799bec",
+    "widths": [
+      256,
+      384,
+      640,
+      770
+    ]
+  },
+  "/images/projects/department-of-finance/03.jpg": {
+    "base": "/_img/images/projects/department-of-finance/03.a5695a0b",
+    "widths": [
+      256,
+      384,
+      640,
+      770
+    ]
+  },
+  "/images/projects/mynt-restaurant/01.jpg": {
+    "base": "/_img/images/projects/mynt-restaurant/01.03a7b0bc",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1280,
+      1554
+    ]
+  },
+  "/images/projects/mynt-restaurant/02.jpg": {
+    "base": "/_img/images/projects/mynt-restaurant/02.282ed112",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1254
+    ]
+  },
+  "/images/projects/mynt-restaurant/03.jpg": {
+    "base": "/_img/images/projects/mynt-restaurant/03.44b4cf01",
+    "widths": [
+      256,
+      384,
+      510
+    ]
+  },
+  "/images/projects/mynt-restaurant/04.jpg": {
+    "base": "/_img/images/projects/mynt-restaurant/04.0235d560",
+    "widths": [
+      256,
+      384,
+      510
+    ]
+  },
+  "/images/projects/mynt-restaurant/05.jpg": {
+    "base": "/_img/images/projects/mynt-restaurant/05.937ea6aa",
+    "widths": [
+      256,
+      384,
+      510
+    ]
+  },
+  "/images/projects/sun-capital-residence/01.jpg": {
+    "base": "/_img/images/projects/sun-capital-residence/01.e4066733",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1280,
+      1658
+    ]
+  },
+  "/images/projects/sun-capital-residence/02.jpg": {
+    "base": "/_img/images/projects/sun-capital-residence/02.bd0afb05",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      840
+    ]
+  },
+  "/images/projects/sun-capital-residence/03.jpg": {
+    "base": "/_img/images/projects/sun-capital-residence/03.e8941d7d",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      840
+    ]
+  },
+  "/images/site/ceiling-works.jpg": {
+    "base": "/_img/images/site/ceiling-works.27ee908a",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      896
+    ]
+  },
+  "/images/site/flooring.jpg": {
+    "base": "/_img/images/site/flooring.209a9df6",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      896
+    ]
+  }
+}

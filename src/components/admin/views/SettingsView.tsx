@@ -139,7 +139,7 @@ function BrandTab({ form, set }: TabProps) {
           <Field label="Studio name" htmlFor="site-name" hint="Used for the logo’s alt text and email subjects.">
             <TextInput id="site-name" value={form.name} onChange={(event) => set({ name: event.target.value })} />
           </Field>
-          <Field label="Website address" htmlFor="site-url" hint="The live domain, e.g. https://www.indigoegy.com">
+          <Field label="Website address" htmlFor="site-url" hint="The live domain, e.g. https://indigoegy.com">
             <TextInput id="site-url" type="url" value={form.url} onChange={(event) => set({ url: event.target.value })} />
           </Field>
         </div>

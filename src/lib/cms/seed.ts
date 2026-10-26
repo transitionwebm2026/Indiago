@@ -1,4 +1,4 @@
-import { posts } from '@/lib/data/posts';
+import { posts } from '@/lib/data/post-bodies';
 import { projects } from '@/lib/data/projects';
 import { processSteps, services } from '@/lib/data/services';
 import { defaultSiteSettings } from '@/lib/site';

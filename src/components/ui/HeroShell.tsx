@@ -11,7 +11,7 @@ import { useProjects, useSite } from '@/lib/cms/hooks';
 import type { HeroSlide } from '@/lib/data/heroes';
 import { getProject } from '@/lib/data/projects';
 import { img, isVideo } from '@/lib/images';
-import { EASE } from '@/lib/motion';
+import { EASE, useEntranceAnimation } from '@/lib/motion';
 import { projectHref } from '@/lib/routes';
 import { cn, pad } from '@/lib/utils';
 
@@ -77,8 +77,21 @@ export function HeroShell({ slides, size = 'page', showCaption = true, children 
   const projects = useProjects();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  // Later photographs load only after the page has, so they never compete with the first one.
+  const [loadRest, setLoadRest] = useState(false);
+  const animate = useEntranceAnimation();
   const count = slides.length;
   const full = size === 'full';
+
+  useEffect(() => {
+    const load = () => setLoadRest(true);
+    if (document.readyState === 'complete') {
+      load();
+      return;
+    }
+    window.addEventListener('load', load, { once: true });
+    return () => window.removeEventListener('load', load);
+  }, []);
 
   // Slides edited in the CMS can shrink the list under the current position.
   useEffect(() => {
@@ -192,13 +205,14 @@ export function HeroShell({ slides, size = 'page', showCaption = true, children 
                   preload={slideIndex === 0 ? 'auto' : 'metadata'}
                   className="absolute inset-0 h-full w-full object-cover"
                 />
-              ) : (
+              ) : (slideIndex === 0 || loadRest) && (
                 <Image
                   src={img(slide.image, 2400)}
                   alt={project ? l(project.title) : ''}
                   fill
                   sizes="100vw"
                   priority={slideIndex === 0}
+                  fetchPriority={slideIndex === 0 ? 'high' : 'low'}
                   loading={slideIndex === 0 ? undefined : 'eager'}
                   className={cn(
                     'object-cover transition-transform ease-out motion-reduce:transition-none',
@@ -225,7 +239,7 @@ export function HeroShell({ slides, size = 'page', showCaption = true, children 
             only sit side by side from xl up; narrower, the controls drop below the card. */}
         <div className="flex w-full flex-col gap-5 md:gap-6 md:pr-16 lg:pr-20 xl:flex-row xl:items-end xl:justify-between xl:gap-8">
           <motion.div
-            initial={{ opacity: 0, y: 32 }}
+            initial={animate ? { opacity: 0, y: 32 } : false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: EASE, delay: 0.15 }}
             className={cn(

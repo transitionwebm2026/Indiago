@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { ArticleRoute } from '@/components/blog/ArticleRoute';
-import { authors, getPost, posts } from '@/lib/data/posts';
+import { getPost, posts } from '@/lib/data/post-bodies';
+import { authors } from '@/lib/data/posts';
 import { img } from '@/lib/images';
 import { postHref, SHELL_SLUG } from '@/lib/routes';
-import { site } from '@/lib/site';
+import { pageMetadata } from '@/lib/seo';
 
 type Params = Promise<{ slug: string }>;
 
@@ -18,24 +19,20 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { slug } = await params;
   const post = getPost(slug);
   if (!post) return { title: 'Article', robots: { index: false } };
+  const author = authors[post.author].name.en;
   return {
-    title: post.title.en,
-    description: post.excerpt.en,
-    alternates: { canonical: postHref(post.slug) },
-    authors: [{ name: authors[post.author].name.en }],
-    openGraph: {
-      type: 'article',
-      siteName: site.name,
-      url: postHref(post.slug),
+    ...pageMetadata({
       title: post.title.en,
       description: post.excerpt.en,
-      publishedTime: post.date,
-      images: [{ url: img(post.cover, 1200), alt: post.title.en }],
-    },
+      path: postHref(post.slug),
+      image: { url: img(post.cover, 1200), alt: post.title.en },
+      article: { publishedTime: post.date, authors: [author] },
+    }),
+    authors: [{ name: author }],
   };
 }
 
 export default async function ArticlePage({ params }: { params: Params }) {
   const { slug } = await params;
-  return <ArticleRoute slug={slug} />;
+  return <ArticleRoute slug={slug} builtIn={getPost(slug)} />;
 }

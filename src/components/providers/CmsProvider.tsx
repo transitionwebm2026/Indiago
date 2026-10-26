@@ -3,7 +3,7 @@
 import { useEffect, type ReactNode } from 'react';
 import { SWRConfig, useSWRConfig, type Cache } from 'swr';
 import { cmsKeys } from '@/lib/cms/api';
-import { getSupabase, isRealtimeEnabled } from '@/lib/supabase/client';
+import { isRealtimeEnabled, isSupabaseConfigured, loadSupabase } from '@/lib/supabase/config';
 
 const CACHE_KEY = 'indigo-cms-cache-v1';
 
@@ -54,24 +54,28 @@ function RealtimeSync() {
   const { mutate } = useSWRConfig();
 
   useEffect(() => {
-    const supabase = getSupabase();
-    if (!supabase || !isRealtimeEnabled) return;
+    if (!isSupabaseConfigured || !isRealtimeEnabled) return;
 
-    let channel: ReturnType<typeof supabase.channel> | null = null;
+    let cancelled = false;
+    let disconnect: (() => void) | null = null;
     // Connect once the page has settled, so the socket never competes with the first paint.
-    const timer = window.setTimeout(() => {
-      channel = supabase.channel('cms-live');
+    const timer = window.setTimeout(async () => {
+      const supabase = await loadSupabase();
+      if (!supabase || cancelled) return;
+      const channel = supabase.channel('cms-live');
       for (const [table, matches] of Object.entries(tableKeys)) {
         channel.on('postgres_changes', { event: '*', schema: 'public', table }, () => {
           void mutate((key) => typeof key === 'string' && matches(key));
         });
       }
       channel.subscribe();
+      disconnect = () => void supabase.removeChannel(channel);
     }, 2000);
 
     return () => {
+      cancelled = true;
       window.clearTimeout(timer);
-      if (channel) void supabase.removeChannel(channel);
+      disconnect?.();
     };
   }, [mutate]);
 
