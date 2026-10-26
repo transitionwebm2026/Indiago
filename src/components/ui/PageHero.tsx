@@ -1,12 +1,12 @@
 'use client';
 
-import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import type { HeroSlide } from '@/lib/data/heroes';
 import { Eyebrow } from './Eyebrow';
 import { HeroShell } from './HeroShell';
 import { Highlight } from './Highlight';
+import { Link } from './Link';
 
 interface Crumb {
   label: string;

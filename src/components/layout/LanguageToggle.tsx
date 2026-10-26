@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import type { Locale } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
@@ -36,7 +36,7 @@ export function LanguageToggle({ id, className }: { id: string; className?: stri
             )}
           >
             {active && (
-              <motion.span
+              <m.span
                 layoutId={`lang-pill-${id}`}
                 className="absolute inset-0 -z-10 rounded-full bg-champagne"
                 transition={{ type: 'spring', stiffness: 420, damping: 34 }}

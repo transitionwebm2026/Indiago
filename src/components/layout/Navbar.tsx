@@ -1,12 +1,12 @@
 'use client';
 
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { ButtonLink } from '@/components/ui/Button';
 import { GridLines } from '@/components/ui/GridLines';
+import { Link } from '@/components/ui/Link';
 import { useSite } from '@/lib/cms/hooks';
 import { EASE } from '@/lib/motion';
 import { routes } from '@/lib/routes';
@@ -121,7 +121,7 @@ export function Navbar() {
                   >
                     {l(link.label)}
                     {active && (
-                      <motion.span
+                      <m.span
                         layoutId="nav-active"
                         className="absolute inset-x-0 -bottom-0.5 h-px rounded-full bg-champagne"
                         transition={{ type: 'spring', stiffness: 380, damping: 32 }}
@@ -184,7 +184,7 @@ function MobileMenu({ links, site, isActive, onClose }: MobileMenuProps) {
   const { t, l } = useLanguage();
 
   return (
-    <motion.div
+    <m.div
       id="mobile-menu"
       className="fixed inset-0 z-40 flex flex-col overflow-y-auto bg-indigo pt-24 lg:hidden"
       initial={{ opacity: 0 }}
@@ -198,7 +198,7 @@ function MobileMenu({ links, site, isActive, onClose }: MobileMenuProps) {
           {links.map((link, index) => {
             const active = isActive(link.href);
             return (
-              <motion.li
+              <m.li
                 key={link.id}
                 className="border-b border-ivory/10"
                 initial={{ opacity: 0, y: 24 }}
@@ -214,12 +214,12 @@ function MobileMenu({ links, site, isActive, onClose }: MobileMenuProps) {
                   <span className={cn(active && 'text-champagne')}>{l(link.label)}</span>
                   <span className="font-sans text-[0.62rem] tracking-luxe text-ivory/40">{pad(index + 1)}</span>
                 </NavAnchor>
-              </motion.li>
+              </m.li>
             );
           })}
         </ul>
 
-        <motion.div
+        <m.div
           className="mt-auto space-y-6 pb-10 pt-12"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -243,8 +243,8 @@ function MobileMenu({ links, site, isActive, onClose }: MobileMenuProps) {
               </a>
             )}
           </div>
-        </motion.div>
+        </m.div>
       </nav>
-    </motion.div>
+    </m.div>
   );
 }

@@ -1,9 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { ArrowRight, Images } from 'lucide-react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
+import { Link } from '@/components/ui/Link';
 import type { Project } from '@/lib/data/projects';
 import { img } from '@/lib/images';
 import { projectHref } from '@/lib/routes';

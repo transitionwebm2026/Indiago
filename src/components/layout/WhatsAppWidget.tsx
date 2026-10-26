@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { ArrowUpRight, Phone, X } from 'lucide-react';
 import { useEffect, useId, useState } from 'react';
 import { WhatsAppIcon } from '@/components/icons/SocialIcons';
@@ -32,7 +32,7 @@ export function WhatsAppWidget() {
     <div className="fixed bottom-5 right-5 z-[60] flex flex-col items-end gap-4 sm:bottom-8 sm:right-8">
       <AnimatePresence>
         {open && (
-          <motion.div
+          <m.div
             id={panelId}
             role="dialog"
             aria-label={t.whatsapp.label}
@@ -98,13 +98,13 @@ export function WhatsAppWidget() {
                 {t.whatsapp.custom}
               </a>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
       <AnimatePresence>
         {!open && site.phoneHref && (
-          <motion.a
+          <m.a
             key="call"
             href={site.phoneHref}
             aria-label={t.whatsapp.call}
@@ -118,11 +118,11 @@ export function WhatsAppWidget() {
             className="grid h-14 w-14 place-items-center rounded-full border border-champagne/50 bg-indigo text-champagne"
           >
             <Phone className="h-5 w-5" strokeWidth={1.5} />
-          </motion.a>
+          </m.a>
         )}
       </AnimatePresence>
 
-      <motion.button
+      <m.button
         type="button"
         onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
@@ -137,7 +137,7 @@ export function WhatsAppWidget() {
       >
         {!open && <span aria-hidden className="absolute inset-0 animate-pulse-ring rounded-full bg-champagne" />}
         <AnimatePresence mode="wait" initial={false}>
-          <motion.span
+          <m.span
             key={open ? 'close' : 'open'}
             initial={{ opacity: 0, rotate: -45 }}
             animate={{ opacity: 1, rotate: 0 }}
@@ -146,9 +146,9 @@ export function WhatsAppWidget() {
             className="relative"
           >
             {open ? <X className="h-6 w-6" strokeWidth={1.5} /> : <WhatsAppIcon className="h-6 w-6" />}
-          </motion.span>
+          </m.span>
         </AnimatePresence>
-      </motion.button>
+      </m.button>
     </div>
   );
 }

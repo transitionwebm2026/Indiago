@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useState } from 'react';
 import { WhatsAppIcon } from '@/components/icons/SocialIcons';
 import { useLanguage } from '@/components/providers/LanguageProvider';
@@ -65,7 +65,7 @@ export function CtaBanner({ background = 'linen', interactive = false }: CtaBann
                             )}
                           >
                             {active && (
-                              <motion.span
+                              <m.span
                                 layoutId="cta-type"
                                 className="absolute inset-0 -z-10 rounded-full bg-champagne"
                                 transition={{ type: 'spring', stiffness: 400, damping: 34 }}

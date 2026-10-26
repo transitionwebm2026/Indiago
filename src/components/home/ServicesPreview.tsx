@@ -1,11 +1,11 @@
 'use client';
 
-import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { ServiceIcon } from '@/components/services/ServiceIcon';
 import { WorkflowTimeline } from '@/components/services/WorkflowTimeline';
 import { ButtonLink } from '@/components/ui/Button';
+import { Link } from '@/components/ui/Link';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { useServices } from '@/lib/cms/hooks';

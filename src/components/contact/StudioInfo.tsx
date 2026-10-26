@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { ArrowUpRight, Mail, MapPin, Phone, UserRound, type LucideIcon } from 'lucide-react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
+import { Link } from '@/components/ui/Link';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { useSite } from '@/lib/cms/hooks';

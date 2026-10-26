@@ -1,12 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { ButtonLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/Eyebrow';
 import { HeroShell } from '@/components/ui/HeroShell';
+import { Link } from '@/components/ui/Link';
 import { Monogram } from '@/components/ui/Monogram';
 import { Reveal } from '@/components/ui/Reveal';
 import { useAuthors, useMedia } from '@/lib/cms/hooks';

@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { useMemo, useState } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { FilterBar, type FilterOption } from '@/components/ui/FilterBar';
@@ -45,10 +45,10 @@ export function JournalExplorer() {
           <FilterBar id="journal-filter" label={t.blog.filterLabel} options={options} value={filter} onChange={setFilter} />
         </div>
 
-        <motion.div layout className="mt-14 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+        <m.div layout className="mt-14 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout" initial={false}>
             {visible.map((post) => (
-              <motion.div
+              <m.div
                 key={post.slug}
                 layout
                 initial={{ opacity: 0, y: 24 }}
@@ -57,10 +57,10 @@ export function JournalExplorer() {
                 transition={{ duration: 0.55, ease: EASE }}
               >
                 <ArticleCard post={post} />
-              </motion.div>
+              </m.div>
             ))}
           </AnimatePresence>
-        </motion.div>
+        </m.div>
 
         {visible.length === 0 && <p className="mt-14 text-center text-charcoal-soft">{t.blog.empty}</p>}
       </div>

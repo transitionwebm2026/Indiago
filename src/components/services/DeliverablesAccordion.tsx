@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { CheckCircle2, Plus } from 'lucide-react';
 import { useId, useState } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
@@ -72,7 +72,7 @@ export function DeliverablesAccordion() {
                   </h3>
                   <AnimatePresence initial={false}>
                     {expanded && (
-                      <motion.div
+                      <m.div
                         id={panelId}
                         role="region"
                         aria-labelledby={buttonId}
@@ -90,7 +90,7 @@ export function DeliverablesAccordion() {
                             </li>
                           ))}
                         </ul>
-                      </motion.div>
+                      </m.div>
                     )}
                   </AnimatePresence>
                 </li>

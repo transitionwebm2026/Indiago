@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { cn, pad } from '@/lib/utils';
 
 export interface FilterOption<T extends string> {
@@ -39,7 +39,7 @@ export function FilterBar<T extends string>({ id, label, options, value, onChang
             )}
           >
             {active && (
-              <motion.span
+              <m.span
                 layoutId={`${id}-active`}
                 className="absolute inset-0 -z-10 rounded-full bg-indigo"
                 transition={{ type: 'spring', stiffness: 380, damping: 34 }}

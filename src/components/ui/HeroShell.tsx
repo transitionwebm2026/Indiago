@@ -1,12 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Pause, Play } from 'lucide-react';
 import { useEffect, useState, type ReactNode } from 'react';
 import { socialIcons } from '@/components/icons/SocialIcons';
 import { useLanguage } from '@/components/providers/LanguageProvider';
+import { Link } from '@/components/ui/Link';
 import { useProjects, useSite } from '@/lib/cms/hooks';
 import type { HeroSlide } from '@/lib/data/heroes';
 import { getProject } from '@/lib/data/projects';
@@ -140,7 +140,7 @@ export function HeroShell({ slides, size = 'page', showCaption = true, children 
             >
               <span className="absolute inset-x-0 top-1/2 h-[3px] -translate-y-1/2 overflow-hidden rounded-full bg-ivory/25">
                 {active && (
-                  <motion.span
+                  <m.span
                     key={`${index}-${paused}`}
                     className="absolute inset-0 origin-left rounded-full bg-champagne"
                     initial={{ scaleX: paused ? 1 : 0 }}
@@ -238,7 +238,7 @@ export function HeroShell({ slides, size = 'page', showCaption = true, children 
         {/* Right padding keeps the card and controls clear of the social rail. Card and controls
             only sit side by side from xl up; narrower, the controls drop below the card. */}
         <div className="flex w-full flex-col gap-5 md:gap-6 md:pr-16 lg:pr-20 xl:flex-row xl:items-end xl:justify-between xl:gap-8">
-          <motion.div
+          <m.div
             initial={animate ? { opacity: 0, y: 32 } : false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: EASE, delay: 0.15 }}
@@ -248,7 +248,7 @@ export function HeroShell({ slides, size = 'page', showCaption = true, children 
             )}
           >
             {children}
-          </motion.div>
+          </m.div>
           {count > 1 && controls('hidden max-w-sm shrink-0 md:flex md:self-end xl:self-auto')}
         </div>
       </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { useId, useState, type FormEvent } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
@@ -102,7 +102,7 @@ export function NewsletterSignup() {
             <div id={messageId} aria-live="polite" className="mt-4 min-h-[1.5rem] text-sm">
               <AnimatePresence mode="wait">
                 {feedback ? (
-                  <motion.p
+                  <m.p
                     key={status}
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -111,11 +111,11 @@ export function NewsletterSignup() {
                   >
                     {!isError && <Check aria-hidden className="h-4 w-4" strokeWidth={1.5} />}
                     {feedback}
-                  </motion.p>
+                  </m.p>
                 ) : (
-                  <motion.p key="privacy" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-ivory/45">
+                  <m.p key="privacy" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-ivory/45">
                     {copy.privacy}
-                  </motion.p>
+                  </m.p>
                 )}
               </AnimatePresence>
             </div>

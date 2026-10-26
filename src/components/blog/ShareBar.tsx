@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { Check, Link2 } from 'lucide-react';
 import { useEffect, useState, type ComponentType, type SVGProps } from 'react';
 import { FacebookIcon, LinkedInIcon, WhatsAppIcon, XIcon } from '@/components/icons/SocialIcons';
@@ -61,14 +61,14 @@ export function ShareBar({ path, title, className }: { path: string; title: stri
           </button>
           <AnimatePresence>
             {copied && (
-              <motion.span
+              <m.span
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 className="absolute start-0 top-full z-10 mt-2 whitespace-nowrap rounded-full bg-indigo px-3 py-1 text-[0.62rem] text-champagne lg:start-full lg:top-1/2 lg:ms-3 lg:mt-0 lg:-translate-y-1/2"
               >
                 {t.article.copied}
-              </motion.span>
+              </m.span>
             )}
           </AnimatePresence>
         </li>

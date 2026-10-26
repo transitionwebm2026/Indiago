@@ -1,12 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { ArrowUp } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { socialIcons } from '@/components/icons/SocialIcons';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { ButtonLink } from '@/components/ui/Button';
+import { Link } from '@/components/ui/Link';
 import { useServices, useSite } from '@/lib/cms/hooks';
 import { routes, serviceHref } from '@/lib/routes';
 import { cn } from '@/lib/utils';

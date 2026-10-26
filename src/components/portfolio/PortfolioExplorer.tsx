@@ -1,15 +1,18 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import { useMemo, useState } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { FilterBar, type FilterOption } from '@/components/ui/FilterBar';
-import { Lightbox } from '@/components/ui/Lightbox';
 import { useProjects } from '@/lib/cms/hooks';
 import { projectCategories, type Project, type ProjectCategory } from '@/lib/data/projects';
 import { EASE } from '@/lib/motion';
 import { pad } from '@/lib/utils';
 import { ProjectCard } from './ProjectCard';
+
+// The quick-view gallery only opens on a click, so its code loads after the page.
+const Lightbox = dynamic(() => import('@/components/ui/Lightbox').then((module) => module.Lightbox), { ssr: false });
 
 type Filter = 'all' | ProjectCategory;
 
@@ -54,10 +57,10 @@ export function PortfolioExplorer() {
         </div>
 
         {/* Flex rather than grid so an incomplete last row sits centred. */}
-        <motion.div layout className="mt-14 flex flex-wrap justify-center gap-x-8 gap-y-16">
+        <m.div layout className="mt-14 flex flex-wrap justify-center gap-x-8 gap-y-16">
           <AnimatePresence mode="popLayout" initial={false}>
             {visible.map((project) => (
-              <motion.div
+              <m.div
                 key={project.id}
                 layout
                 initial={{ opacity: 0, y: 24 }}
@@ -67,10 +70,10 @@ export function PortfolioExplorer() {
                 className="w-full sm:w-[calc((100%_-_2rem)/2)] lg:w-[calc((100%_-_4rem)/3)]"
               >
                 <ProjectCard project={project} onOpenGallery={() => setGallery({ project, index: 0 })} />
-              </motion.div>
+              </m.div>
             ))}
           </AnimatePresence>
-        </motion.div>
+        </m.div>
 
         {visible.length === 0 && <p className="mt-14 text-center text-charcoal-soft">{t.portfolio.empty}</p>}
       </div>

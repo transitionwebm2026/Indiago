@@ -1,11 +1,12 @@
 'use client';
 
-import { MotionConfig } from 'framer-motion';
+import { LazyMotion, MotionConfig } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { buildDictionary } from '@/lib/cms/content';
 import { useContentRows, useSiteSettings } from '@/lib/cms/hooks';
 import type { Dictionary, Locale, Localized } from '@/lib/i18n';
+import { loadMotionFeatures } from '@/lib/motion';
 
 const STORAGE_KEY = 'indigo-locale';
 
@@ -75,7 +76,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   return (
     <LanguageContext.Provider value={value}>
-      <MotionConfig reducedMotion="user">{children}</MotionConfig>
+      {/* strict: a full `motion` component here would pull the whole engine back into every page. */}
+      <LazyMotion features={loadMotionFeatures} strict>
+        <MotionConfig reducedMotion="user">{children}</MotionConfig>
+      </LazyMotion>
     </LanguageContext.Provider>
   );
 }

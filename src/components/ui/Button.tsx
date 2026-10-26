@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { Link } from '@/components/ui/Link';
 import { cn } from '@/lib/utils';
 
 type Variant = 'primary' | 'outline-light' | 'outline-dark' | 'solid-dark' | 'link-light' | 'link-dark';

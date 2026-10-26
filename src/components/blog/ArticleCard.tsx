@@ -1,9 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { ArrowRight, Clock } from 'lucide-react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
+import { Link } from '@/components/ui/Link';
 import type { PostSummary } from '@/lib/data/posts';
 import { img } from '@/lib/images';
 import { postHref } from '@/lib/routes';

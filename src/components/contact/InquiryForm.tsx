@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion, type Variants } from 'framer-motion';
+import { AnimatePresence, m, type Variants } from 'framer-motion';
 import { ArrowLeft, Check } from 'lucide-react';
 import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
 import { WhatsAppIcon } from '@/components/icons/SocialIcons';
@@ -239,7 +239,7 @@ export function InquiryForm() {
       result === 'whatsapp' ? form.successBodyWhatsapp : result === 'email' ? form.successBodyEmail : form.successBodyMailto;
     return (
       <div ref={cardRef} className="card-frame scroll-mt-28 rounded-[2rem] bg-white/70 p-8 sm:p-12">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: EASE }}
@@ -262,7 +262,7 @@ export function InquiryForm() {
               {form.startOver}
             </Button>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     );
   }
@@ -290,7 +290,7 @@ export function InquiryForm() {
               className="block w-full text-start disabled:cursor-default"
             >
               <span className="block h-1 overflow-hidden rounded-full bg-indigo/10">
-                <motion.span
+                <m.span
                   className="block h-full origin-left rounded-full bg-indigo rtl:origin-right"
                   initial={false}
                   animate={{ scaleX: index <= step ? 1 : 0 }}
@@ -312,7 +312,7 @@ export function InquiryForm() {
 
       <form onSubmit={onSubmit} noValidate className="mt-10">
         <AnimatePresence mode="wait" custom={direction} initial={false}>
-          <motion.div
+          <m.div
             key={step}
             custom={direction}
             variants={slide}
@@ -483,7 +483,7 @@ export function InquiryForm() {
                 </>
               )}
             </div>
-          </motion.div>
+          </m.div>
         </AnimatePresence>
 
         {sendError && (

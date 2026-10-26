@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useCallback, useEffect, useRef } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
@@ -61,7 +61,7 @@ export function Lightbox({ images, index, onClose, onIndexChange }: LightboxProp
   return (
     <AnimatePresence>
       {open && index !== null && (
-        <motion.div
+        <m.div
           role="dialog"
           aria-modal="true"
           aria-label={images[index]?.alt}
@@ -89,7 +89,7 @@ export function Lightbox({ images, index, onClose, onIndexChange }: LightboxProp
 
           <div className="relative flex-1" onClick={onClose}>
             <AnimatePresence mode="wait" initial={false}>
-              <motion.div
+              <m.div
                 key={index}
                 className="absolute inset-x-4 inset-y-2 cursor-grab active:cursor-grabbing sm:inset-x-24"
                 initial={{ opacity: 0, scale: 0.985 }}
@@ -113,7 +113,7 @@ export function Lightbox({ images, index, onClose, onIndexChange }: LightboxProp
                   className="pointer-events-none select-none object-contain"
                   draggable={false}
                 />
-              </motion.div>
+              </m.div>
             </AnimatePresence>
 
             {images.length > 1 && (
@@ -167,7 +167,7 @@ export function Lightbox({ images, index, onClose, onIndexChange }: LightboxProp
               </div>
             </div>
           )}
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

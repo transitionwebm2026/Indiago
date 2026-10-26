@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Expand } from 'lucide-react';
 import { useState } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
@@ -11,6 +10,7 @@ import { ButtonLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/Eyebrow';
 import { HeroShell } from '@/components/ui/HeroShell';
 import { Highlight } from '@/components/ui/Highlight';
+import { Link } from '@/components/ui/Link';
 import { Reveal } from '@/components/ui/Reveal';
 import { useServices } from '@/lib/cms/hooks';
 import { projectSlides } from '@/lib/data/heroes';

@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { useId, useRef, useState, type KeyboardEvent } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
@@ -73,7 +73,7 @@ export function WorkflowTimeline({ variant = 'full' }: { variant?: 'full' | 'com
               className="group relative pb-6 pt-8 text-start"
             >
               <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-ivory/15" />
-              <motion.span
+              <m.span
                 aria-hidden
                 className="absolute inset-x-0 top-0 h-px origin-left rounded-full bg-champagne rtl:origin-right"
                 initial={false}
@@ -116,7 +116,7 @@ export function WorkflowTimeline({ variant = 'full' }: { variant?: 'full' | 'com
         className="mt-8 card-frame-dark rounded-[2rem] bg-indigo-900/50 p-7 md:p-10"
       >
         <AnimatePresence mode="wait" initial={false}>
-          <motion.div
+          <m.div
             key={active}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -141,7 +141,7 @@ export function WorkflowTimeline({ variant = 'full' }: { variant?: 'full' | 'com
                 ))}
               </ul>
             )}
-          </motion.div>
+          </m.div>
         </AnimatePresence>
       </div>
     </div>
