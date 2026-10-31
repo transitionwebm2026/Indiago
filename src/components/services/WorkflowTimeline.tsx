@@ -1,7 +1,6 @@
 'use client';
 
 import { AnimatePresence, m } from 'framer-motion';
-import { Check } from 'lucide-react';
 import { useId, useRef, useState, type KeyboardEvent } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { plain } from '@/components/ui/Highlight';
@@ -135,7 +134,7 @@ export function WorkflowTimeline({ variant = 'full' }: { variant?: 'full' | 'com
               <ul className="space-y-3 self-center">
                 {step.points.map((point, index) => (
                   <li key={`${point.en}-${index}`} className="flex items-start gap-3 border-b border-ivory/10 pb-3 text-sm text-ivory/85">
-                    <Check aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-champagne" strokeWidth={1.5} />
+                    <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rotate-45 bg-champagne" />
                     {l(point)}
                   </li>
                 ))}

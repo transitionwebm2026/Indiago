@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, m } from 'framer-motion';
-import { CheckCircle2, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useId, useState } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { Reveal } from '@/components/ui/Reveal';
@@ -21,9 +21,7 @@ export function DeliverablesAccordion() {
     <section className="section-y bg-ivory">
       <div className="container-luxe grid gap-14 lg:grid-cols-12 lg:gap-20">
         <div className="lg:col-span-4">
-          <div className="lg:sticky lg:top-32">
-            <SectionHeading eyebrow={deliverables.eyebrow} title={deliverables.title} body={deliverables.body} />
-          </div>
+          <SectionHeading eyebrow={deliverables.eyebrow} title={deliverables.title} body={deliverables.body} />
         </div>
 
         <Reveal className="lg:col-span-8">
@@ -85,7 +83,7 @@ export function DeliverablesAccordion() {
                         <ul className="grid gap-3 pb-6 sm:grid-cols-2 sm:pb-8 md:ps-12">
                           {stage.deliverables.map((item, itemIndex) => (
                             <li key={`${item.en}-${itemIndex}`} className="flex items-start gap-3 rounded-2xl bg-linen px-4 py-3.5 text-sm text-indigo">
-                              <CheckCircle2 aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-champagne-700" strokeWidth={1.5} />
+                              <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rotate-45 bg-champagne" />
                               {l(item)}
                             </li>
                           ))}

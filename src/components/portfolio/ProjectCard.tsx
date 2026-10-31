@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { ArrowRight, Images } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { Link } from '@/components/ui/Link';
 import type { Project } from '@/lib/data/projects';
@@ -56,9 +56,8 @@ export function ProjectCard({ project, onOpenGallery, className, aspect = 'aspec
             <button
               type="button"
               onClick={onOpenGallery}
-              className="relative z-10 inline-flex items-center gap-2 rounded-full border border-ivory/30 bg-indigo/40 px-3 py-2 text-[0.62rem] uppercase tracking-luxe backdrop-blur-sm transition-colors hover:border-champagne hover:text-champagne"
+              className="relative z-10 inline-flex items-center rounded-full border border-ivory/30 bg-indigo/40 px-3 py-2 text-[0.62rem] uppercase tracking-luxe backdrop-blur-sm transition-colors hover:border-champagne hover:text-champagne"
             >
-              <Images aria-hidden className="h-3.5 w-3.5" strokeWidth={1.5} />
               {project.gallery.length + 1} {t.common.photos}
             </button>
           )}

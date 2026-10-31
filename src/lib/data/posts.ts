@@ -71,11 +71,11 @@ export const postSummaries: PostSummary[] = [
     slug: 'arabian-heritage-modern-majlis',
     title: {
       en: 'Designing with Arabian Heritage: The Modern Majlis',
-      ar: 'التصميم المستوحى من التراث العربي: المجلس بروح معاصرة',
+      ar: 'المجلس العربي بروح معاصرة',
     },
     excerpt: {
       en: 'Wind towers, carved doors, Sadu weaving and the generous majlis — how the architecture of the Arabian Gulf translates into calm, contemporary interiors.',
-      ar: 'البراجيل والأبواب المنحوتة ونسيج السدو والمجلس الرحب: كيف تتحوّل عمارة الخليج العربي إلى مساحات داخلية معاصرة وهادئة.',
+      ar: 'البراجيل والأبواب المحفورة ونسيج السدو والمجلس الواسع: كيف نأخذ من عمارة الخليج ما يناسب بيتًا معاصرًا هادئًا.',
     },
     category: 'heritage',
     author: 'studio',
@@ -88,11 +88,11 @@ export const postSummaries: PostSummary[] = [
     slug: 'islamic-cairo-mashrabiya-geometry-light',
     title: {
       en: 'Islamic Cairo at Home: Mashrabiya, Geometry and Light',
-      ar: 'القاهرة الإسلامية في بيتك: المشربية والزخارف الهندسية والضوء',
+      ar: 'القاهرة الإسلامية في بيتك: مشربية وزخارف وضوء',
     },
     excerpt: {
       en: 'The historic houses of Cairo were masterclasses in privacy, ventilation and craft. What their courtyards, mashrabiya and marble floors can teach a modern interior.',
-      ar: 'كانت بيوت القاهرة التاريخية دروسًا في الخصوصية والتهوية والحِرفة. ماذا تعلّمنا أفنيتها ومشربياتها وأرضياتها الرخامية في تصميم المساحات الحديثة؟',
+      ar: 'بيوت القاهرة القديمة كانت درسًا في الخصوصية والتهوية والصنعة. ماذا نتعلّم من أحواشها ومشربياتها وأرضياتها الرخام ونحن نصمّم بيتًا حديثًا؟',
     },
     category: 'heritage',
     author: 'studio',
@@ -104,11 +104,11 @@ export const postSummaries: PostSummary[] = [
     slug: 'pharaonic-heritage-modern-interiors',
     title: {
       en: 'Pharaonic Heritage, Modern Interiors: Designing with Ancient Egypt',
-      ar: 'التراث الفرعوني في التصميم الحديث: مساحات مستوحاة من مصر القديمة',
+      ar: 'لمسة فرعونية في بيت حديث',
     },
     excerpt: {
       en: 'Lotus columns, limestone, gold and lapis blue — how to bring the timeless order of ancient Egyptian design into a contemporary home without turning it into a theme.',
-      ar: 'أعمدة اللوتس والحجر الجيري والذهب والأزرق اللازوردي: كيف تُدخل نظام التصميم المصري القديم إلى منزل معاصر دون أن يتحوّل إلى ديكور مسرحي.',
+      ar: 'أعمدة اللوتس والحجر الجيري والذهب والأزرق اللازوردي. كيف تستوحي من مصر القديمة دون أن يتحول بيتك إلى ديكور مسرحي؟',
     },
     category: 'heritage',
     author: 'studio',
@@ -120,11 +120,11 @@ export const postSummaries: PostSummary[] = [
     slug: 'coptic-heritage-linen-inlaid-wood',
     title: {
       en: 'Coptic Heritage: Linen, Inlaid Wood and Quiet Sacred Light',
-      ar: 'التراث القبطي: الكتان والخشب المطعّم والضوء الهادئ',
+      ar: 'التراث القبطي: كتان وخشب مطعّم وضوء هادئ',
     },
     excerpt: {
       en: 'Old Cairo’s churches and the treasures of the Coptic Museum hold one of Egypt’s most refined craft traditions — woven linen, inlaid screens and calm, softly lit rooms.',
-      ar: 'تحتفظ كنائس مصر القديمة وكنوز المتحف القبطي بواحد من أرقى التقاليد الحِرفية في مصر: الكتان المنسوج، والحواجز الخشبية المطعّمة، والغرف الهادئة ذات الضوء الناعم.',
+      ar: 'في كنائس مصر القديمة والمتحف القبطي واحدة من أرقى الحِرف المصرية: كتان منسوج، وحواجز خشبية مطعّمة، وغرف هادئة يدخلها ضوء ناعم.',
     },
     category: 'heritage',
     author: 'studio',
@@ -136,11 +136,11 @@ export const postSummaries: PostSummary[] = [
     slug: 'khedivial-cairo-belle-epoque-interiors',
     title: {
       en: 'Khedivial Cairo: Belle Époque Elegance for Modern Homes',
-      ar: 'القاهرة الخديوية: أناقة الزمن الجميل في البيوت المعاصرة',
+      ar: 'القاهرة الخديوية: أناقة الزمن الجميل في بيتك',
     },
     excerpt: {
       en: 'High ceilings, plaster cornices, herringbone parquet and wrought-iron balconies — how downtown Cairo’s grand apartments inspire timeless classic interiors.',
-      ar: 'أسقف عالية، وكرانيش جبسية، وباركيه بنقشة عظم السمكة، وبلكونات من الحديد المشغول: كيف تُلهم شقق وسط القاهرة العريقة تصاميم كلاسيكية لا يحدّها زمن.',
+      ar: 'أسقف عالية، وكرانيش جبس، وباركيه عظم سمكة، وبلكونات حديد مشغول. كيف تُلهمنا شقق وسط البلد القديمة تصميمًا كلاسيكيًا لا يفقد جماله مع الزمن.',
     },
     category: 'heritage',
     author: 'studio',
@@ -152,11 +152,11 @@ export const postSummaries: PostSummary[] = [
     slug: 'nubian-heritage-colour-domes-handcraft',
     title: {
       en: 'Nubian Heritage: Colour, Domes and Handcraft',
-      ar: 'التراث النوبي: الألوان والقباب والحِرف اليدوية',
+      ar: 'التراث النوبي: ألوان وقباب وشغل يدوي',
     },
     excerpt: {
       en: 'The villages of Nubia near Aswan are among Egypt’s most joyful architecture. What their domes, painted walls and woven crafts can bring to a modern home.',
-      ar: 'تُعدّ القرى النوبية قرب أسوان من أكثر العمارة المصرية بهجة. ماذا يمكن أن تضيفه قبابها وحوائطها الملوّنة وحِرفها المنسوجة إلى منزل عصري؟',
+      ar: 'القرى النوبية قرب أسوان من أكثر الأماكن بهجة في مصر. ماذا يمكن أن تضيفه قبابها وحوائطها الملوّنة وأشغالها اليدوية إلى بيت عصري؟',
     },
     category: 'heritage',
     author: 'studio',
@@ -168,11 +168,11 @@ export const postSummaries: PostSummary[] = [
     slug: 'moroccan-andalusian-heritage-zellige-tadelakt',
     title: {
       en: 'Moroccan and Andalusian Heritage: Zellige, Tadelakt and the Riad',
-      ar: 'التراث المغربي والأندلسي: الزليج والتادلاكت وبيت الرياض',
+      ar: 'التراث المغربي والأندلسي: زليج وتادلاكت وبيت الرياض',
     },
     excerpt: {
       en: 'From Granada’s Alhambra to the riads of Marrakesh, a design heritage built on courtyards, water and extraordinary craft — and how to use it with restraint.',
-      ar: 'من قصر الحمراء في غرناطة إلى رياضات مراكش، تراث تصميم يقوم على الأفنية والماء والحِرفة الاستثنائية، وكيف تستخدمه باعتدال.',
+      ar: 'من قصر الحمراء في غرناطة إلى رياضات مراكش: تراث يقوم على الفناء والماء والصنعة المتقنة. وكيف تستخدمه دون مبالغة.',
     },
     category: 'heritage',
     author: 'studio',
@@ -184,11 +184,11 @@ export const postSummaries: PostSummary[] = [
     slug: 'damascene-house-levantine-heritage',
     title: {
       en: 'The Damascene House: Levantine Heritage in Contemporary Design',
-      ar: 'البيت الدمشقي: التراث الشامي في التصميم المعاصر',
+      ar: 'البيت الدمشقي: روح الشام في بيت معاصر',
     },
     excerpt: {
       en: 'Courtyards with fountains, striped stone, painted wood and mother-of-pearl inlay — the Levantine house as a lesson in layered, liveable luxury.',
-      ar: 'أفنية بنوافير، وحجر مخطّط، وخشب ملوّن، وتطعيم بالصدف: البيت الشامي درس في الفخامة المتعددة الطبقات والصالحة للعيش.',
+      ar: 'فناء بنافورة، وحجر مخطّط، وخشب ملوّن، وتطعيم بالصدف. البيت الشامي درس في الفخامة المريحة التي تصلح للحياة اليومية.',
     },
     category: 'heritage',
     author: 'studio',
@@ -200,11 +200,11 @@ export const postSummaries: PostSummary[] = [
     slug: 'quiet-luxury-interior-trends-2026',
     title: {
       en: 'Quiet Luxury: The Interior Trends Shaping 2026',
-      ar: 'الفخامة الهادئة: اتجاهات التصميم الداخلي في 2026',
+      ar: 'الفخامة الهادئة: اتجاهات التصميم في 2026',
     },
     excerpt: {
       en: 'Why the most sought-after interiors this year whisper rather than shout — and how to bring that calm, tactile restraint into your own home.',
-      ar: 'لماذا تهمس أكثر التصاميم الداخلية رواجًا هذا العام بدلًا من أن تصرخ، وكيف تُدخل هذا الهدوء الملموس إلى منزلك.',
+      ar: 'أكثر التصميمات رواجًا هذا العام لا تلفت النظر بصوت عالٍ. لماذا؟ وكيف تنقل هذا الهدوء إلى بيتك؟',
     },
     category: 'design-trends',
     author: 'founder',
@@ -216,11 +216,11 @@ export const postSummaries: PostSummary[] = [
     slug: 'choosing-natural-stone',
     title: {
       en: 'Marble, Travertine or Onyx? A Guide to Choosing Natural Stone',
-      ar: 'رخام أم ترافرتين أم أونيكس؟ دليلك لاختيار الحجر الطبيعي',
+      ar: 'رخام أم ترافرتين أم أونيكس؟ كيف تختار الحجر المناسب',
     },
     excerpt: {
       en: 'Each natural stone behaves differently underfoot, under water and under light. Here is how we match stone to the room it will live in.',
-      ar: 'يختلف سلوك كل حجر طبيعي تحت الأقدام وتحت الماء وتحت الضوء. إليك كيف نختار الحجر المناسب للمساحة التي سيعيش فيها.',
+      ar: 'كل حجر طبيعي يتصرّف بشكل مختلف تحت الأقدام ومع الماء وتحت الضوء. هكذا نختار الحجر المناسب لكل مكان في البيت.',
     },
     category: 'material-selection',
     author: 'studio',
@@ -232,11 +232,11 @@ export const postSummaries: PostSummary[] = [
     slug: 'space-planning-daily-rituals',
     title: {
       en: 'Planning Around Daily Rituals: Space Planning That Lasts',
-      ar: 'التخطيط حول روتينك اليومي: تخطيط مساحات يدوم',
+      ar: 'صمّم بيتك حول يومك',
     },
     excerpt: {
       en: 'Good space planning starts with a diary, not a floor plan. How mapping daily routines leads to layouts that still work years later.',
-      ar: 'يبدأ التخطيط الجيد للمساحات من يومياتك لا من المخطط. كيف يقود فهم الروتين اليومي إلى توزيع يظل عمليًا لسنوات.',
+      ar: 'التخطيط الجيد يبدأ من يومك، لا من المسقط. كيف يقود فهم روتينك إلى توزيع يظل مريحًا لسنوات.',
     },
     category: 'space-planning',
     author: 'studio',
@@ -248,11 +248,11 @@ export const postSummaries: PostSummary[] = [
     slug: 'shell-and-core-to-handover',
     title: {
       en: 'From Shell & Core to Handover: What to Expect',
-      ar: 'من الوحدة الخام إلى التسليم: ماذا تتوقع؟',
+      ar: 'من الطوب الأحمر إلى الاستلام: ماذا تتوقع؟',
     },
     excerpt: {
       en: 'A clear, stage-by-stage guide to a turnkey interior project — what happens, what you approve and what you receive along the way.',
-      ar: 'دليل واضح مرحلة بمرحلة لمشروع تصميم داخلي متكامل: ماذا يحدث، وما الذي تعتمده، وما الذي تستلمه في كل خطوة.',
+      ar: 'شرح بسيط لكل مرحلة في مشروع التشطيب الكامل: ماذا يحدث، وما الذي تعتمده، وما الذي تستلمه.',
     },
     category: 'client-guides',
     author: 'founder',
@@ -264,11 +264,11 @@ export const postSummaries: PostSummary[] = [
     slug: 'layered-lighting',
     title: {
       en: 'Layered Lighting: Designing Rooms That Change With the Day',
-      ar: 'الإضاءة متعددة الطبقات: غرف تتغيّر مع ساعات اليوم',
+      ar: 'إضاءة على طبقات: غرفة تتغير مع ساعات اليوم',
     },
     excerpt: {
       en: 'Ambient, task and accent lighting working together — the simplest way to make a well-designed room feel extraordinary.',
-      ar: 'الإضاءة العامة والوظيفية والتجميلية حين تعمل معًا: أبسط طريقة لتجعل الغرفة المصمّمة جيدًا استثنائية.',
+      ar: 'إضاءة عامة، وإضاءة للعمل، وإضاءة للجمال. عندما تعمل الثلاثة معًا، تتحوّل الغرفة الجيدة إلى غرفة مميّزة.',
     },
     category: 'space-planning',
     author: 'studio',
@@ -280,11 +280,11 @@ export const postSummaries: PostSummary[] = [
     slug: 'natural-timber-egypt-climate',
     title: {
       en: 'Specifying Natural Timber for Egypt’s Climate',
-      ar: 'اختيار الأخشاب الطبيعية لمناخ مصر',
+      ar: 'كيف تختار الخشب المناسب لجو مصر',
     },
     excerpt: {
       en: 'Heat, dust and dry air test every wooden surface. How we choose, treat and detail timber so it stays beautiful for years.',
-      ar: 'الحرارة والغبار والهواء الجاف تختبر كل سطح خشبي. كيف نختار الخشب ونعالجه ونفصّله ليبقى جميلًا لسنوات.',
+      ar: 'الحرارة والتراب والجو الجاف تختبر أي خشب. هكذا نختاره ونعالجه ونفصّله ليعيش سنوات.',
     },
     category: 'material-selection',
     author: 'studio',
@@ -296,11 +296,11 @@ export const postSummaries: PostSummary[] = [
     slug: 'how-to-brief-your-interior-designer',
     title: {
       en: 'How to Brief Your Interior Designer',
-      ar: 'كيف تكتب ملخص مشروعك لمصمّمك الداخلي',
+      ar: 'قبل أول لقاء مع مصمّمك: ماذا تجهّز؟',
     },
     excerpt: {
       en: 'The questions to answer before your first meeting — and why a clear brief saves time, budget and revisions.',
-      ar: 'الأسئلة التي يجب أن تجيب عنها قبل اجتماعك الأول، ولماذا يوفّر الملخص الواضح الوقت والميزانية والتعديلات.',
+      ar: 'أسئلة أجب عنها قبل الاجتماع الأول، ولماذا يوفّر الملخص الواضح وقتك وميزانيتك وعدد التعديلات.',
     },
     category: 'client-guides',
     author: 'studio',

@@ -2,7 +2,6 @@
 
 import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
-import { ServiceIcon } from '@/components/services/ServiceIcon';
 import { WorkflowTimeline } from '@/components/services/WorkflowTimeline';
 import { ButtonLink } from '@/components/ui/Button';
 import { Link } from '@/components/ui/Link';
@@ -36,13 +35,8 @@ export function ServicesPreview() {
                 href={serviceHref(service.id)}
                 className="group flex h-full flex-col card-frame-dark rounded-3xl bg-indigo-700/30 p-8 hover:border-champagne/60 hover:bg-indigo-700/60 lg:p-9"
               >
-                <div className="flex items-center justify-between">
-                  <span className="grid h-14 w-14 place-items-center rounded-2xl bg-indigo-900/60 text-champagne">
-                    <ServiceIcon icon={service.icon} className="h-7 w-7" />
-                  </span>
-                  <span className="font-serif text-sm text-ivory/30">{pad(index + 1)}</span>
-                </div>
-                <h3 className="mt-12 font-serif text-2xl leading-snug tracking-wide text-ivory">{l(service.title)}</h3>
+                <span className="font-serif text-sm text-champagne">{pad(index + 1)}</span>
+                <h3 className="mt-10 font-serif text-2xl leading-snug tracking-wide text-ivory">{l(service.title)}</h3>
                 <p className="mt-4 text-sm leading-relaxed text-ivory/60">{l(service.summary)}</p>
                 <span className="mt-auto inline-flex items-center gap-2 pt-8 text-[0.62rem] font-medium uppercase tracking-luxe text-champagne">
                   {t.common.readMore}

@@ -71,7 +71,7 @@ replaces it; returning visitors see the edited version immediately from their br
 | --- | --- |
 | Overview | New-inquiry count, latest briefs, quick links, "Restore missing defaults" |
 | Global Settings | Logo, menu links (rename, reorder, hide, add), phones, email, WhatsApp, address, map, social profiles, founder, footer |
-| Pages Content | Every headline, paragraph, button and hero photo on every page, in English and Arabic |
+| Pages Content | Every headline, paragraph, button and home-hero photo on every page, in English and Arabic |
 | Portfolio | Projects: text, cover, gallery, before/after and 3D-render-vs-real pairs, featured, visible, order |
 | Services & Process | Service cards (icon, photo, bullets, home-page flag) and the execution process steps |
 | Blog / Journal | Articles with a Markdown editor and live preview, drafts, featured article |
@@ -135,8 +135,10 @@ the Inter font there (a path bug in Next); a Linux build such as Vercel's includ
 - **Google Search Console:** add the property, choose **HTML tag**, put the `content` value in
   `GOOGLE_SITE_VERIFICATION` (`.env.local`, and in Vercel if you deploy there), rebuild and upload,
   then click **Verify** and submit `https://indigoegy.com/sitemap.xml`.
-- Icons: `public/favicon.ico`, `icon.svg`, `favicon-16x16.png`, `favicon-32x32.png`,
-  `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`. Social share image: `public/og-image.jpg`.
+- Logo: `public/logo.png` (transparent, for the navbar, footer and dashboard). It, the icons
+  (`public/favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`, `icon-192.png`,
+  `icon-512.png`, `icon-maskable-512.png`) and the social share image (`public/og-image.jpg`) are all
+  cut from `public/images/Indigo logo.jpeg`.
 
 ## Forms
 
@@ -163,7 +165,7 @@ These files hold the built-in content — what the site shows without Supabase, 
 | Portfolio projects (each creates `/portfolio/[id]/`) | `src/lib/data/projects.ts` |
 | Blog articles (each creates `/blog/[slug]/`) | `src/lib/data/posts.ts` (titles, excerpts), `src/lib/data/post-bodies.ts` (article text) |
 | Services and process steps | `src/lib/data/services.ts` |
-| Hero sliders (three project photos per page, 3 s each) | `src/lib/data/heroes.ts` |
+| Home hero slider (three project photos, 3 s each) | `src/lib/data/heroes.ts` |
 | Section images | `src/lib/images.ts` |
 | Brand colours & fonts | `tailwind.config.ts` |
 
@@ -197,7 +199,7 @@ src/
   components/
     admin/             dashboard shell, forms, uploader, media library, editors
     layout/            Navbar, Footer, Logo, LanguageToggle, WhatsAppWidget, SiteChrome
-    ui/                Buttons, headings, PageHero, FilterBar, Lightbox, Counter, Reveal…
+    ui/                Buttons, headings, PageHeader, FilterBar, Lightbox, Counter, Reveal…
     home/ about/ portfolio/ services/ blog/ contact/   page sections
     shared/            CtaBanner, RouteStatus
     providers/         CmsProvider (live content), LanguageProvider (i18n + RTL)

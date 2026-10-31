@@ -19,12 +19,10 @@ export function StorySection() {
       <div className="container-luxe">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-5">
-            <div className="lg:sticky lg:top-32">
-              <SectionHeading eyebrow={story.eyebrow} title={story.title} />
-              <Reveal delay={0.2} className="relative mt-12 hidden aspect-[4/5] overflow-hidden rounded-[2rem] bg-linen-dark lg:block">
-                <Image src={img(image, 1000)} alt="" fill sizes="35vw" className="object-cover" />
-              </Reveal>
-            </div>
+            <SectionHeading eyebrow={story.eyebrow} title={story.title} />
+            <Reveal delay={0.2} className="relative mt-12 hidden aspect-[4/5] overflow-hidden rounded-[2rem] bg-linen-dark lg:block">
+              <Image src={img(image, 1000)} alt="" fill sizes="35vw" className="object-cover" />
+            </Reveal>
           </div>
 
           <div className="lg:col-span-7 lg:pt-24">

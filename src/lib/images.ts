@@ -18,7 +18,8 @@ export const pageImages = {
   homeAboutPrimary: '1600607687939-ce8a6c25118c',
   homeAboutSecondary: '1616137466211-f939a420be84',
   aboutStory: '1600573472550-8090b5e0745e',
-  craft: ['1503387762-592deb58ef4e', '1541888946425-d81bb19240f5', '1504307651254-35680f356dfd'],
+  // Site supervision against the drawings, the team aligned on one set of plans, finish samples checked.
+  craft: ['1772442198624-4fc4d7281e89', '1608303588026-884930af2559', '1664638413509-6aa486866f9a'],
   materials: {
     stone: '1566305977571-5666677c6e98',
     timber: '1600047508788-786f3865b4b9',

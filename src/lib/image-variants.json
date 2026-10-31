@@ -11,7 +11,7 @@
     ]
   },
   "/images/projects/al-borg-laboratories/01.jpg": {
-    "base": "/_img/images/projects/al-borg-laboratories/01.84893db2",
+    "base": "/_img/images/projects/al-borg-laboratories/01.10933a50",
     "widths": [
       256,
       384,
@@ -19,31 +19,41 @@
       828,
       1080,
       1280,
-      1659
+      1920,
+      2560,
+      3200
     ]
   },
   "/images/projects/al-borg-laboratories/02.jpg": {
-    "base": "/_img/images/projects/al-borg-laboratories/02.c49e33bf",
+    "base": "/_img/images/projects/al-borg-laboratories/02.29494845",
     "widths": [
       256,
       384,
       640,
       828,
-      840
+      1080,
+      1280,
+      1920,
+      2560,
+      3200
     ]
   },
   "/images/projects/al-borg-laboratories/03.jpg": {
-    "base": "/_img/images/projects/al-borg-laboratories/03.fbd07bcb",
+    "base": "/_img/images/projects/al-borg-laboratories/03.175a4cc9",
     "widths": [
       256,
       384,
       640,
       828,
-      840
+      1080,
+      1280,
+      1920,
+      2560,
+      3200
     ]
   },
   "/images/projects/arabian-majlis/01.jpg": {
-    "base": "/_img/images/projects/arabian-majlis/01.c4a0fc45",
+    "base": "/_img/images/projects/arabian-majlis/01.90f734e6",
     "widths": [
       256,
       384,
@@ -51,29 +61,41 @@
       828,
       1080,
       1280,
-      1554
+      1920,
+      2560,
+      3200
     ]
   },
   "/images/projects/arabian-majlis/02.jpg": {
-    "base": "/_img/images/projects/arabian-majlis/02.c749228c",
+    "base": "/_img/images/projects/arabian-majlis/02.cc159717",
     "widths": [
       256,
       384,
       640,
-      770
+      828,
+      1080,
+      1280,
+      1920,
+      2560,
+      3080
     ]
   },
   "/images/projects/arabian-majlis/03.jpg": {
-    "base": "/_img/images/projects/arabian-majlis/03.029441b6",
+    "base": "/_img/images/projects/arabian-majlis/03.d037b73d",
     "widths": [
       256,
       384,
       640,
-      770
+      828,
+      1080,
+      1280,
+      1920,
+      2560,
+      3080
     ]
   },
   "/images/projects/department-of-finance/01.jpg": {
-    "base": "/_img/images/projects/department-of-finance/01.39fc8063",
+    "base": "/_img/images/projects/department-of-finance/01.01503273",
     "widths": [
       256,
       384,
@@ -81,29 +103,41 @@
       828,
       1080,
       1280,
-      1554
+      1920,
+      2560,
+      3200
     ]
   },
   "/images/projects/department-of-finance/02.jpg": {
-    "base": "/_img/images/projects/department-of-finance/02.90799bec",
+    "base": "/_img/images/projects/department-of-finance/02.1839cf29",
     "widths": [
       256,
       384,
       640,
-      770
+      828,
+      1080,
+      1280,
+      1920,
+      2560,
+      3080
     ]
   },
   "/images/projects/department-of-finance/03.jpg": {
-    "base": "/_img/images/projects/department-of-finance/03.a5695a0b",
+    "base": "/_img/images/projects/department-of-finance/03.d337cc5a",
     "widths": [
       256,
       384,
       640,
-      770
+      828,
+      1080,
+      1280,
+      1920,
+      2560,
+      3080
     ]
   },
   "/images/projects/mynt-restaurant/01.jpg": {
-    "base": "/_img/images/projects/mynt-restaurant/01.03a7b0bc",
+    "base": "/_img/images/projects/mynt-restaurant/01.c414602a",
     "widths": [
       256,
       384,
@@ -111,46 +145,13 @@
       828,
       1080,
       1280,
-      1554
+      1920,
+      2560,
+      3200
     ]
   },
   "/images/projects/mynt-restaurant/02.jpg": {
-    "base": "/_img/images/projects/mynt-restaurant/02.282ed112",
-    "widths": [
-      256,
-      384,
-      640,
-      828,
-      1080,
-      1254
-    ]
-  },
-  "/images/projects/mynt-restaurant/03.jpg": {
-    "base": "/_img/images/projects/mynt-restaurant/03.44b4cf01",
-    "widths": [
-      256,
-      384,
-      510
-    ]
-  },
-  "/images/projects/mynt-restaurant/04.jpg": {
-    "base": "/_img/images/projects/mynt-restaurant/04.0235d560",
-    "widths": [
-      256,
-      384,
-      510
-    ]
-  },
-  "/images/projects/mynt-restaurant/05.jpg": {
-    "base": "/_img/images/projects/mynt-restaurant/05.937ea6aa",
-    "widths": [
-      256,
-      384,
-      510
-    ]
-  },
-  "/images/projects/sun-capital-residence/01.jpg": {
-    "base": "/_img/images/projects/sun-capital-residence/01.e4066733",
+    "base": "/_img/images/projects/mynt-restaurant/02.1a68d273",
     "widths": [
       256,
       384,
@@ -158,27 +159,168 @@
       828,
       1080,
       1280,
-      1658
+      1920,
+      2560,
+      3200
+    ]
+  },
+  "/images/projects/mynt-restaurant/03.jpg": {
+    "base": "/_img/images/projects/mynt-restaurant/03.924fd176",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1280,
+      1920,
+      2040
+    ]
+  },
+  "/images/projects/mynt-restaurant/04.jpg": {
+    "base": "/_img/images/projects/mynt-restaurant/04.10c000ea",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1280,
+      1920,
+      2040
+    ]
+  },
+  "/images/projects/mynt-restaurant/05.jpg": {
+    "base": "/_img/images/projects/mynt-restaurant/05.a3783392",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1280,
+      1920,
+      2040
+    ]
+  },
+  "/images/projects/sun-capital-residence/01.jpg": {
+    "base": "/_img/images/projects/sun-capital-residence/01.76c7d44f",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1280,
+      1920,
+      2560,
+      3200
     ]
   },
   "/images/projects/sun-capital-residence/02.jpg": {
-    "base": "/_img/images/projects/sun-capital-residence/02.bd0afb05",
+    "base": "/_img/images/projects/sun-capital-residence/02.67ebe2b4",
     "widths": [
       256,
       384,
       640,
       828,
-      840
+      1080,
+      1280,
+      1920,
+      2560,
+      3200
     ]
   },
   "/images/projects/sun-capital-residence/03.jpg": {
-    "base": "/_img/images/projects/sun-capital-residence/03.e8941d7d",
+    "base": "/_img/images/projects/sun-capital-residence/03.0b41f11c",
     "widths": [
       256,
       384,
       640,
       828,
-      840
+      1080,
+      1280,
+      1920,
+      2560,
+      3200
+    ]
+  },
+  "/images/services/design-execution.jpg": {
+    "base": "/_img/images/services/design-execution.1032f138",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1280,
+      1920,
+      2048
+    ]
+  },
+  "/images/services/finishing.jpg": {
+    "base": "/_img/images/services/finishing.c0bbf2aa",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1280,
+      1920,
+      2048
+    ]
+  },
+  "/images/services/fit-out.jpg": {
+    "base": "/_img/images/services/fit-out.acdc701a",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1280,
+      1920,
+      2048
+    ]
+  },
+  "/images/services/interior-design.jpg": {
+    "base": "/_img/images/services/interior-design.95503075",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1280,
+      1920,
+      2048
+    ]
+  },
+  "/images/services/joinery-styling.jpg": {
+    "base": "/_img/images/services/joinery-styling.bd8e313c",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1280,
+      1920,
+      2048
+    ]
+  },
+  "/images/services/renovation.jpg": {
+    "base": "/_img/images/services/renovation.0034fabe",
+    "widths": [
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1280,
+      1920,
+      2048
     ]
   },
   "/images/site/ceiling-works.jpg": {

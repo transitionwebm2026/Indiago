@@ -37,12 +37,12 @@ export const contentPages: { id: ContentPage; label: string }[] = [
   { id: 'shared', label: 'Shared & labels' },
 ];
 
-const heroSlidesField = (page: string): MediaFieldDef => ({
+const heroSlidesField: MediaFieldDef = {
   key: 'slides',
   type: 'slides',
   label: 'Hero photographs',
-  hint: `The slider at the top of the ${page} page changes photo every 3 seconds. Use large landscape images (at least 2000 px wide).`,
-});
+  hint: 'The slider at the top of the home page changes photo every 3 seconds. Use large landscape images (at least 2000 px wide).',
+};
 
 export const navLinkKeys = ['home', 'about', 'portfolio', 'services', 'journal', 'contact'];
 
@@ -53,7 +53,7 @@ export const contentSections: SectionDef[] = [
     page: 'home',
     label: 'Hero',
     description: 'The full-screen opening of the home page.',
-    media: [heroSlidesField('home')],
+    media: [heroSlidesField],
   },
   {
     key: 'home.about',
@@ -71,7 +71,7 @@ export const contentSections: SectionDef[] = [
   { key: 'home.journal', page: 'home', label: 'Blog preview', description: 'Heading above the two latest articles.' },
 
   // About
-  { key: 'about.hero', page: 'about', label: 'Hero', description: 'The top of the About page.', media: [heroSlidesField('About')] },
+  { key: 'about.hero', page: 'about', label: 'Page title', description: 'The title and introduction at the top of the About page.' },
   {
     key: 'about.story',
     page: 'about',
@@ -103,32 +103,32 @@ export const contentSections: SectionDef[] = [
   { key: 'about.metrics', page: 'about', label: 'Client trust numbers', description: 'The animated counters (years, projects…).' },
 
   // Portfolio
-  { key: 'portfolio.hero', page: 'portfolio', label: 'Hero', description: 'The top of the Portfolio page.', media: [heroSlidesField('Portfolio')] },
+  { key: 'portfolio.hero', page: 'portfolio', label: 'Page title', description: 'The title and introduction at the top of the Portfolio page.' },
   { key: 'portfolio', page: 'portfolio', label: 'Project grid labels', description: 'Filter and counter labels above the project grid.', exclude: ['hero'] },
   { key: 'project', page: 'portfolio', label: 'Project page labels', description: 'Headings and buttons used on every individual project page.' },
 
   // Services
-  { key: 'services.hero', page: 'services', label: 'Hero', description: 'The top of the Services page.', media: [heroSlidesField('Services')] },
+  { key: 'services.hero', page: 'services', label: 'Page title', description: 'The title and introduction at the top of the Services page.' },
   { key: 'services.grid', page: 'services', label: 'Services heading', description: 'Heading above the service cards. The cards are edited in Services & Process.' },
   { key: 'services.workflow', page: 'services', label: 'Process heading', description: 'Heading above the process timeline. The steps are edited in Services & Process.' },
   { key: 'services.deliverables', page: 'services', label: 'Deliverables heading', description: 'Heading beside the deliverables accordion.' },
   { key: 'services.packages', page: 'services', label: 'Design packages', description: 'The three packages, the supervision fee and the comparison table.' },
 
   // Blog
-  { key: 'blog.hero', page: 'blog', label: 'Hero', description: 'The top of the Blog page and every article.', media: [heroSlidesField('Blog')] },
+  { key: 'blog.hero', page: 'blog', label: 'Page title', description: 'The title and introduction at the top of the Blog page.' },
   { key: 'blog', page: 'blog', label: 'Article list labels', description: 'Labels around the featured article and article grid.', exclude: ['hero', 'newsletter'] },
   { key: 'blog.newsletter', page: 'blog', label: 'Newsletter sign-up', description: 'The email sign-up band.' },
   { key: 'article', page: 'blog', label: 'Article page labels', description: 'Labels used on every article page.' },
 
   // Contact
-  { key: 'contact.hero', page: 'contact', label: 'Hero', description: 'The top of the Contact page.', media: [heroSlidesField('Contact')] },
+  { key: 'contact.hero', page: 'contact', label: 'Page title', description: 'The title and introduction at the top of the Contact page.' },
   { key: 'contact.intro', page: 'contact', label: 'Project brief introduction', description: 'Text beside the four-step brief form.' },
   { key: 'contact.form', page: 'contact', label: 'Project brief form', description: 'Every label, option, message and error in the four-step form.' },
   { key: 'contact.info', page: 'contact', label: 'Studio information', description: 'Card labels. The address, phones and email are edited in Global Settings → Contact.' },
   { key: 'contact.map', page: 'contact', label: 'Map section', description: 'Heading and button text. The map location is edited in Global Settings → Map.' },
 
   // Shared
-  { key: 'cta', page: 'shared', label: 'Closing call-to-action banner', description: 'The Deep Indigo banner that closes most pages.' },
+  { key: 'cta', page: 'home', label: 'Closing call-to-action banner', description: 'The Deep Indigo banner that closes the home page.' },
   { key: 'whatsapp', page: 'shared', label: 'WhatsApp chat widget', description: 'The chat bubble in the bottom corner of every page.' },
   {
     key: 'nav',
@@ -152,16 +152,11 @@ export const sectionsByKey = new Map(contentSections.map((section) => [section.k
 export const defaultMedia = {
   'home.hero': { slides: heroSlides.home },
   'home.about': { primaryImage: pageImages.homeAboutPrimary as string, secondaryImage: pageImages.homeAboutSecondary as string },
-  'about.hero': { slides: heroSlides.about },
   'about.story': { image: pageImages.aboutStory as string },
   'about.craft': { images: [...pageImages.craft] as string[] },
   'about.materials': {
     images: [pageImages.materials.stone, pageImages.materials.timber, pageImages.materials.metal, pageImages.materials.sustainable] as string[],
   },
-  'portfolio.hero': { slides: heroSlides.portfolio },
-  'services.hero': { slides: heroSlides.services },
-  'blog.hero': { slides: heroSlides.journal },
-  'contact.hero': { slides: heroSlides.contact },
 } satisfies Record<string, Record<string, string | string[] | HeroSlide[]>>;
 
 export type MediaMap = typeof defaultMedia;

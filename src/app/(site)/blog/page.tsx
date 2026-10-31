@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
-import { BlogHero } from '@/components/blog/BlogHero';
 import { FeaturedArticle } from '@/components/blog/FeaturedArticle';
 import { JournalExplorer } from '@/components/blog/JournalExplorer';
 import { NewsletterSignup } from '@/components/blog/NewsletterSignup';
-import { CtaBanner } from '@/components/shared/CtaBanner';
+import { PageIntro } from '@/components/ui/PageHeader';
 import { routes } from '@/lib/routes';
 import { pageMetadata } from '@/lib/seo';
 
@@ -17,11 +16,10 @@ export const metadata: Metadata = pageMetadata({
 export default function BlogPage() {
   return (
     <>
-      <BlogHero />
+      <PageIntro page="blog" />
       <FeaturedArticle />
       <JournalExplorer />
       <NewsletterSignup />
-      <CtaBanner />
     </>
   );
 }

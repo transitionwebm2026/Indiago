@@ -2,19 +2,16 @@
 
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { ArrowLeft, ArrowRight, Expand } from 'lucide-react';
+import { ArrowRight, Expand } from 'lucide-react';
 import { useState } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
-import { ServiceIcon } from '@/components/services/ServiceIcon';
-import { ButtonLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/Eyebrow';
-import { HeroShell } from '@/components/ui/HeroShell';
 import { Highlight } from '@/components/ui/Highlight';
 import { Link } from '@/components/ui/Link';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { Reveal } from '@/components/ui/Reveal';
 import { useServices } from '@/lib/cms/hooks';
-import { projectSlides } from '@/lib/data/heroes';
-import { categoryPropertyType, type Project } from '@/lib/data/projects';
+import type { Project } from '@/lib/data/projects';
 import { img } from '@/lib/images';
 import { projectHref, routes, serviceHref } from '@/lib/routes';
 import { cn, pad } from '@/lib/utils';
@@ -49,31 +46,23 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
 
   return (
     <>
-      <HeroShell slides={projectSlides(project)} showCaption={false}>
-        <Link
-          href={routes.portfolio}
-          className="group inline-flex items-center gap-2 text-[0.64rem] font-medium uppercase tracking-luxe text-ivory/70 transition-colors hover:text-champagne"
-        >
-          <ArrowLeft
-            aria-hidden
-            strokeWidth={1.5}
-            className="h-3.5 w-3.5 transition-transform duration-500 group-hover:-translate-x-1 rtl:-scale-x-100 rtl:group-hover:translate-x-1"
-          />
-          {t.project.back}
-        </Link>
-        <ul className="mt-8 flex flex-wrap gap-2">
-          {[t.categories[project.category], l(project.location), ...project.highlights.map(l)].map((tag) => (
+      <PageHeader
+        eyebrow={t.categories[project.category]}
+        title={title}
+        body={l(project.summary)}
+        crumbs={[{ label: t.nav.portfolio, href: routes.portfolio }, { label: title }]}
+      >
+        <ul className="flex flex-wrap gap-2">
+          {[l(project.location), ...project.highlights.map(l)].map((tag) => (
             <li
               key={tag}
-              className="rounded-full border border-champagne/40 px-3.5 py-1.5 text-[0.6rem] font-medium uppercase tracking-luxe text-champagne"
+              className="rounded-full border border-champagne/60 px-3.5 py-1.5 text-[0.6rem] font-medium uppercase tracking-luxe text-champagne-800"
             >
               {tag}
             </li>
           ))}
         </ul>
-        <h1 className="mt-6 text-balance font-serif text-[2.3rem] leading-[1.08] tracking-wide sm:text-5xl lg:text-6xl">{title}</h1>
-        <p className="mt-5 text-pretty text-base leading-relaxed text-ivory/75 sm:text-lg">{l(project.summary)}</p>
-      </HeroShell>
+      </PageHeader>
 
       {/* Overview facts */}
       <section aria-label={t.project.overview} className="bg-ivory pt-12 md:pt-16">
@@ -125,9 +114,8 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
                     <li key={service.id}>
                       <Link
                         href={serviceHref(service.id)}
-                        className="inline-flex items-center gap-2.5 rounded-full border border-indigo/15 px-4 py-2.5 text-sm text-indigo transition-colors hover:border-indigo hover:bg-indigo hover:text-ivory"
+                        className="inline-flex items-center rounded-full border border-indigo/15 px-4 py-2.5 text-sm text-indigo transition-colors hover:border-indigo hover:bg-indigo hover:text-ivory"
                       >
-                        <ServiceIcon icon={service.icon} className="h-4 w-4" />
                         {l(service.title)}
                       </Link>
                     </li>
@@ -139,7 +127,7 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
 
           {project.materials.length > 0 && (
             <Reveal delay={0.1} className="lg:col-span-5">
-              <div className="card-frame rounded-[2rem] bg-linen p-5 sm:p-8 md:p-10 lg:sticky lg:top-32">
+              <div className="card-frame rounded-[2rem] bg-linen p-5 sm:p-8 md:p-10">
                 <h2 className="font-serif text-2xl tracking-wide text-indigo">{t.project.materials}</h2>
                 <ol className="mt-8 space-y-2">
                   {project.materials.map((material, index) => (
@@ -235,31 +223,8 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
         />
       )}
 
-      {/* Similar project CTA */}
-      <section className="bg-ivory py-16 md:py-20">
-        <div className="container-luxe">
-          <div className="flex flex-col items-start justify-between gap-8 card-frame rounded-[2rem] bg-white/70 p-6 sm:p-8 md:flex-row md:items-center md:p-12">
-            <div>
-              <h2 className="text-balance font-serif text-3xl tracking-wide text-indigo md:text-4xl">
-                <Highlight text={t.project.ctaTitle} />
-              </h2>
-              <p className="mt-3 max-w-xl text-charcoal-soft">{t.project.ctaBody}</p>
-            </div>
-            <ButtonLink
-              href={`/contact/?type=${categoryPropertyType[project.category]}#inquiry`}
-              variant="solid-dark"
-              size="lg"
-              arrow
-              className="shrink-0"
-            >
-              {t.project.ctaButton}
-            </ButtonLink>
-          </div>
-        </div>
-      </section>
-
       {/* Next project */}
-      <section className="bg-ivory pb-20 md:pb-28">
+      <section className="bg-ivory py-16 md:py-24">
         <div className="container-luxe">
           <Link href={projectHref(next.id)} className="group relative isolate block overflow-hidden rounded-[2rem] text-ivory">
             <Image

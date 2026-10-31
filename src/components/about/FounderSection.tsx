@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { Check } from 'lucide-react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { ButtonLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/Eyebrow';
@@ -54,7 +53,7 @@ export function FounderSection() {
             <ul className="mt-10 grid gap-3 sm:grid-cols-3">
               {founder.highlights.filter(Boolean).map((highlight, index) => (
                 <li key={`${highlight}-${index}`} className="flex items-start gap-3 card-frame rounded-2xl bg-ivory p-4 text-sm leading-relaxed text-indigo">
-                  <Check aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-champagne-700" strokeWidth={1.5} />
+                  <span aria-hidden className="mt-2.5 h-1 w-1 shrink-0 rotate-45 bg-champagne" />
                   {highlight}
                 </li>
               ))}

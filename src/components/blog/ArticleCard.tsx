@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { ArrowRight, Clock } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { Link } from '@/components/ui/Link';
 import type { PostSummary } from '@/lib/data/posts';
@@ -14,11 +14,10 @@ export function ReadTimeBadge({ minutes, className }: { minutes: number; classNa
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full bg-ivory px-3 py-1.5 text-[0.6rem] font-medium uppercase tracking-luxe text-indigo',
+        'inline-flex items-center rounded-full bg-ivory px-3 py-1.5 text-[0.6rem] font-medium uppercase tracking-luxe text-indigo',
         className,
       )}
     >
-      <Clock aria-hidden className="h-3 w-3" strokeWidth={1.75} />
       {minutes} {t.common.minRead}
     </span>
   );

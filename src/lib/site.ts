@@ -92,7 +92,7 @@ export const defaultSiteSettings: SiteSettings = {
   map: { query: 'Villa 40 Al Safa St, Sheikh Zayed City, Giza, Egypt', embedUrl: '', lat: null, lng: null },
   founder: {
     name: { en: 'Ahmed Abo Mosallam', ar: 'أحمد أبو مسلم' },
-    role: { en: 'Founder & Principal Interior Designer', ar: 'المؤسس والمصمم الداخلي الرئيسي' },
+    role: { en: 'Founder & Principal Interior Designer', ar: 'المؤسس وكبير المصممين' },
     initials: 'AA',
     portrait: '/Engphoto.jpeg',
   },

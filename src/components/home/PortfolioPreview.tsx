@@ -8,7 +8,6 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { useProjects } from '@/lib/cms/hooks';
 import { getFeaturedProjects } from '@/lib/data/projects';
 import { routes } from '@/lib/routes';
-import { cn } from '@/lib/utils';
 
 export function PortfolioPreview() {
   const { t } = useLanguage();
@@ -30,7 +29,7 @@ export function PortfolioPreview() {
 
         <div className="mt-16 grid gap-x-8 gap-y-14 md:grid-cols-3">
           {featuredProjects.map((project, index) => (
-            <Reveal key={project.id} delay={index * 0.12} className={cn(index === 1 && 'md:mt-20')}>
+            <Reveal key={project.id} delay={index * 0.12}>
               <ProjectCard project={project} />
             </Reveal>
           ))}

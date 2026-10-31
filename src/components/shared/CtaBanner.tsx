@@ -19,7 +19,7 @@ interface CtaBannerProps {
   interactive?: boolean;
 }
 
-/** Deep Indigo inquiry banner used to close most pages. */
+/** Deep Indigo inquiry banner that closes the home page. */
 export function CtaBanner({ background = 'linen', interactive = false }: CtaBannerProps) {
   const { t, locale } = useLanguage();
   const { site, whatsappLink } = useSite();

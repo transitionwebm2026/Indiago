@@ -77,7 +77,8 @@ export const en = {
     },
     why: {
       eyebrow: 'Why Indigo',
-      title: 'On time. On standard. *On vision.*',
+      // Non-breaking spaces keep each two-word phrase on one line.
+      title: 'On time. On standard. *On vision.*',
       body: 'We approach every space with unwavering devotion to quality, combining global standards with the authenticity, warmth and artistry that define Egypt.',
       items: [
         {
@@ -256,7 +257,7 @@ export const en = {
       title: 'A track record measured in *delivered spaces*',
       items: [
         { value: 15, suffix: '+', label: 'Years of Experience' },
-        { value: 150, suffix: '+', label: 'Completed Projects' },
+        { value: 50, suffix: '+', label: 'Completed Projects' },
         { value: 100, suffix: '%', label: 'Turnkey Delivery' },
       ],
     },
@@ -269,7 +270,7 @@ export const en = {
     },
     filterLabel: 'Filter projects',
     empty: 'No projects in this sector yet.',
-    countLabel: 'projects',
+    countLabel: 'Selected Projects',
   },
   project: {
     back: 'All Projects',
@@ -290,9 +291,6 @@ export const en = {
     render: '3D Render',
     real: 'Completed Space',
     compareLabel: 'Drag to compare',
-    ctaTitle: 'Planning a *similar space*?',
-    ctaBody: 'Tell us about your property and we’ll help you shape it into a considered, fully finished space.',
-    ctaButton: 'Start a Similar Project',
     loading: 'Loading project…',
     missingTitle: 'This project is *no longer available*',
     missingBody: 'It may have been renamed or removed. Explore the rest of our portfolio instead.',
@@ -368,7 +366,7 @@ export const en = {
           revisions: '2 revision rounds',
         },
         {
-          name: 'Indigo Bespoke',
+          name: 'Indigo Elite',
           tagline: 'Everything, ready to execute',
           idealFor: 'Villas, hospitality and commercial projects ready to tender or build immediately.',
           features: [
@@ -579,7 +577,6 @@ export const en = {
     contact: 'Contact',
     follow: 'Follow the Studio',
     rights: 'All rights reserved.',
-    ctaTitle: 'Ready to begin your project?',
     credit: 'Design & Development',
     newTab: '(opens in a new tab)',
   },

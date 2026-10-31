@@ -4,12 +4,12 @@ import { site } from '@/lib/site';
 export const siteDescription =
   'Indigo Interiors is an interior design, fit-out and finishing company bringing UAE standards of quality to Egypt — residential, hospitality, corporate and healthcare interiors across Abu Dhabi and Greater Cairo.';
 
-/** 1200 × 630 share card (public/og-image.jpg), used wherever a page has no photograph of its own. */
+/** 1200 × 630 logo card (public/og-image.jpg), used wherever a page has no photograph of its own. */
 export const shareImage = {
   url: '/og-image.jpg',
   width: 1200,
   height: 630,
-  alt: 'Indigo Interiors — interior architecture and turnkey fit-out',
+  alt: 'Indigo Interiors logo',
 };
 
 interface PageSeo {

@@ -11,7 +11,7 @@ const PUBLIC_DIR = 'public';
 const OUTPUT_DIR = path.join(PUBLIC_DIR, '_img');
 const MANIFEST = path.join('src', 'lib', 'image-variants.json');
 // Match next.config.mjs (deviceSizes + imageSizes), so each srcset width has its own file.
-const WIDTHS = [256, 384, 640, 828, 1080, 1280, 1920];
+const WIDTHS = [256, 384, 640, 828, 1080, 1280, 1920, 2560];
 
 /** JPEGs anywhere in /public, plus every image under /public/images. The share image is only read by social sites. */
 const isPhoto = (relative) =>
@@ -46,7 +46,7 @@ for (const file of photos) {
 
   await mkdir(path.dirname(base), { recursive: true });
   for (const target of widths) {
-    await sharp(source).rotate().resize({ width: target }).webp({ quality: 78, effort: 5 }).toFile(`${base}.w${target}.webp`);
+    await sharp(source).rotate().resize({ width: target }).webp({ quality: 82, effort: 5 }).toFile(`${base}.w${target}.webp`);
   }
 
   const url = (value) => `/${value.split(path.sep).join('/')}`;

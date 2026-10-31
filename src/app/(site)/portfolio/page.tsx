@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { PortfolioExplorer } from '@/components/portfolio/PortfolioExplorer';
-import { PortfolioHero } from '@/components/portfolio/PortfolioHero';
-import { CtaBanner } from '@/components/shared/CtaBanner';
+import { PageIntro } from '@/components/ui/PageHeader';
 import { routes } from '@/lib/routes';
 import { pageMetadata } from '@/lib/seo';
 
@@ -15,9 +14,8 @@ export const metadata: Metadata = pageMetadata({
 export default function PortfolioPage() {
   return (
     <>
-      <PortfolioHero />
+      <PageIntro page="portfolio" />
       <PortfolioExplorer />
-      <CtaBanner />
     </>
   );
 }

@@ -1,14 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import { Check } from 'lucide-react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { useServices } from '@/lib/cms/hooks';
 import { img } from '@/lib/images';
 import { pad } from '@/lib/utils';
-import { ServiceIcon } from './ServiceIcon';
 
 export function ServicesGrid() {
   const { t, l } = useLanguage();
@@ -37,9 +35,6 @@ export function ServicesGrid() {
                       className="object-cover transition-transform duration-1200 ease-luxe group-hover:scale-[1.05]"
                     />
                   )}
-                  <span className="absolute start-4 top-4 grid h-14 w-14 place-items-center rounded-2xl bg-indigo text-champagne">
-                    <ServiceIcon icon={service.icon} className="h-6 w-6" />
-                  </span>
                 </div>
                 <div className="flex flex-1 flex-col p-5 md:p-6">
                   <span className="font-serif text-sm text-champagne-700">{pad(index + 1)}</span>
@@ -49,7 +44,7 @@ export function ServicesGrid() {
                     <ul className="mt-6 space-y-2.5 border-t border-indigo/10 pt-6">
                       {service.deliverables.map((item, itemIndex) => (
                         <li key={`${item.en}-${itemIndex}`} className="flex items-start gap-3 text-sm text-indigo">
-                          <Check aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-champagne-700" strokeWidth={1.5} />
+                          <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rotate-45 bg-champagne" />
                           {l(item)}
                         </li>
                       ))}

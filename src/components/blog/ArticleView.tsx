@@ -1,65 +1,49 @@
 'use client';
 
 import Image from 'next/image';
-import { ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { ButtonLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/Eyebrow';
-import { HeroShell } from '@/components/ui/HeroShell';
-import { Link } from '@/components/ui/Link';
 import { Monogram } from '@/components/ui/Monogram';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { Reveal } from '@/components/ui/Reveal';
-import { useAuthors, useMedia } from '@/lib/cms/hooks';
+import { useAuthors } from '@/lib/cms/hooks';
 import type { Post, PostSummary } from '@/lib/data/posts';
 import { img } from '@/lib/images';
 import { postHref, routes } from '@/lib/routes';
 import { formatDate } from '@/lib/utils';
 import { ArticleBody } from './ArticleBody';
-import { ArticleCard, ReadTimeBadge } from './ArticleCard';
+import { ArticleCard } from './ArticleCard';
 import { NewsletterSignup } from './NewsletterSignup';
 import { ShareBar } from './ShareBar';
 
 export function ArticleView({ post, related }: { post: Post; related: PostSummary[] }) {
   const { t, l, locale } = useLanguage();
-  const { slides } = useMedia('blog.hero');
   const author = useAuthors()[post.author];
   const title = l(post.title);
   const arabicBody = locale === 'ar' && post.bodyAr?.length ? post.bodyAr : undefined;
 
   return (
     <>
-      <HeroShell slides={slides}>
-        <Link
-          href={routes.blog}
-          className="group inline-flex items-center gap-2 text-[0.64rem] font-medium uppercase tracking-luxe text-ivory/70 transition-colors hover:text-champagne"
-        >
-          <ArrowLeft
-            aria-hidden
-            strokeWidth={1.5}
-            className="h-3.5 w-3.5 transition-transform duration-500 group-hover:-translate-x-1 rtl:-scale-x-100 rtl:group-hover:translate-x-1"
-          />
-          {t.article.back}
-        </Link>
-        <div className="mt-8 flex flex-wrap items-center gap-3">
-          <Eyebrow surface="dark">{t.blogCategories[post.category]}</Eyebrow>
-          <ReadTimeBadge minutes={post.readTime} />
-        </div>
-        <h1 className="mt-6 text-balance font-serif text-[2.1rem] leading-[1.12] tracking-wide sm:text-5xl lg:text-[3.2rem]">
-          {title}
-        </h1>
-        <p className="mt-5 text-pretty text-base leading-relaxed text-ivory/70 sm:text-lg">{l(post.excerpt)}</p>
-        <div className="mt-8 flex items-center gap-4 border-t border-ivory/10 pt-6">
+      <PageHeader
+        eyebrow={t.blogCategories[post.category]}
+        title={title}
+        body={l(post.excerpt)}
+        crumbs={[{ label: t.nav.journal, href: routes.blog }, { label: title }]}
+      >
+        <div className="flex items-center gap-4">
           <Monogram initials={author.initials} src={author.portrait} className="h-12 w-12 text-sm" />
           <div>
-            <p className="text-sm text-ivory">
+            <p className="text-sm text-indigo">
               {t.common.by} {l(author.name)}
             </p>
-            <p className="mt-0.5 text-xs text-ivory/60">
-              {l(author.role)} · <time dateTime={post.date}>{formatDate(post.date, locale)}</time>
+            <p className="mt-0.5 text-xs text-charcoal-muted">
+              {l(author.role)} · <time dateTime={post.date}>{formatDate(post.date, locale)}</time> · {post.readTime}{' '}
+              {t.common.minRead}
             </p>
           </div>
         </div>
-      </HeroShell>
+      </PageHeader>
 
       <div className="bg-ivory">
         <div className="container-luxe pt-12 md:pt-20">
@@ -72,7 +56,7 @@ export function ArticleView({ post, related }: { post: Post; related: PostSummar
 
         <div className="container-luxe grid gap-10 py-16 md:py-24 lg:grid-cols-12 lg:gap-12">
           <aside className="lg:col-span-2">
-            <ShareBar path={postHref(post.slug)} title={title} className="lg:sticky lg:top-32" />
+            <ShareBar path={postHref(post.slug)} title={title} />
           </aside>
 
           <article className="lg:col-span-8">

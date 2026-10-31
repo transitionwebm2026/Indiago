@@ -13,7 +13,8 @@ const nextConfig = {
     loader: 'custom',
     loaderFile: './src/lib/image-loader.ts',
     // Keep in step with WIDTHS in scripts/optimize-images.mjs.
-    deviceSizes: [640, 828, 1080, 1280, 1920],
+    // 2560 keeps the full-screen hero sharp on large and high-density displays.
+    deviceSizes: [640, 828, 1080, 1280, 1920, 2560],
     imageSizes: [256, 384],
   },
 };

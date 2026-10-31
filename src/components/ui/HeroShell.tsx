@@ -60,19 +60,15 @@ function SocialRail({ label, title }: { label: string; title: string }) {
 
 interface HeroShellProps {
   slides: HeroSlide[];
-  /** "full" fills the viewport (home); "page" is the shorter inner-page hero. */
-  size?: 'full' | 'page';
-  /** Show the current project's name in the slider controls. */
-  showCaption?: boolean;
-  /** Content of the rounded Deep Indigo card that sits over the photographs. */
+  /** Content of the rounded, translucent Deep Indigo card that sits over the photographs. */
   children: ReactNode;
 }
 
 /**
- * Hero with an auto-advancing slider of three clear, un-tinted project photographs.
- * Copy sits in a rounded card so it stays legible without dimming the images.
+ * The home page's full-screen hero: an auto-advancing slider of three clear, un-tinted project photographs.
+ * Copy sits in a compact frosted card so it stays legible without dimming the images.
  */
-export function HeroShell({ slides, size = 'page', showCaption = true, children }: HeroShellProps) {
+export function HeroShell({ slides, children }: HeroShellProps) {
   const { t, l } = useLanguage();
   const projects = useProjects();
   const [index, setIndex] = useState(0);
@@ -81,7 +77,6 @@ export function HeroShell({ slides, size = 'page', showCaption = true, children 
   const [loadRest, setLoadRest] = useState(false);
   const animate = useEntranceAnimation();
   const count = slides.length;
-  const full = size === 'full';
 
   useEffect(() => {
     const load = () => setLoadRest(true);
@@ -114,7 +109,7 @@ export function HeroShell({ slides, size = 'page', showCaption = true, children 
         className,
       )}
     >
-      {showCaption && current && (
+      {current && (
         <Link href={projectHref(current.id)} className="min-w-0 flex-1 transition-colors hover:text-champagne">
           <span className="block truncate font-serif text-sm tracking-wide">{l(current.title)}</span>
           <span className="block truncate text-[0.58rem] font-medium uppercase tracking-luxe text-ivory/55">
@@ -169,21 +164,13 @@ export function HeroShell({ slides, size = 'page', showCaption = true, children 
   );
 
   return (
-    // The full hero is exactly one screen tall: on phones the photo takes whatever height the card leaves.
-    <section
-      className={cn(
-        'relative isolate bg-ivory md:bg-indigo',
-        full && 'flex h-[100svh] min-h-fit flex-col md:block md:h-auto md:min-h-0',
-      )}
-    >
+    // The hero is exactly one screen tall: on phones the photo takes whatever height the card leaves.
+    <section className="relative isolate flex h-[100svh] min-h-fit flex-col bg-ivory md:block md:h-auto md:min-h-0 md:bg-indigo">
       <div
         role="region"
         aria-roledescription="carousel"
         aria-label={t.hero.slider}
-        className={cn(
-          'relative overflow-hidden bg-indigo md:absolute md:inset-0 md:h-auto md:min-h-0',
-          full ? 'min-h-[19rem] flex-1' : 'h-[52svh] min-h-[380px]',
-        )}
+        className="relative min-h-[19rem] flex-1 overflow-hidden bg-indigo md:absolute md:inset-0 md:h-auto md:min-h-0"
       >
         {slides.map((slide, slideIndex) => {
           const active = slideIndex === index;
@@ -229,12 +216,7 @@ export function HeroShell({ slides, size = 'page', showCaption = true, children 
         <SocialRail label={t.footer.follow} title={t.hero.follow} />
       </div>
 
-      <div
-        className={cn(
-          'container-luxe relative z-10 -mt-12 pb-4 md:mt-0 md:flex md:items-end md:pb-10 md:pt-28',
-          full ? 'md:min-h-[100svh]' : 'md:min-h-[86svh]',
-        )}
-      >
+      <div className="container-luxe relative z-10 -mt-12 pb-4 md:mt-0 md:flex md:min-h-[100svh] md:items-end md:pb-10 md:pt-28">
         {/* Right padding keeps the card and controls clear of the social rail. Card and controls
             only sit side by side from xl up; narrower, the controls drop below the card. */}
         <div className="flex w-full flex-col gap-5 md:gap-6 md:pr-16 lg:pr-20 xl:flex-row xl:items-end xl:justify-between xl:gap-8">
@@ -242,10 +224,8 @@ export function HeroShell({ slides, size = 'page', showCaption = true, children 
             initial={animate ? { opacity: 0, y: 32 } : false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: EASE, delay: 0.15 }}
-            className={cn(
-              'card-frame-dark rounded-[2rem] bg-indigo/95 p-6 text-ivory backdrop-blur-xl sm:p-10 lg:p-[clamp(2.25rem,5.5svh,3rem)]',
-              full ? 'md:max-w-[46rem]' : 'md:max-w-[44rem]',
-            )}
+            // On phones the card mostly sits below the photo, so it only turns see-through where it covers one.
+            className="card-frame-dark rounded-[1.75rem] bg-indigo/90 p-5 text-ivory backdrop-blur-md sm:p-7 md:max-w-[33rem] md:bg-indigo/65 lg:p-8"
           >
             {children}
           </m.div>

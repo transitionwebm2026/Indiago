@@ -2,9 +2,8 @@ import type { Metadata } from 'next';
 import { DeliverablesAccordion } from '@/components/services/DeliverablesAccordion';
 import { DesignPackages } from '@/components/services/DesignPackages';
 import { ServicesGrid } from '@/components/services/ServicesGrid';
-import { ServicesHero } from '@/components/services/ServicesHero';
 import { WorkflowSection } from '@/components/services/WorkflowSection';
-import { CtaBanner } from '@/components/shared/CtaBanner';
+import { PageIntro } from '@/components/ui/PageHeader';
 import { routes } from '@/lib/routes';
 import { pageMetadata } from '@/lib/seo';
 
@@ -18,12 +17,11 @@ export const metadata: Metadata = pageMetadata({
 export default function ServicesPage() {
   return (
     <>
-      <ServicesHero />
+      <PageIntro page="services" />
       <ServicesGrid />
       <WorkflowSection />
       <DesignPackages />
       <DeliverablesAccordion />
-      <CtaBanner />
     </>
   );
 }

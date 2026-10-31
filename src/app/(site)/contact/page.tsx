@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { ContactHero } from '@/components/contact/ContactHero';
 import { InquirySection } from '@/components/contact/InquirySection';
 import { StudioInfo } from '@/components/contact/StudioInfo';
 import { StudioMap } from '@/components/contact/StudioMap';
+import { PageIntro } from '@/components/ui/PageHeader';
 import { routes } from '@/lib/routes';
 import { pageMetadata } from '@/lib/seo';
 
@@ -16,7 +16,7 @@ export const metadata: Metadata = pageMetadata({
 export default function ContactPage() {
   return (
     <>
-      <ContactHero />
+      <PageIntro page="contact" />
       <InquirySection />
       <StudioInfo />
       <StudioMap />
