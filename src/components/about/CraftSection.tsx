@@ -6,7 +6,7 @@ import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { useMedia } from '@/lib/cms/hooks';
 import { img } from '@/lib/images';
-import { cn, pad } from '@/lib/utils';
+import { pad } from '@/lib/utils';
 
 export function CraftSection() {
   const { t } = useLanguage();
@@ -23,7 +23,7 @@ export function CraftSection() {
             <Reveal
               key={`${image}-${index}`}
               delay={index * 0.1}
-              className={cn('relative isolate overflow-hidden rounded-2xl bg-indigo-900 md:rounded-3xl', index === 1 ? 'aspect-[3/4] md:-mt-10' : 'aspect-[3/4]')}
+              className="relative isolate aspect-[3/4] overflow-hidden rounded-2xl bg-indigo-900 md:rounded-3xl"
             >
               <Image
                 src={img(image, 900)}
