@@ -26,7 +26,7 @@ export interface SocialLink {
 export interface SiteSettings {
   name: string;
   url: string;
-  /** Uploaded logo for dark surfaces; empty uses the built-in SVG lockup. */
+  /** Uploaded logo for dark surfaces; empty uses public/logo.png. */
   logo: string;
   nav: NavLink[];
   showNavCta: boolean;
@@ -72,7 +72,8 @@ export interface ResolvedSite extends SiteSettings {
  */
 export const defaultSiteSettings: SiteSettings = {
   name: 'Indigo Interiors',
-  url: 'https://indigoegy.com',
+  // Set in next.config.mjs: the deployment's own domain, so share images and canonical URLs resolve.
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://indigoegy.com',
   logo: '',
   nav: primaryNav.map((item) => ({
     id: item.key,

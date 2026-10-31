@@ -128,7 +128,10 @@ the Inter font there (a path bug in Next); a Linux build such as Vercel's includ
 
 ### Search engines
 
-- Every page has a canonical URL on `https://indigoegy.com`, Open Graph and Twitter card tags,
+- The site's address comes from the build: Vercel uses the project's production domain (the
+  custom domain once added, otherwise `indiago.vercel.app`), other builds use `https://indigoegy.com`.
+  Set `NEXT_PUBLIC_SITE_URL` to override it, e.g. to keep Vercel pointing at indigoegy.com.
+- Every page has a canonical URL on that address, Open Graph and Twitter card tags,
   and `index, follow` robots tags (`/admin/` is `noindex`). Page titles and descriptions live in each
   `src/app/(site)/**/page.tsx`; the shared helper is `src/lib/seo.ts`.
 - `/sitemap.xml`, `/robots.txt` and `/manifest.webmanifest` are generated at build time.

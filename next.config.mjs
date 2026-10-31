@@ -1,7 +1,16 @@
+// The address the site is served from, used for canonical URLs, the sitemap and share images.
+// Vercel builds take the project's production domain (its custom domain once one is added, otherwise
+// the vercel.app address); other builds use indigoegy.com. NEXT_PUBLIC_SITE_URL overrides both.
+const productionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || (productionHost ? `https://${productionHost}` : 'https://indigoegy.com');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Plain HTML/CSS/JS in out/ for Hostinger's static hosting — no Node.js server needed.
   output: 'export',
+  // Inlined at build time, so server-rendered pages and the browser see the same address.
+  env: { NEXT_PUBLIC_SITE_URL: siteUrl },
   trailingSlash: true,
   experimental: {
     // The stylesheet (~15 KB gzipped) goes into each page's HTML, so the first paint doesn't wait
