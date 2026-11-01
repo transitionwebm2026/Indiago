@@ -147,13 +147,13 @@ export function DesignPackages() {
             </h3>
           </Reveal>
         </div>
-        <Reveal delay={0.12} className="mt-10 overflow-x-auto rounded-[2rem] card-frame bg-white/80">
-          <table className="w-full min-w-[40rem] border-collapse text-sm">
+        <Reveal delay={0.12} className="relative mt-10 overflow-hidden rounded-[2rem] card-frame bg-white/80">
+          <table className="w-full table-fixed border-collapse text-sm md:table-auto">
             <thead>
               <tr>
                 <th
                   scope="col"
-                  className="px-6 py-5 text-start text-[0.62rem] font-medium uppercase tracking-ultra text-champagne-800"
+                  className="hidden px-6 py-5 text-start text-[0.62rem] font-medium uppercase tracking-ultra text-champagne-800 md:table-cell"
                 >
                   {compare.feature}
                 </th>
@@ -162,7 +162,7 @@ export function DesignPackages() {
                     key={item.name}
                     scope="col"
                     className={cn(
-                      'px-4 py-5 text-center font-serif text-base font-normal tracking-wide',
+                      'px-2 py-5 text-center font-serif text-sm font-normal tracking-wide md:px-4 md:text-base',
                       index === RECOMMENDED ? 'bg-indigo text-champagne' : 'text-indigo',
                     )}
                   >
@@ -171,18 +171,31 @@ export function DesignPackages() {
                 ))}
               </tr>
             </thead>
-            <tbody>
-              {compare.rows.map((row) => {
-                const cells: (string | boolean)[] = row.values;
-                return (
-                  <tr key={row.label} className="border-t border-indigo/10">
-                    <th scope="row" className="px-6 py-4 text-start font-normal text-charcoal-soft">
+            {compare.rows.map((row) => {
+              const cells: (string | boolean)[] = row.values;
+              return (
+                <tbody key={row.label} className="border-t border-indigo/10">
+                  {/* Phones have no room for a label column, so the label takes its own line above the values. */}
+                  <tr className="md:hidden">
+                    <th
+                      colSpan={cells.length}
+                      scope="rowgroup"
+                      className="px-4 pb-2.5 pt-4 text-center font-normal text-charcoal-soft"
+                    >
+                      {row.label}
+                    </th>
+                  </tr>
+                  <tr>
+                    <th scope="row" className="hidden px-6 py-4 text-start font-normal text-charcoal-soft md:table-cell">
                       {row.label}
                     </th>
                     {cells.map((cell, index) => {
                       const featured = index === RECOMMENDED;
                       return (
-                        <td key={index} className={cn('px-4 py-4 text-center', featured ? 'bg-indigo text-ivory' : 'text-indigo')}>
+                        <td
+                          key={index}
+                          className={cn('px-2 py-3 text-center md:px-4 md:py-4', featured ? 'bg-indigo text-ivory' : 'text-indigo')}
+                        >
                           {cell === true ? (
                             <>
                               <Check
@@ -208,9 +221,9 @@ export function DesignPackages() {
                       );
                     })}
                   </tr>
-                );
-              })}
-            </tbody>
+                </tbody>
+              );
+            })}
           </table>
         </Reveal>
       </div>
