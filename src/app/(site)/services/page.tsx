@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { DeliverablesAccordion } from '@/components/services/DeliverablesAccordion';
 import { DesignPackages } from '@/components/services/DesignPackages';
+import { ServicesCta } from '@/components/services/ServicesCta';
 import { ServicesGrid } from '@/components/services/ServicesGrid';
 import { WorkflowSection } from '@/components/services/WorkflowSection';
 import { PageIntro } from '@/components/ui/PageHeader';
@@ -17,11 +18,12 @@ export const metadata: Metadata = pageMetadata({
 export default function ServicesPage() {
   return (
     <>
-      <PageIntro page="services" />
+      <PageIntro page="services" size="lg" />
       <ServicesGrid />
       <WorkflowSection />
       <DesignPackages />
       <DeliverablesAccordion />
+      <ServicesCta />
     </>
   );
 }

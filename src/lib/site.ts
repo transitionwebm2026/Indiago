@@ -53,7 +53,7 @@ export interface SiteSettings {
     portrait: string;
   };
   social: SocialLink[];
-  /** Website design & development credit shown at the very end of the footer. */
+  /** Website design & development credit, the button at the very bottom of every page. */
   credit: { name: string; href: string; logo: string; visible: boolean };
   copyrightYear: number;
 }

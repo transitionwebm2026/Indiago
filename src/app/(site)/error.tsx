@@ -7,7 +7,7 @@ import { Eyebrow } from '@/components/ui/Eyebrow';
 import { Highlight } from '@/components/ui/Highlight';
 import { routes } from '@/lib/routes';
 
-/** Shown between the navbar and footer when a page fails while rendering in the browser. */
+/** Shown in place of a page that fails while rendering in the browser (the menu button stays available). */
 export default function SiteError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   const { t } = useLanguage();
   const copy = t.error;

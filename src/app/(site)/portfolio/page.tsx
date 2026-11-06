@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { PortfolioExplorer } from '@/components/portfolio/PortfolioExplorer';
-import { PageIntro } from '@/components/ui/PageHeader';
 import { routes } from '@/lib/routes';
 import { pageMetadata } from '@/lib/seo';
 
@@ -11,11 +10,7 @@ export const metadata: Metadata = pageMetadata({
   path: routes.portfolio,
 });
 
+/** The page opens straight onto the projects: there is no title section above the filter and grid. */
 export default function PortfolioPage() {
-  return (
-    <>
-      <PageIntro page="portfolio" />
-      <PortfolioExplorer />
-    </>
-  );
+  return <PortfolioExplorer />;
 }

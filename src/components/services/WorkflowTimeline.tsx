@@ -69,7 +69,7 @@ export function WorkflowTimeline({ variant = 'full' }: { variant?: 'full' | 'com
               aria-controls={`${baseId}-panel`}
               tabIndex={selected ? 0 : -1}
               onClick={() => setActive(index)}
-              className="group relative pb-6 pt-8 text-start"
+              className="group relative pb-4 pt-6 text-start"
             >
               <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-ivory/15" />
               <m.span
@@ -88,7 +88,7 @@ export function WorkflowTimeline({ variant = 'full' }: { variant?: 'full' | 'com
               />
               <span
                 className={cn(
-                  'block font-serif text-4xl tracking-wide transition-colors duration-500 md:text-5xl',
+                  'block font-serif text-3xl tracking-wide transition-colors duration-500 md:text-4xl',
                   selected ? 'text-champagne' : 'text-ivory/25 group-hover:text-ivory/50',
                 )}
               >
@@ -96,7 +96,7 @@ export function WorkflowTimeline({ variant = 'full' }: { variant?: 'full' | 'com
               </span>
               <span
                 className={cn(
-                  'mt-4 block text-[0.7rem] font-medium uppercase leading-relaxed tracking-luxe transition-colors duration-500',
+                  'mt-3 block text-[0.64rem] font-medium uppercase leading-relaxed tracking-luxe transition-colors duration-500',
                   selected ? 'text-ivory' : 'text-ivory/55 group-hover:text-ivory/80',
                 )}
               >
@@ -112,7 +112,7 @@ export function WorkflowTimeline({ variant = 'full' }: { variant?: 'full' | 'com
         role="tabpanel"
         id={`${baseId}-panel`}
         aria-labelledby={`${baseId}-tab-${active}`}
-        className="mt-8 card-frame-dark rounded-[2rem] bg-indigo-900/50 p-7 md:p-10"
+        className="mt-6 card-frame-dark rounded-[1.25rem] bg-indigo-900/50 p-5 md:p-7"
       >
         <AnimatePresence mode="wait" initial={false}>
           <m.div
@@ -121,19 +121,26 @@ export function WorkflowTimeline({ variant = 'full' }: { variant?: 'full' | 'com
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.4, ease: EASE }}
-            className={cn('grid gap-8', variant === 'full' && 'md:grid-cols-[1.2fr_1fr] md:gap-16')}
+            className={cn('grid gap-6', variant === 'full' && 'md:grid-cols-[1.2fr_1fr] md:gap-12')}
           >
             <div>
-              <p className="text-[0.64rem] font-medium uppercase tracking-ultra text-champagne">
+              <p className="text-[0.6rem] font-medium uppercase tracking-ultra text-champagne">
                 {workflow.stepLabel} {pad(active + 1)} · {l(step.duration)}
               </p>
-              <h3 className="mt-4 font-serif text-3xl tracking-wide text-ivory md:text-4xl">{l(step.title)}</h3>
-              <p className="mt-4 max-w-xl leading-relaxed text-ivory/70">{l(step.summary)}</p>
+              <h3
+                className={cn(
+                  'mt-3 font-serif text-2xl tracking-wide text-ivory md:text-[1.75rem]',
+                  variant === 'full' && 'md:text-[2rem]',
+                )}
+              >
+                {l(step.title)}
+              </h3>
+              <p className="mt-3 max-w-xl text-[0.9rem] leading-relaxed text-ivory/70">{l(step.summary)}</p>
             </div>
             {variant === 'full' && (
-              <ul className="space-y-3 self-center">
+              <ul className="space-y-2 self-center">
                 {step.points.map((point, index) => (
-                  <li key={`${point.en}-${index}`} className="flex items-start gap-3 border-b border-ivory/10 pb-3 text-sm text-ivory/85">
+                  <li key={`${point.en}-${index}`} className="flex items-start gap-2.5 border-b border-ivory/10 pb-2 text-[0.82rem] text-ivory/85">
                     <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rotate-45 bg-champagne" />
                     {l(point)}
                   </li>

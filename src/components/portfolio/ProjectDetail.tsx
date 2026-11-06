@@ -67,17 +67,17 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
       {/* Overview facts */}
       <section aria-label={t.project.overview} className="bg-ivory pt-12 md:pt-16">
         <div className="container-luxe">
-          <dl className="grid grid-cols-2 gap-3 md:grid-cols-3">
+          <dl className="grid grid-cols-2 gap-2.5 md:grid-cols-3">
             {facts.map((fact, index) => (
               <div
                 key={fact.label}
                 className={cn(
-                  'card-frame min-w-0 rounded-2xl bg-white/70 px-4 py-5 sm:px-5 sm:py-6',
+                  'card-frame min-w-0 rounded-2xl bg-white/70 px-4 py-3.5 sm:py-4',
                   index === facts.length - 1 && facts.length % 2 === 1 && 'col-span-2 md:col-span-1',
                 )}
               >
-                <dt className="text-[0.62rem] font-medium uppercase tracking-luxe text-charcoal-muted">{fact.label}</dt>
-                <dd className="mt-2 break-words font-serif text-base tracking-wide text-indigo min-[400px]:text-lg">{fact.value}</dd>
+                <dt className="text-[0.58rem] font-medium uppercase tracking-luxe text-charcoal-muted">{fact.label}</dt>
+                <dd className="mt-1.5 break-words font-serif text-[0.95rem] tracking-wide text-indigo min-[400px]:text-base">{fact.value}</dd>
               </div>
             ))}
           </dl>
@@ -127,15 +127,15 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
 
           {project.materials.length > 0 && (
             <Reveal delay={0.1} className="lg:col-span-5">
-              <div className="card-frame rounded-[2rem] bg-linen p-5 sm:p-8 md:p-10">
-                <h2 className="font-serif text-2xl tracking-wide text-indigo">{t.project.materials}</h2>
-                <ol className="mt-8 space-y-2">
+              <div className="card-frame rounded-[1.25rem] bg-linen p-4 sm:p-6">
+                <h2 className="font-serif text-xl tracking-wide text-indigo">{t.project.materials}</h2>
+                <ol className="mt-4 space-y-1.5">
                   {project.materials.map((material, index) => (
-                    <li key={`${material.name.en}-${index}`} className="flex gap-4 rounded-2xl bg-ivory px-4 py-4 sm:gap-5 sm:px-5">
-                      <span className="font-serif text-sm text-champagne-700">{pad(index + 1)}</span>
+                    <li key={`${material.name.en}-${index}`} className="flex gap-3.5 rounded-xl bg-ivory px-3.5 py-3">
+                      <span className="font-serif text-xs text-champagne-700">{pad(index + 1)}</span>
                       <div className="min-w-0">
-                        <p className="font-medium text-indigo">{l(material.name)}</p>
-                        <p className="mt-0.5 text-sm text-charcoal-soft">{l(material.detail)}</p>
+                        <p className="text-sm font-medium text-indigo">{l(material.name)}</p>
+                        <p className="mt-0.5 text-[0.8rem] text-charcoal-soft">{l(material.detail)}</p>
                       </div>
                     </li>
                   ))}
@@ -171,7 +171,7 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
                   onClick={() => setLightboxIndex(index)}
                   aria-label={`${t.common.viewGallery}: ${image.alt}`}
                   className={cn(
-                    'group relative block w-full overflow-hidden rounded-2xl bg-linen-dark md:rounded-3xl',
+                    'group relative block w-full overflow-hidden rounded-xl bg-linen-dark md:rounded-[1.25rem]',
                     index === 0 ? 'aspect-square md:aspect-auto md:h-full' : 'aspect-square',
                   )}
                 >
@@ -224,27 +224,27 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
       )}
 
       {/* Next project */}
-      <section className="bg-ivory py-16 md:py-24">
+      <section className="bg-ivory py-14 md:py-20">
         <div className="container-luxe">
-          <Link href={projectHref(next.id)} className="group relative isolate block overflow-hidden rounded-[2rem] text-ivory">
+          <Link href={projectHref(next.id)} className="group relative isolate block overflow-hidden rounded-[1.25rem] text-ivory">
             <Image
-              src={img(next.cover, 2000)}
+              src={img(next.cover, 1600)}
               alt=""
               fill
               sizes="100vw"
               className="-z-10 object-cover transition-transform duration-1200 ease-luxe group-hover:scale-[1.04]"
             />
-            <div className="flex min-h-[20rem] items-end p-3 sm:min-h-[22rem] sm:p-6 md:min-h-[26rem]">
-              <div className="flex w-full items-center justify-between gap-4 card-frame-dark rounded-3xl bg-indigo/95 p-5 backdrop-blur-xl sm:gap-6 sm:p-6 md:w-auto md:min-w-[28rem] md:p-8">
+            <div className="flex min-h-[14rem] items-end p-2.5 sm:min-h-[16rem] sm:p-4 md:min-h-[18rem]">
+              <div className="flex w-full items-center justify-between gap-4 card-frame-dark rounded-2xl bg-indigo/95 p-4 backdrop-blur-xl sm:gap-5 sm:p-5 md:w-auto md:min-w-[22rem]">
                 <div className="min-w-0">
-                  <p className="text-[0.64rem] font-medium uppercase tracking-ultra text-champagne">{t.project.next}</p>
-                  <p className="mt-3 break-words font-serif text-2xl tracking-wide min-[400px]:text-3xl md:text-4xl">{l(next.title)}</p>
-                  <p className="mt-2 text-sm text-ivory/60">
+                  <p className="text-[0.58rem] font-medium uppercase tracking-ultra text-champagne">{t.project.next}</p>
+                  <p className="mt-2 break-words font-serif text-xl tracking-wide min-[400px]:text-2xl">{l(next.title)}</p>
+                  <p className="mt-1 text-[0.8rem] text-ivory/60">
                     {t.categories[next.category]} · {l(next.location)}
                   </p>
                 </div>
-                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-champagne/50 text-champagne transition-colors duration-500 group-hover:bg-champagne group-hover:text-indigo sm:h-14 sm:w-14">
-                  <ArrowRight aria-hidden className="h-5 w-5 rtl:-scale-x-100" strokeWidth={1.25} />
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-champagne/50 text-champagne transition-colors duration-500 group-hover:bg-champagne group-hover:text-indigo sm:h-11 sm:w-11">
+                  <ArrowRight aria-hidden className="h-4 w-4 rtl:-scale-x-100" strokeWidth={1.25} />
                 </span>
               </div>
             </div>

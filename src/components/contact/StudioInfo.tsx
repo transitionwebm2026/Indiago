@@ -43,7 +43,7 @@ export function StudioInfo() {
         <SectionHeading eyebrow={info.eyebrow} title={info.title} />
 
         {/* Flex rather than grid so an incomplete last row sits centred. */}
-        <ul className="mt-14 flex flex-wrap justify-center gap-4">
+        <ul className="mt-10 flex flex-wrap justify-center gap-3">
           {cards.map((card, index) => {
             const content = (
               <>
@@ -58,21 +58,25 @@ export function StudioInfo() {
                 <p
                   dir={card.ltr ? 'ltr' : undefined}
                   className={cn(
-                    'mt-8 font-serif text-lg leading-snug tracking-wide text-indigo',
+                    'mt-4 font-serif text-base leading-snug tracking-wide text-indigo',
                     card.ltr && 'rtl:text-right',
                     card.href.startsWith('mailto:') && 'break-all',
                   )}
                 >
                   {card.value}
                 </p>
-                {card.detail && <p className="mt-1 text-sm text-charcoal-soft">{card.detail}</p>}
+                {card.detail && <p className="mt-0.5 text-[0.8rem] text-charcoal-soft">{card.detail}</p>}
               </>
             );
             const className =
-              'card-frame group flex h-full flex-col rounded-3xl bg-ivory p-6 hover:border-champagne';
+              'card-frame group flex h-full flex-col rounded-2xl bg-ivory p-4 hover:border-champagne sm:p-5';
 
+            // One row of five on wide screens, three on laptops, two on tablets, one on phones.
             return (
-              <li key={card.label} className="w-full sm:w-[calc((100%_-_1rem)/2)] lg:w-[calc((100%_-_2rem)/3)]">
+              <li
+                key={card.label}
+                className="w-full sm:w-[calc((100%_-_0.75rem)/2)] lg:w-[calc((100%_-_1.5rem)/3)] xl:w-[calc((100%_-_3rem)/5)]"
+              >
                 <Reveal delay={index * 0.08} className="h-full">
                   {card.href.startsWith('/') ? (
                     <Link href={card.href} className={className}>

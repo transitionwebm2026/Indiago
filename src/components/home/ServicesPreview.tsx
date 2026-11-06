@@ -28,17 +28,17 @@ export function ServicesPreview() {
           </Reveal>
         </div>
 
-        <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
           {services.map((service, index) => (
             <Reveal key={service.id} delay={index * 0.1} className="h-full">
               <Link
                 href={serviceHref(service.id)}
-                className="group flex h-full flex-col card-frame-dark rounded-3xl bg-indigo-700/30 p-8 hover:border-champagne/60 hover:bg-indigo-700/60 lg:p-9"
+                className="group flex h-full flex-col card-frame-dark rounded-2xl bg-indigo-700/30 p-5 hover:border-champagne/60 hover:bg-indigo-700/60 lg:p-6"
               >
-                <span className="font-serif text-sm text-champagne">{pad(index + 1)}</span>
-                <h3 className="mt-10 font-serif text-2xl leading-snug tracking-wide text-ivory">{l(service.title)}</h3>
-                <p className="mt-4 text-sm leading-relaxed text-ivory/60">{l(service.summary)}</p>
-                <span className="mt-auto inline-flex items-center gap-2 pt-8 text-[0.62rem] font-medium uppercase tracking-luxe text-champagne">
+                <span className="font-serif text-xs text-champagne">{pad(index + 1)}</span>
+                <h3 className="mt-5 font-serif text-lg leading-snug tracking-wide text-ivory sm:text-xl">{l(service.title)}</h3>
+                <p className="mt-2 line-clamp-3 text-[0.82rem] leading-relaxed text-ivory/60">{l(service.summary)}</p>
+                <span className="mt-auto inline-flex items-center gap-2 pt-5 text-[0.6rem] font-medium uppercase tracking-luxe text-champagne">
                   {t.common.readMore}
                   <ArrowRight
                     aria-hidden

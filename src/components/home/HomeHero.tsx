@@ -2,7 +2,6 @@
 
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { ButtonLink } from '@/components/ui/Button';
-import { Eyebrow } from '@/components/ui/Eyebrow';
 import { HeroShell } from '@/components/ui/HeroShell';
 import { Highlight } from '@/components/ui/Highlight';
 import { useMedia } from '@/lib/cms/hooks';
@@ -15,18 +14,17 @@ export function HomeHero() {
 
   return (
     <HeroShell slides={slides}>
-      <Eyebrow surface="dark">{hero.eyebrow}</Eyebrow>
-      {/* On large screens the headline also scales with screen height, so the hero always fits one screen. */}
-      <h1 className="mt-4 text-balance font-serif text-[1.65rem] leading-[1.1] tracking-wide text-ivory sm:text-[2.2rem] lg:text-[length:min(2.6rem,5.4svh)]">
+      {/* Headline and actions only, so the photography carries the hero. The shade behind the copy is
+          light so the photographs stay bright; a soft glow under the headline keeps it legible on pale photos.
+          On large screens the headline also scales with screen height, so the hero always fits one screen. */}
+      <h1 className="text-balance font-serif text-[2rem] leading-[1.08] tracking-wide text-ivory [text-shadow:0_1px_3px_rgba(23,18,44,0.4),0_2px_30px_rgba(23,18,44,0.6)] sm:text-[2.9rem] lg:text-[length:min(3.75rem,7svh)]">
         <Highlight text={hero.title} surface="dark" />
       </h1>
-      {/* Phones show headline and actions only, leaving room for the photography. */}
-      <p className="mt-4 hidden text-pretty text-[0.95rem] leading-relaxed text-ivory/80 sm:block">{hero.body}</p>
-      <div className="mt-5 flex flex-col gap-2.5 sm:mt-6 sm:flex-row sm:flex-wrap">
-        <ButtonLink href={routes.portfolio} size="sm" arrow className="max-sm:min-h-12">
+      <div className="mt-7 flex flex-col gap-2.5 sm:mt-9 sm:flex-row sm:flex-wrap sm:gap-3">
+        <ButtonLink href={routes.portfolio} arrow className="max-sm:min-h-12">
           {hero.primary}
         </ButtonLink>
-        <ButtonLink href={routes.inquiry} size="sm" variant="outline-light" className="max-sm:min-h-12">
+        <ButtonLink href={routes.inquiry} variant="outline-light" className="bg-indigo-950/35 backdrop-blur-md max-sm:min-h-12">
           {hero.secondary}
         </ButtonLink>
       </div>

@@ -12,7 +12,7 @@ export function WorkflowSection() {
   return (
     <section id="process" className="section-y relative isolate scroll-mt-20 overflow-hidden bg-indigo text-ivory">
       <div className="container-luxe">
-        <SectionHeading surface="dark" eyebrow={workflow.eyebrow} title={workflow.title} body={workflow.body} />
+        <SectionHeading surface="dark" eyebrow={workflow.eyebrow} title={workflow.title} body={workflow.body} size="lg" />
         <Reveal delay={0.15} className="mt-16">
           <WorkflowTimeline variant="full" />
         </Reveal>

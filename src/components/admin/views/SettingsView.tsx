@@ -163,7 +163,7 @@ function NavigationTab({ form, set }: TabProps) {
   return (
     <Card
       title="Menu links"
-      description="The links in the header, the mobile menu and the footer. Hide a page with the switch, change the order with the arrows."
+      description="The links in the site menu (the three-line button in the top corner). Hide a page with the switch, change the order with the arrows."
     >
       <div className="space-y-3">
         {form.nav.map((link, index) => {
@@ -214,7 +214,7 @@ function NavigationTab({ form, set }: TabProps) {
 
 function ContactTab({ form, set }: TabProps) {
   return (
-    <Card title="Contact information" description="Shown in the footer, the contact page, the call button and the WhatsApp widget.">
+    <Card title="Contact information" description="Shown in the site menu, the contact page, the call button and the WhatsApp widget.">
       <div className="space-y-6">
         <div className="grid gap-6 md:grid-cols-2">
           <Field label="Email" htmlFor="email">
@@ -301,7 +301,7 @@ function SocialTab({ form, set }: TabProps) {
   const update = (index: number, change: Partial<SocialLink>) => set({ social: form.social.map((link, i) => (i === index ? { ...link, ...change } : link)) });
 
   return (
-    <Card title="Social profiles" description="Icons in the footer and the “Follow us” rail on every hero.">
+    <Card title="Social profiles" description="Icons in the site menu and the “Follow us” rail on the home hero.">
       <div className="space-y-3">
         {form.social.map((link, index) => {
           const Icon = socialIcons[link.id];
@@ -378,7 +378,10 @@ function FooterTab({ form, set }: TabProps) {
 
   return (
     <div className="space-y-6">
-      <Card title="Copyright & credit" description="The bottom row of the footer.">
+      <Card
+        title="Copyright & credit"
+        description="The site no longer has a full footer: the credit button sits in a slim band at the very bottom of every page, and the copyright year is not shown anywhere."
+      >
         <div className="space-y-6">
           <Field label="Copyright year" htmlFor="copyright-year">
             <TextInput

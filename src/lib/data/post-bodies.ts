@@ -5,6 +5,208 @@ import { postSummaries, type ArticleBlock, type Post } from './posts';
  * "Import website content" read it, so it never ships in the JavaScript of other pages.
  */
 const bodies: Record<string, { body: ArticleBlock[]; bodyAr?: ArticleBlock[] }> = {
+  'interior-design-trends-2027': {
+    body: [
+      {
+        type: 'p',
+        text: 'Every year brings new colours and new names for familiar ideas. Looking at the briefs we receive and the materials suppliers are bringing to market, the direction for 2027 is clear: interiors that feel warmer, more personal and built to last. These are the ideas we expect to shape homes and hospitality spaces in the year ahead.',
+      },
+      { type: 'h2', text: 'Warm minimalism' },
+      {
+        type: 'p',
+        text: 'The pared-back look is staying, but it is losing its chill. Expect clean lines softened with rounded edges, warm whites and sand tones in place of stark white, and textured plaster instead of flat paint. The rooms stay calm and uncluttered, yet they feel inviting rather than clinical.',
+      },
+      { type: 'h2', text: 'Earthy, grounded colour' },
+      {
+        type: 'p',
+        text: 'Terracotta, olive, ochre and deep chocolate brown are joining the neutral palette. They work best as one confident accent per room — a lacquered cabinet, an upholstered headboard or a painted ceiling — rather than spread across every wall.',
+      },
+      { type: 'h2', text: 'Natural materials, honestly expressed' },
+      {
+        type: 'list',
+        items: [
+          'Stone with visible veining, honed rather than polished',
+          'Timber with an open grain and a matt oil finish',
+          'Fluted and ribbed surfaces on joinery, walls and kitchen islands',
+          'Linen, wool and bouclé for upholstery and curtains',
+        ],
+      },
+      { type: 'h2', text: 'Craft and local heritage' },
+      {
+        type: 'p',
+        text: 'Clients increasingly want something no one else has. Hand-made tiles, carved timber screens, woven textiles and metalwork from local workshops give a space its own identity. In Egypt, a contemporary reading of mashrabiya, inlaid wood and Nubian colour is one of the most personal ways to achieve it.',
+      },
+      {
+        type: 'quote',
+        text: 'The most memorable rooms of the coming year will be the ones that could only belong to the people who live in them.',
+      },
+      { type: 'h2', text: 'Spaces that work harder' },
+      {
+        type: 'p',
+        text: 'Homes now host work, exercise and guests as well as family life. Flexible layouts, sliding partitions, concealed desks and storage walls let one room change its role during the day without ever looking busy.',
+      },
+      { type: 'h2', text: 'Wellbeing and longevity' },
+      {
+        type: 'p',
+        text: 'Good daylight, quiet acoustics, low-VOC finishes and lighting that follows the rhythm of the day are moving from a luxury to an expectation. So is durability: choosing pieces and finishes that will still look right in ten years is the most sustainable decision a client can make.',
+      },
+      { type: 'h2', text: 'Our advice' },
+      {
+        type: 'p',
+        text: 'Trends are best used as a menu, not a rulebook. Choose the one or two ideas that suit the way you live, build them into the design from the start, and keep the base of the home calm and timeless so it can evolve with you.',
+      },
+    ],
+    bodyAr: [
+      {
+        type: 'p',
+        text: 'كل عام يأتي بألوان جديدة وأسماء جديدة لأفكار نعرفها. ومن الطلبات التي تصلنا من عملائنا، والخامات التي يطرحها الموردون، يبدو اتجاه 2027 واضحًا: مساحات أدفأ، وأكثر خصوصية، ومصنوعة لتعيش طويلًا. هذه أهم الأفكار التي نتوقع أن تشكّل البيوت وأماكن الضيافة في العام القادم.',
+      },
+      { type: 'h2', text: 'بساطة دافئة' },
+      {
+        type: 'p',
+        text: 'التصميم البسيط مستمر، لكنه يفقد برودته. توقّع خطوطًا نظيفة بحواف دائرية ناعمة، ودرجات من الأبيض الدافئ والرملي بدل الأبيض الناصع، ومحارة بملمس بدل الدهان المسطّح. تبقى الغرف هادئة ومرتبة، لكنها تبدو مرحّبة لا باردة.',
+      },
+      { type: 'h2', text: 'ألوان من الأرض' },
+      {
+        type: 'p',
+        text: 'التيراكوتا والزيتي والأوكر والبني الغامق تنضم إلى الألوان المحايدة. وأجمل استخدام لها أن تكون لونًا واحدًا واثقًا في الغرفة: دولاب بدهان لامع، أو ظهر سرير منجّد، أو سقف ملوّن، لا على كل الحوائط.',
+      },
+      { type: 'h2', text: 'خامات طبيعية كما هي' },
+      {
+        type: 'list',
+        items: [
+          'حجر تظهر عروقه، بتشطيب مطفي لا لامع',
+          'خشب بعروق مفتوحة وتشطيب زيتي مطفي',
+          'أسطح مضلّعة ومخدّدة في النجارة والحوائط وجزر المطابخ',
+          'كتان وصوف وبوكليه للتنجيد والستائر',
+        ],
+      },
+      { type: 'h2', text: 'الحِرفة والتراث المحلي' },
+      {
+        type: 'p',
+        text: 'يريد العملاء أكثر فأكثر شيئًا لا يملكه غيرهم. البلاط المصنوع يدويًا، والسواتر الخشبية المحفورة، والمنسوجات، والأعمال المعدنية من ورش محلية، تعطي المكان هويته الخاصة. وفي مصر، القراءة المعاصرة للمشربية والخشب المطعّم وألوان النوبة من أكثر الطرق خصوصية لتحقيق ذلك.',
+      },
+      {
+        type: 'quote',
+        text: 'أكثر الغرف التي ستبقى في الذاكرة العام القادم هي التي لا يمكن أن تنتمي إلا لأصحابها.',
+      },
+      { type: 'h2', text: 'مساحات تؤدي أكثر من دور' },
+      {
+        type: 'p',
+        text: 'البيت اليوم مكان للعمل والرياضة واستقبال الضيوف، إلى جانب حياة الأسرة. التوزيع المرن، والقواطيع المنزلقة، والمكاتب المخفية، وحوائط التخزين، تسمح للغرفة الواحدة أن تغيّر دورها خلال اليوم دون أن تبدو مزدحمة.',
+      },
+      { type: 'h2', text: 'الراحة وطول العمر' },
+      {
+        type: 'p',
+        text: 'الإضاءة الطبيعية الجيدة، والهدوء الصوتي، والدهانات قليلة الانبعاثات، والإضاءة التي تتغيّر مع ساعات اليوم، تتحوّل من رفاهية إلى شيء متوقَّع. وكذلك المتانة: أن تختار قطعًا وتشطيبات ستبقى مناسبة بعد عشر سنوات هو أكثر قرار مستدام يمكن أن تتخذه.',
+      },
+      { type: 'h2', text: 'نصيحتنا' },
+      {
+        type: 'p',
+        text: 'استخدم الاتجاهات كقائمة تختار منها، لا كقواعد تلتزم بها. اختر فكرة أو فكرتين تناسبان طريقة حياتك، وأدخلهما في التصميم من البداية، واترك أساس البيت هادئًا وكلاسيكيًا ليتطوّر معك.',
+      },
+    ],
+  },
+  'luxury-looks-smart-budget': {
+    body: [
+      {
+        type: 'p',
+        text: 'Luxury is less about how much a room costs and more about how it is planned, finished and lit. With a clear plan, a modest budget can deliver a space that looks and feels considered. The secret is knowing where every pound does the most work.',
+      },
+      { type: 'h2', text: 'Start with the plan, not the shopping list' },
+      {
+        type: 'p',
+        text: 'The most expensive mistakes happen before anything is bought: a sofa that blocks the way through a room, lighting points in the wrong place, storage that arrives as an afterthought. A measured layout and a simple Bill of Quantities put the whole budget in front of you at once, so the money goes to the decisions that matter instead of being spent piece by piece.',
+      },
+      { type: 'h2', text: 'Spend where hands and eyes land' },
+      {
+        type: 'p',
+        text: 'Some surfaces are touched and seen every day; others are barely noticed. We put the budget into the places that carry the impression of quality and keep everything else simple.',
+      },
+      {
+        type: 'list',
+        items: [
+          'Door handles, switches and taps you touch dozens of times a day',
+          'The entrance and the main living-room wall, which set the tone of the home',
+          'Kitchen worktops and the vanity top in the guest bathroom',
+          'One generous rug and good curtains, which soften and finish a room',
+        ],
+      },
+      { type: 'h2', text: 'Save without it showing' },
+      {
+        type: 'list',
+        items: [
+          'Use large porcelain slabs with a natural-stone look on big floor areas, and keep real marble for one feature surface',
+          'Choose a simple, sturdy carcass for wardrobes and kitchens, and invest in the fronts and handles',
+          'Paint ceilings and secondary walls in one calm colour instead of cladding every wall',
+          'Mix a few investment pieces with simple, well-proportioned furniture',
+        ],
+      },
+      {
+        type: 'quote',
+        text: 'A room looks expensive when everything in it agrees: the same few materials, the same tones and the same care in every corner.',
+      },
+      { type: 'h2', text: 'Let light do the work' },
+      {
+        type: 'p',
+        text: 'Lighting is the most affordable upgrade with the biggest effect. Concealed linear lighting in a ceiling recess, warm 2700K bulbs and two or three lamps at different heights make plain finishes look rich at night. Plan the circuits and dimmers early: moving a lighting point after the plaster is finished costs far more than placing it correctly on the drawing.',
+      },
+      { type: 'h2', text: 'Finish with restraint' },
+      {
+        type: 'p',
+        text: 'Clutter is the fastest way to make any room look cheaper. Built-in storage, a palette of three or four tones and a few objects chosen with care give a home the calm of a hotel suite. When the budget is tight, it is better to finish fewer rooms completely than every room halfway.',
+      },
+    ],
+    bodyAr: [
+      {
+        type: 'p',
+        text: 'الفخامة لا تُقاس بثمن الغرفة، بل بطريقة تخطيطها وتشطيبها وإضاءتها. ومع خطة واضحة، تستطيع ميزانية معقولة أن تصنع مساحة تبدو مدروسة ومريحة. السر أن تعرف أين يصنع كل جنيه أكبر فرق.',
+      },
+      { type: 'h2', text: 'ابدأ بالخطة، لا بقائمة المشتريات' },
+      {
+        type: 'p',
+        text: 'أغلى الأخطاء تحدث قبل شراء أي شيء: كنبة تقطع الحركة في الغرفة، ونقاط إضاءة في غير مكانها، وتخزين يُفكَّر فيه في آخر لحظة. التوزيع المدروس والمقايسة البسيطة يضعان الميزانية كلها أمامك مرة واحدة، فتذهب الفلوس إلى القرارات المهمة بدل أن تُصرف قطعة قطعة.',
+      },
+      { type: 'h2', text: 'اصرف حيث تلمس يدك وتقع عينك' },
+      {
+        type: 'p',
+        text: 'بعض الأسطح تلمسها وتراها كل يوم، وبعضها لا يلاحظه أحد تقريبًا. لذلك نضع الميزانية في الأماكن التي تعطي إحساس الجودة، ونُبقي كل ما عداها بسيطًا.',
+      },
+      {
+        type: 'list',
+        items: [
+          'مقابض الأبواب ومفاتيح الكهرباء والخلاطات التي تلمسها عشرات المرات يوميًا',
+          'المدخل والحائط الرئيسي في الريسبشن، فهما أول ما يراه الضيف',
+          'أسطح المطبخ ورخامة حوض حمّام الضيوف',
+          'سجادة واحدة كبيرة وستائر جيدة، فهي التي تُكمل الغرفة وتعطيها دفئًا',
+        ],
+      },
+      { type: 'h2', text: 'وفّر دون أن يظهر التوفير' },
+      {
+        type: 'list',
+        items: [
+          'استخدم بلاطات بورسلين كبيرة بشكل الحجر الطبيعي في المساحات الواسعة، واحتفظ بالرخام الحقيقي لسطح واحد مميّز',
+          'اختر هيكلًا بسيطًا ومتينًا للدواليب والمطبخ، واستثمر في الضلف والمقابض',
+          'ادهن الأسقف والحوائط الثانوية بلون هادئ واحد بدل تكسية كل الحوائط',
+          'امزج قطعًا قليلة مميّزة بأثاث بسيط بنِسب جيدة',
+        ],
+      },
+      {
+        type: 'quote',
+        text: 'الغرفة تبدو غالية عندما يتفق كل ما فيها: نفس الخامات القليلة، ونفس الدرجات، ونفس العناية في كل ركن.',
+      },
+      { type: 'h2', text: 'دع الإضاءة تعمل' },
+      {
+        type: 'p',
+        text: 'الإضاءة أرخص ترقية وأكبرها أثرًا. إضاءة خطية مخفية في تجويف السقف، ولمبات بلون دافئ 2700 كلفن، وأباجورتان أو ثلاث على ارتفاعات مختلفة، تجعل التشطيبات البسيطة تبدو غنية بالليل. خطّط للدوائر والديمر من البداية، فنقل نقطة إضاءة بعد انتهاء المحارة يكلّف أكثر بكثير من وضعها في مكانها الصحيح على الرسم.',
+      },
+      { type: 'h2', text: 'أنهِ بالبساطة' },
+      {
+        type: 'p',
+        text: 'الزحمة أسرع طريقة لتجعل أي غرفة تبدو أرخص. التخزين المدمج، وثلاث أو أربع درجات لونية فقط، وقطع ديكور قليلة مختارة بعناية، تعطي البيت هدوء جناح فندقي. وإذا كانت الميزانية محدودة، فالأفضل أن تُنهي غرفًا أقل بالكامل من أن تُنهي كل الغرف نصف تشطيب.',
+      },
+    ],
+  },
   'arabian-heritage-modern-majlis': {
     body: [
       {

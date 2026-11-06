@@ -19,6 +19,8 @@ interface PageHeaderProps {
   title: string;
   body?: string;
   crumbs?: Crumb[];
+  /** "lg" sets a larger page title (the Services page). */
+  size?: 'md' | 'lg';
   className?: string;
   children?: ReactNode;
 }
@@ -27,7 +29,7 @@ interface PageHeaderProps {
  * The title that opens every inner page (only the home page has a photo hero): breadcrumb,
  * eyebrow and a large serif headline with its introduction, closed by a fine Champagne rule.
  */
-export function PageHeader({ eyebrow, title, body, crumbs, className, children }: PageHeaderProps) {
+export function PageHeader({ eyebrow, title, body, crumbs, size = 'md', className, children }: PageHeaderProps) {
   const { t } = useLanguage();
   const animate = useEntranceAnimation();
   const trail: Crumb[] = [{ label: t.common.home, href: '/' }, ...(crumbs ?? [])];
@@ -42,7 +44,7 @@ export function PageHeader({ eyebrow, title, body, crumbs, className, children }
         initial={animate ? { opacity: 0, y: 24 } : false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, ease: EASE }}
-        className="container-luxe pt-32 sm:pt-36 md:pt-44"
+        className="container-luxe pt-24 sm:pt-28 md:pt-32"
       >
         <nav aria-label="Breadcrumb">
           <ol className="flex flex-wrap items-center gap-2 text-[0.64rem] uppercase tracking-luxe text-charcoal-muted">
@@ -66,7 +68,12 @@ export function PageHeader({ eyebrow, title, body, crumbs, className, children }
         <div className="mt-10 grid gap-7 md:mt-14 lg:grid-cols-12 lg:items-end lg:gap-16">
           <div className="lg:col-span-8">
             <Eyebrow>{eyebrow}</Eyebrow>
-            <h1 className="mt-6 text-balance font-serif text-[2.35rem] leading-[1.08] tracking-wide text-indigo sm:text-[3.4rem] lg:text-[4rem]">
+            <h1
+              className={cn(
+                'mt-6 text-balance font-serif leading-[1.08] tracking-wide text-indigo',
+                size === 'lg' ? 'text-[2.6rem] sm:text-[3.9rem] lg:text-[4.75rem]' : 'text-[2.35rem] sm:text-[3.4rem] lg:text-[4rem]',
+              )}
+            >
               <Highlight text={title} />
             </h1>
           </div>
@@ -90,8 +97,10 @@ export function PageHeader({ eyebrow, title, body, crumbs, className, children }
 const navLabel = { about: 'about', portfolio: 'portfolio', services: 'services', blog: 'journal', contact: 'contact' } as const;
 
 /** The header of a main inner page, written in that page's `hero` copy (editable in the CMS). */
-export function PageIntro({ page }: { page: keyof typeof navLabel }) {
+export function PageIntro({ page, size }: { page: keyof typeof navLabel; size?: PageHeaderProps['size'] }) {
   const { t } = useLanguage();
   const copy = t[page].hero;
-  return <PageHeader eyebrow={copy.eyebrow} title={copy.title} body={copy.body} crumbs={[{ label: t.nav[navLabel[page]] }]} />;
+  return (
+    <PageHeader eyebrow={copy.eyebrow} title={copy.title} body={copy.body} crumbs={[{ label: t.nav[navLabel[page]] }]} size={size} />
+  );
 }

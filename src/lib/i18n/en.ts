@@ -43,6 +43,7 @@ export const en = {
     play: 'Play slideshow',
     goTo: 'Show image',
     follow: 'Follow us',
+    sectors: 'Sectors we design for',
   },
   categories: {
     residential: 'Residential',
@@ -78,7 +79,7 @@ export const en = {
     why: {
       eyebrow: 'Why Indigo',
       // Non-breaking spaces keep each two-word phrase on one line.
-      title: 'On time. On standard. *On vision.*',
+      title: '“On time, on standards…”',
       body: 'We approach every space with unwavering devotion to quality, combining global standards with the authenticity, warmth and artistry that define Egypt.',
       items: [
         {
@@ -115,7 +116,8 @@ export const en = {
     },
     services: {
       eyebrow: 'Services & Workflow',
-      title: 'One team, from *concept to handover*',
+      // "from" is part of the gold phrase, held to it by a non-breaking space so it never wraps away from it.
+      title: 'One team, *from concept to handover*',
       body: 'Design, costing, execution and supervision managed under one roof.',
       workflowTitle: 'How a project unfolds',
       cta: 'Explore Services & Process',
@@ -141,7 +143,7 @@ export const en = {
     hero: {
       eyebrow: 'About the Studio',
       title: 'Refined, Composed & Precise *Interior Architecture*',
-      body: 'Indigo Interiors designs and delivers interiors that hold up to daily life — calm in character, exact in detail and executed with the same care they were drawn with.',
+      body: 'Indigo Interiors designs and delivers interiors that hold up to daily life, calm in character, exact in detail and executed with the same care they were drawn with.',
     },
     story: {
       eyebrow: 'Company Overview',
@@ -303,13 +305,13 @@ export const en = {
     },
     grid: {
       eyebrow: 'Our Services',
-      title: 'Complete interior solutions, from *concept to completion*',
+      title: 'Complete interior solutions, *from concept to completion*',
       body: 'Engage us for a single service, or let one dedicated team manage your project from first sketch to final styling.',
     },
     // Service cards and process steps live in lib/data/services.ts (and the CMS).
     workflow: {
       eyebrow: 'How We Work',
-      title: 'A clear process, from first meeting to *final handover*',
+      title: 'A *clear process*, from first meeting to final handover',
       body: 'A clear sequence with defined approvals at every stage — so you always know what happens next.',
       stepLabel: 'Step',
     },
@@ -386,26 +388,10 @@ export const en = {
         title: 'Fixed site-supervision fee',
         body: 'On the value of executed works per the approved BOQ, for every package.',
       },
-      compare: {
-        eyebrow: 'Compare',
-        title: 'Compare the *packages*',
-        feature: 'Feature',
-        included: 'Included',
-        notIncluded: 'Not included',
-        rows: [
-          { label: 'Site visit & measurements', values: [true, true, true] },
-          { label: 'Furniture layout options', values: ['1', '2', '2'] },
-          { label: 'Mood board & materials', values: [true, true, true] },
-          { label: '3D renders', values: [false, 'Main spaces', 'All spaces'] },
-          { label: 'Ceiling, lighting & flooring plans', values: [false, true, true] },
-          { label: 'Materials & finishes schedule', values: [false, true, true] },
-          { label: 'Full working drawings', values: [false, false, true] },
-          { label: 'Custom joinery details', values: [false, false, true] },
-          { label: 'FF&E selection', values: [false, false, true] },
-          { label: 'BOQ level', values: ['Preliminary', 'Detailed', 'Priced'] },
-          { label: 'Revision rounds', values: ['1', '2', '3'] },
-        ],
-      },
+    },
+    cta: {
+      title: 'Let’s do your *project*',
+      body: 'Tell us about your space and we will arrange a consultation.',
     },
   },
   blog: {

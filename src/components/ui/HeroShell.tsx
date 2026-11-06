@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { m } from 'framer-motion';
-import { Pause, Play } from 'lucide-react';
+import { ArrowRight, Pause, Play } from 'lucide-react';
 import { useEffect, useState, type ReactNode } from 'react';
 import { socialIcons } from '@/components/icons/SocialIcons';
 import { useLanguage } from '@/components/providers/LanguageProvider';
@@ -25,11 +25,11 @@ function SocialRail({ label, title }: { label: string; title: string }) {
   if (profiles.length === 0) return null;
 
   return (
-    // On phones the rail centres in the photo strip left visible between the navbar and the overlapping card.
+    // On phones the rail sits below the menu button (lined up under it in English), clear of the copy at the bottom of the photo.
     // One frosted capsule keeps the label legible over any photograph.
     <nav
       aria-label={label}
-      className="absolute right-4 top-[calc(50%+1rem)] z-20 flex -translate-y-1/2 flex-col items-center gap-2.5 rounded-full border border-champagne/30 bg-indigo/85 px-1 pb-1 pt-4 backdrop-blur-md sm:right-6 sm:gap-3 sm:px-1.5 sm:pb-1.5 sm:pt-5 md:top-1/2 lg:right-8"
+      className="absolute right-4 top-28 z-20 flex flex-col items-center gap-2.5 rounded-full border border-champagne/30 bg-indigo/85 px-1 pb-1 pt-4 backdrop-blur-md sm:right-6 sm:gap-3 sm:px-1.5 sm:pb-1.5 sm:pt-5 md:top-1/2 md:-translate-y-1/2 lg:right-8"
     >
       {/* Arabic is turned the other way so it, too, reads downwards towards the icons. */}
       <span className="text-[0.62rem] font-medium uppercase tracking-luxe text-champagne [writing-mode:vertical-rl] rtl:rotate-180">
@@ -60,13 +60,14 @@ function SocialRail({ label, title }: { label: string; title: string }) {
 
 interface HeroShellProps {
   slides: HeroSlide[];
-  /** Content of the rounded, translucent Deep Indigo card that sits over the photographs. */
+  /** The hero copy, set directly on the photographs. */
   children: ReactNode;
 }
 
 /**
- * The home page's full-screen hero: an auto-advancing slider of three clear, un-tinted project photographs.
- * Copy sits in a compact frosted card so it stays legible without dimming the images.
+ * The home page's full-screen hero: an auto-advancing slider with one project photograph per sector
+ * the studio serves. The copy sits straight on the photographs over a soft Deep Indigo shade, and a
+ * row of sector tabs along the bottom names each slide's sector and shows its progress.
  */
 export function HeroShell({ slides, children }: HeroShellProps) {
   const { t, l } = useLanguage();
@@ -102,76 +103,10 @@ export function HeroShell({ slides, children }: HeroShellProps) {
 
   const current = getProject(slides[index]?.projectId ?? '', projects);
 
-  const controls = (className: string) => (
-    <div
-      className={cn(
-        'flex items-center gap-3 rounded-full border border-ivory/15 bg-indigo/85 py-1.5 pe-1.5 ps-4 text-ivory backdrop-blur-md sm:gap-4 sm:ps-5',
-        className,
-      )}
-    >
-      {current && (
-        <Link href={projectHref(current.id)} className="min-w-0 flex-1 transition-colors hover:text-champagne">
-          <span className="block truncate font-serif text-sm tracking-wide">{l(current.title)}</span>
-          <span className="block truncate text-[0.58rem] font-medium uppercase tracking-luxe text-ivory/55">
-            {l(current.location)}
-          </span>
-        </Link>
-      )}
-      {/* On the narrowest phones the dots alone show the position, leaving room for the project name. */}
-      <span dir="ltr" className="shrink-0 text-[0.64rem] font-medium tabular-nums tracking-luxe text-ivory/70 max-[399px]:hidden">
-        {pad(index + 1)} / {pad(count)}
-      </span>
-      <div dir="ltr" className="flex shrink-0 items-center gap-1.5">
-        {slides.map((slide, slideIndex) => {
-          const active = slideIndex === index;
-          return (
-            <button
-              key={`${slide.image}-${slideIndex}`}
-              type="button"
-              onClick={() => setIndex(slideIndex)}
-              aria-label={`${t.hero.goTo} ${slideIndex + 1}`}
-              aria-current={active}
-              className="relative h-7 w-6 min-[400px]:w-7 sm:w-9"
-            >
-              <span className="absolute inset-x-0 top-1/2 h-[3px] -translate-y-1/2 overflow-hidden rounded-full bg-ivory/25">
-                {active && (
-                  <m.span
-                    key={`${index}-${paused}`}
-                    className="absolute inset-0 origin-left rounded-full bg-champagne"
-                    initial={{ scaleX: paused ? 1 : 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ duration: paused ? 0 : SLIDE_INTERVAL / 1000, ease: 'linear' }}
-                  />
-                )}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-      <button
-        type="button"
-        onClick={() => setPaused((value) => !value)}
-        aria-label={paused ? t.hero.play : t.hero.pause}
-        className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-ivory/10 transition-colors hover:bg-champagne hover:text-indigo"
-      >
-        {paused ? (
-          <Play aria-hidden className="h-3.5 w-3.5" strokeWidth={2} />
-        ) : (
-          <Pause aria-hidden className="h-3.5 w-3.5" strokeWidth={2} />
-        )}
-      </button>
-    </div>
-  );
-
   return (
-    // The hero is exactly one screen tall: on phones the photo takes whatever height the card leaves.
-    <section className="relative isolate flex h-[100svh] min-h-fit flex-col bg-ivory md:block md:h-auto md:min-h-0 md:bg-indigo">
-      <div
-        role="region"
-        aria-roledescription="carousel"
-        aria-label={t.hero.slider}
-        className="relative min-h-[19rem] flex-1 overflow-hidden bg-indigo md:absolute md:inset-0 md:h-auto md:min-h-0"
-      >
+    // Exactly one screen tall on every device; the copy and the sector tabs share the bottom of the photograph.
+    <section className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-indigo text-ivory">
+      <div role="region" aria-roledescription="carousel" aria-label={t.hero.slider} className="absolute inset-0 -z-10">
         {slides.map((slide, slideIndex) => {
           const active = slideIndex === index;
           const project = getProject(slide.projectId, projects);
@@ -195,7 +130,7 @@ export function HeroShell({ slides, children }: HeroShellProps) {
               ) : (slideIndex === 0 || loadRest) && (
                 <Image
                   src={img(slide.image, 2400)}
-                  alt={project ? l(project.title) : ''}
+                  alt={project ? `${t.categories[project.category]} — ${l(project.title)}` : ''}
                   fill
                   sizes="100vw"
                   priority={slideIndex === 0}
@@ -211,27 +146,94 @@ export function HeroShell({ slides, children }: HeroShellProps) {
             </div>
           );
         })}
-        {/* Stops short of the social rail on the right. */}
-        {count > 1 && controls('absolute bottom-16 left-4 right-[3.75rem] sm:right-[4.5rem] md:hidden')}
-        <SocialRail label={t.footer.follow} title={t.hero.follow} />
+        {/* A light shade only behind the copy (the bottom on phones, the reading side from md up) that
+            fades out well before the far side, so the rest of the photograph shows at full brightness. */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-t from-indigo-950/75 via-indigo-950/25 via-40% to-transparent to-70% md:bg-gradient-to-r md:from-indigo-950/60 md:via-indigo-950/20 md:via-35% md:to-transparent md:to-60% rtl:md:bg-gradient-to-l"
+        />
       </div>
 
-      <div className="container-luxe relative z-10 -mt-12 pb-4 md:mt-0 md:flex md:min-h-[100svh] md:items-end md:pb-10 md:pt-28">
-        {/* Right padding keeps the card and controls clear of the social rail. Card and controls
-            only sit side by side from xl up; narrower, the controls drop below the card. */}
-        <div className="flex w-full flex-col gap-5 md:gap-6 md:pr-16 lg:pr-20 xl:flex-row xl:items-end xl:justify-between xl:gap-8">
-          <m.div
-            initial={animate ? { opacity: 0, y: 32 } : false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: EASE, delay: 0.15 }}
-            // On phones the card mostly sits below the photo, so it only turns see-through where it covers one.
-            className="card-frame-dark rounded-[1.75rem] bg-indigo/90 p-5 text-ivory backdrop-blur-md sm:p-7 md:max-w-[33rem] md:bg-indigo/65 lg:p-8"
-          >
-            {children}
-          </m.div>
-          {count > 1 && controls('hidden max-w-sm shrink-0 md:flex md:self-end xl:self-auto')}
-        </div>
+      <SocialRail label={t.footer.follow} title={t.hero.follow} />
+
+      {/* Right padding keeps the copy clear of the social rail (on the right in both languages). */}
+      <div className="container-luxe relative flex flex-1 flex-col justify-end pb-8 pt-32 md:justify-center md:pb-12 md:pt-36">
+        <m.div
+          initial={animate ? { opacity: 0, y: 32 } : false}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: EASE, delay: 0.15 }}
+          className="max-w-2xl pr-14 sm:pr-16 md:pr-0 rtl:md:pr-20 lg:max-w-3xl rtl:lg:pr-24"
+        >
+          {children}
+        </m.div>
       </div>
+
+      {count > 1 && (
+        <div className="container-luxe relative pb-6 md:pb-8">
+          {/* Right padding keeps the tabs clear of the social rail and, on phones, of the fixed call/WhatsApp buttons. */}
+          <div className="flex items-end gap-4 pr-16 sm:gap-6 lg:pr-20">
+            <div role="group" aria-label={t.hero.sectors} className="grid flex-1 grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-4 sm:gap-x-6">
+              {slides.map((slide, slideIndex) => {
+                const active = slideIndex === index;
+                const project = getProject(slide.projectId, projects);
+                const sector = project ? t.categories[project.category] : pad(slideIndex + 1);
+                return (
+                  <button
+                    key={`${slide.image}-${slideIndex}`}
+                    type="button"
+                    onClick={() => setIndex(slideIndex)}
+                    aria-label={`${t.hero.goTo} ${slideIndex + 1}: ${sector}`}
+                    aria-current={active}
+                    className="group relative min-w-0 pb-1 pt-4 text-start"
+                  >
+                    <span aria-hidden className="absolute inset-x-0 top-0 h-[2px] overflow-hidden rounded-full bg-ivory/25">
+                      {active && (
+                        <m.span
+                          key={`${index}-${paused}`}
+                          className="absolute inset-0 origin-left rounded-full bg-champagne rtl:origin-right"
+                          initial={{ scaleX: paused ? 1 : 0 }}
+                          animate={{ scaleX: 1 }}
+                          transition={{ duration: paused ? 0 : SLIDE_INTERVAL / 1000, ease: 'linear' }}
+                        />
+                      )}
+                    </span>
+                    <span
+                      className={cn(
+                        'block truncate text-[0.64rem] font-medium uppercase tracking-luxe transition-colors duration-300 [text-shadow:0_1px_10px_rgba(23,18,44,0.6)]',
+                        active ? 'text-champagne' : 'text-ivory/80 group-hover:text-ivory',
+                      )}
+                    >
+                      {sector}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {current && (
+              <Link
+                href={projectHref(current.id)}
+                className="hidden shrink-0 items-center gap-2 pb-1 text-[0.62rem] font-medium uppercase tracking-luxe text-ivory/80 transition-colors hover:text-champagne lg:inline-flex"
+              >
+                {t.common.viewProject}
+                <ArrowRight aria-hidden className="h-3.5 w-3.5 rtl:-scale-x-100" strokeWidth={1.5} />
+              </Link>
+            )}
+            <button
+              type="button"
+              onClick={() => setPaused((value) => !value)}
+              aria-label={paused ? t.hero.play : t.hero.pause}
+              className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-ivory/25 text-ivory transition-colors hover:border-champagne hover:bg-champagne hover:text-indigo"
+            >
+              {paused ? (
+                <Play aria-hidden className="h-3.5 w-3.5" strokeWidth={2} />
+              ) : (
+                <Pause aria-hidden className="h-3.5 w-3.5" strokeWidth={2} />
+              )}
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

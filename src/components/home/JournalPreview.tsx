@@ -25,9 +25,10 @@ export function JournalPreview() {
           </Reveal>
         </div>
 
-        <div className="mt-16 grid gap-14 md:grid-cols-2 lg:gap-16">
-          {posts.slice(0, 2).map((post, index) => (
-            <Reveal key={post.slug} delay={index * 0.12}>
+        {/* Three compact cards on large screens; the third drops out on two-column tablets so the row stays even. */}
+        <div className="mt-12 grid gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-5">
+          {posts.slice(0, 3).map((post, index) => (
+            <Reveal key={post.slug} delay={index * 0.12} className={index === 2 ? 'sm:max-lg:hidden' : undefined}>
               <ArticleCard post={post} />
             </Reveal>
           ))}

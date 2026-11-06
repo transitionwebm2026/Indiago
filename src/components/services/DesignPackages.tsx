@@ -1,11 +1,8 @@
 'use client';
 
-import { Check, Minus } from 'lucide-react';
 import { WhatsAppIcon } from '@/components/icons/SocialIcons';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { ButtonLink } from '@/components/ui/Button';
-import { Eyebrow } from '@/components/ui/Eyebrow';
-import { Highlight } from '@/components/ui/Highlight';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { useSite } from '@/lib/cms/hooks';
@@ -35,19 +32,18 @@ function pricingMessage(packages: Packages, item: Packages['items'][number]) {
   ].join('\n');
 }
 
-/** Three design packages, the fixed supervision fee and a feature-by-feature comparison. */
+/** Three design packages and the fixed supervision fee. */
 export function DesignPackages() {
   const { t } = useLanguage();
   const { whatsappLink } = useSite();
   const packages = t.services.packages;
-  const compare = packages.compare;
 
   return (
     <section id="packages" className="section-y scroll-mt-20 bg-linen">
       <div className="container-luxe">
-        <SectionHeading eyebrow={packages.eyebrow} title={packages.title} body={packages.body} align="center" />
+        <SectionHeading eyebrow={packages.eyebrow} title={packages.title} body={packages.body} align="center" size="lg" />
 
-        <div className="mt-16 grid gap-5 lg:grid-cols-3">
+        <div className="mx-auto mt-12 grid max-w-md gap-4 lg:max-w-none lg:grid-cols-3">
           {packages.items.map((item, index) => {
             const featured = index === RECOMMENDED;
             const terms = [
@@ -58,41 +54,41 @@ export function DesignPackages() {
               <Reveal key={item.name} delay={index * 0.1} className="h-full">
                 <article
                   className={cn(
-                    'relative flex h-full flex-col overflow-hidden rounded-[2rem] p-7 pt-9 sm:p-9 sm:pt-11',
+                    'relative flex h-full flex-col overflow-hidden rounded-[1.25rem] p-5 pt-6 sm:p-6 sm:pt-7',
                     featured ? 'bg-indigo text-ivory' : 'card-frame bg-white/80 text-indigo',
                   )}
                 >
                   <span aria-hidden className="absolute inset-x-0 top-0 h-1 bg-champagne" />
                   <p
                     className={cn(
-                      'w-fit rounded-full px-3.5 py-1.5 text-[0.6rem] font-medium uppercase tracking-luxe',
+                      'w-fit rounded-full px-3 py-1 text-[0.56rem] font-medium uppercase tracking-luxe',
                       featured ? 'bg-champagne text-indigo' : 'border border-champagne/60 text-champagne-800',
                     )}
                   >
                     {featured ? packages.recommended : packages.label}
                   </p>
-                  <h3 className="mt-6 font-serif text-3xl tracking-wide">{item.name}</h3>
-                  <p className={cn('mt-2 font-serif text-lg tracking-wide', featured ? 'text-champagne' : 'text-champagne-700')}>
+                  <h3 className="mt-4 font-serif text-2xl tracking-wide sm:text-[1.65rem]">{item.name}</h3>
+                  <p className={cn('mt-1 font-serif text-base tracking-wide', featured ? 'text-champagne' : 'text-champagne-700')}>
                     {item.tagline}
                   </p>
-                  <p className={cn('mt-6 text-sm leading-relaxed', featured ? 'text-ivory/70' : 'text-charcoal-soft')}>
+                  <p className={cn('mt-4 text-[0.82rem] leading-relaxed', featured ? 'text-ivory/70' : 'text-charcoal-soft')}>
                     <span className={cn('font-medium', featured ? 'text-ivory' : 'text-indigo')}>{packages.idealFor}:</span>{' '}
                     {item.idealFor}
                   </p>
 
                   <p
                     className={cn(
-                      'mt-8 border-t pt-6 text-[0.62rem] font-medium uppercase tracking-ultra',
+                      'mt-5 border-t pt-4 text-[0.58rem] font-medium uppercase tracking-ultra',
                       featured ? 'border-ivory/15 text-champagne' : 'border-indigo/10 text-champagne-800',
                     )}
                   >
                     {packages.included}
                   </p>
-                  <ul className="mt-5 space-y-3">
+                  <ul className="mt-3 space-y-2">
                     {item.features.map((feature) => (
                       <li
                         key={feature}
-                        className={cn('flex items-start gap-3 text-sm leading-relaxed', featured ? 'text-ivory/85' : 'text-indigo')}
+                        className={cn('flex items-start gap-2.5 text-[0.82rem] leading-relaxed', featured ? 'text-ivory/85' : 'text-indigo')}
                       >
                         <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rotate-45 bg-champagne" />
                         {feature}
@@ -100,8 +96,8 @@ export function DesignPackages() {
                     ))}
                   </ul>
 
-                  <div className="mt-auto pt-8">
-                    <dl className={cn('space-y-2 border-t pt-6 text-sm', featured ? 'border-ivory/15' : 'border-indigo/10')}>
+                  <div className="mt-auto pt-5">
+                    <dl className={cn('space-y-1.5 border-t pt-4 text-[0.82rem]', featured ? 'border-ivory/15' : 'border-indigo/10')}>
                       {terms.map((term) => (
                         <div key={term.label} className="flex flex-wrap gap-x-2">
                           <dt className={cn('font-medium', featured ? 'text-champagne' : 'text-champagne-800')}>{term.label}:</dt>
@@ -113,7 +109,8 @@ export function DesignPackages() {
                       href={whatsappLink(pricingMessage(packages, item))}
                       variant={featured ? 'primary' : 'solid-dark'}
                       aria-label={`${packages.whatsapp} — ${item.name}`}
-                      className="mt-7 w-full"
+                      size="sm"
+                      className="mt-5 w-full"
                     >
                       <WhatsAppIcon className="h-4 w-4 shrink-0" />
                       {packages.whatsapp}
@@ -125,107 +122,18 @@ export function DesignPackages() {
           })}
         </div>
 
-        <Reveal className="mt-5">
-          <div className="flex flex-col gap-4 rounded-[2rem] bg-champagne p-7 text-indigo sm:flex-row sm:items-center sm:gap-10 sm:p-9">
-            <p dir="ltr" className="font-serif text-6xl leading-none tracking-wide md:text-7xl">
+        <Reveal className="mx-auto mt-4 max-w-md lg:max-w-none">
+          <div className="flex flex-col gap-3 rounded-[1.25rem] bg-champagne p-5 text-indigo sm:flex-row sm:items-center sm:gap-7 sm:p-6">
+            <p dir="ltr" className="font-serif text-4xl leading-none tracking-wide md:text-5xl">
               {packages.supervision.value}
             </p>
             <div>
-              <h3 className="font-serif text-2xl tracking-wide">{packages.supervision.title}</h3>
-              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-indigo/80">{packages.supervision.body}</p>
+              <h3 className="font-serif text-lg tracking-wide sm:text-xl">{packages.supervision.title}</h3>
+              <p className="mt-1 max-w-2xl text-[0.82rem] leading-relaxed text-indigo/80">{packages.supervision.body}</p>
             </div>
           </div>
         </Reveal>
 
-        <div className="mt-24 text-center">
-          <Reveal>
-            <Eyebrow>{compare.eyebrow}</Eyebrow>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <h3 className="mt-5 font-serif text-3xl tracking-wide text-indigo sm:text-4xl">
-              <Highlight text={compare.title} />
-            </h3>
-          </Reveal>
-        </div>
-        <Reveal delay={0.12} className="relative mt-10 overflow-hidden rounded-[2rem] card-frame bg-white/80">
-          <table className="w-full table-fixed border-collapse text-sm md:table-auto">
-            <thead>
-              <tr>
-                <th
-                  scope="col"
-                  className="hidden px-6 py-5 text-start text-[0.62rem] font-medium uppercase tracking-ultra text-champagne-800 md:table-cell"
-                >
-                  {compare.feature}
-                </th>
-                {packages.items.map((item, index) => (
-                  <th
-                    key={item.name}
-                    scope="col"
-                    className={cn(
-                      'px-2 py-5 text-center font-serif text-sm font-normal tracking-wide md:px-4 md:text-base',
-                      index === RECOMMENDED ? 'bg-indigo text-champagne' : 'text-indigo',
-                    )}
-                  >
-                    {item.name}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            {compare.rows.map((row) => {
-              const cells: (string | boolean)[] = row.values;
-              return (
-                <tbody key={row.label} className="border-t border-indigo/10">
-                  {/* Phones have no room for a label column, so the label takes its own line above the values. */}
-                  <tr className="md:hidden">
-                    <th
-                      colSpan={cells.length}
-                      scope="rowgroup"
-                      className="px-4 pb-2.5 pt-4 text-center font-normal text-charcoal-soft"
-                    >
-                      {row.label}
-                    </th>
-                  </tr>
-                  <tr>
-                    <th scope="row" className="hidden px-6 py-4 text-start font-normal text-charcoal-soft md:table-cell">
-                      {row.label}
-                    </th>
-                    {cells.map((cell, index) => {
-                      const featured = index === RECOMMENDED;
-                      return (
-                        <td
-                          key={index}
-                          className={cn('px-2 py-3 text-center md:px-4 md:py-4', featured ? 'bg-indigo text-ivory' : 'text-indigo')}
-                        >
-                          {cell === true ? (
-                            <>
-                              <Check
-                                aria-hidden
-                                strokeWidth={2}
-                                className={cn('mx-auto h-4 w-4', featured ? 'text-champagne' : 'text-champagne-700')}
-                              />
-                              <span className="sr-only">{compare.included}</span>
-                            </>
-                          ) : cell === false ? (
-                            <>
-                              <Minus
-                                aria-hidden
-                                strokeWidth={1.5}
-                                className={cn('mx-auto h-4 w-4', featured ? 'text-ivory/30' : 'text-charcoal-muted/60')}
-                              />
-                              <span className="sr-only">{compare.notIncluded}</span>
-                            </>
-                          ) : (
-                            <span className="font-medium">{cell}</span>
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                </tbody>
-              );
-            })}
-          </table>
-        </Reveal>
       </div>
     </section>
   );

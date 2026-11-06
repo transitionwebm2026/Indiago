@@ -7,6 +7,7 @@ import { useLanguage } from '@/components/providers/LanguageProvider';
 import { FilterBar, type FilterOption } from '@/components/ui/FilterBar';
 import { useProjects } from '@/lib/cms/hooks';
 import { projectCategories, type Project, type ProjectCategory } from '@/lib/data/projects';
+import { plain } from '@/components/ui/Highlight';
 import { EASE } from '@/lib/motion';
 import { pad } from '@/lib/utils';
 import { ProjectCard } from './ProjectCard';
@@ -16,7 +17,7 @@ const Lightbox = dynamic(() => import('@/components/ui/Lightbox').then((module) 
 
 type Filter = 'all' | ProjectCategory;
 
-/** Section 2 of the portfolio page: category filter, project grid and quick-view galleries. */
+/** The whole portfolio page: category filter, project grid and quick-view galleries. */
 export function PortfolioExplorer() {
   const { t, l } = useLanguage();
   const projects = useProjects();
@@ -45,9 +46,12 @@ export function PortfolioExplorer() {
     : [];
 
   return (
-    <section className="section-y bg-ivory">
+    // The page has no title section, so the top padding clears the floating menu button.
+    <section className="bg-ivory pb-20 pt-24 sm:pt-28 md:pb-28 md:pt-32 lg:pb-32">
       <div className="container-luxe">
-        {/* Keeps the heading outline in order (h1 hero → h2 → the cards' h3) for screen readers. */}
+        {/* The page title stays for search engines and screen readers, and keeps the heading outline
+            in order (h1 → h2 → the cards' h3). */}
+        <h1 className="sr-only">{plain(t.portfolio.hero.title)}</h1>
         <h2 className="sr-only">{t.portfolio.hero.eyebrow}</h2>
         <div className="flex flex-col gap-6 border-b border-indigo/10 pb-8 md:flex-row md:items-center md:justify-between">
           <FilterBar id="portfolio-filter" label={t.portfolio.filterLabel} options={options} value={filter} onChange={setFilter} />

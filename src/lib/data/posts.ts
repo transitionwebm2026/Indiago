@@ -36,6 +36,11 @@ export function buildAuthors(founder: Author): Record<AuthorId, Author> {
 
 export const authors = buildAuthors(site.founder);
 
+/** Articles by the studio itself are published without a "By Indigo…" byline; the founder's carry his name. */
+export function hasByline(post: Pick<PostSummary, 'author'>) {
+  return post.author !== 'studio';
+}
+
 export function isBlogCategory(value: string): value is BlogCategory {
   return (blogCategories as string[]).includes(value);
 }
@@ -67,6 +72,38 @@ export interface Post extends PostSummary {
  * don't download it. Each entry generates a static page at /blog/[slug]/. Keep them ordered newest first.
  */
 export const postSummaries: PostSummary[] = [
+  {
+    slug: 'interior-design-trends-2027',
+    title: {
+      en: '2027 Interior Design Trends',
+      ar: 'اتجاهات التصميم الداخلي في 2027',
+    },
+    excerpt: {
+      en: 'Warm minimalism, earthy colour, honest natural materials and local craft: the ideas we expect to shape homes and hospitality interiors in the year ahead.',
+      ar: 'بساطة دافئة، وألوان من الأرض، وخامات طبيعية، وحِرف محلية: الأفكار التي نتوقع أن تشكّل البيوت وأماكن الضيافة في العام القادم.',
+    },
+    category: 'design-trends',
+    author: 'studio',
+    date: '2026-11-05',
+    readTime: 6,
+    cover: '/images/services/interior-design.jpg',
+  },
+  {
+    slug: 'luxury-looks-smart-budget',
+    title: {
+      en: 'Luxury Looks on a Smart Budget',
+      ar: 'فخامة بميزانية ذكية',
+    },
+    excerpt: {
+      en: 'A considered home does not need an unlimited budget. Where to spend, where to save, and how planning, light and restraint make modest finishes look rich.',
+      ar: 'البيت الأنيق لا يحتاج إلى ميزانية مفتوحة. أين تصرف، وأين توفّر، وكيف يجعل التخطيط والإضاءة والبساطة التشطيبات المتوسطة تبدو فاخرة.',
+    },
+    category: 'client-guides',
+    author: 'studio',
+    date: '2026-11-05',
+    readTime: 6,
+    cover: '/images/projects/sun-capital-residence/02.jpg',
+  },
   {
     slug: 'arabian-heritage-modern-majlis',
     title: {

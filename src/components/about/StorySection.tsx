@@ -35,14 +35,14 @@ export function StorySection() {
               </Reveal>
             ))}
 
-            <dl className="mt-16 grid gap-4 sm:grid-cols-2">
+            <dl className="mt-12 grid gap-3 sm:grid-cols-2">
               {story.facts.map((fact, index) => (
-                <Reveal key={fact.label} delay={0.1 + index * 0.06} className="card-frame rounded-3xl bg-white/70 p-7">
-                  <dt className="flex items-center gap-3 text-[0.64rem] font-medium uppercase tracking-ultra text-champagne-800">
-                    <span className="font-serif text-sm tracking-normal text-champagne-700">{pad(index + 1)}</span>
+                <Reveal key={fact.label} delay={0.1 + index * 0.06} className="card-frame rounded-2xl bg-white/70 p-5">
+                  <dt className="flex items-center gap-2.5 text-[0.6rem] font-medium uppercase tracking-luxe text-champagne-800">
+                    <span className="font-serif text-xs tracking-normal text-champagne-700">{pad(index + 1)}</span>
                     {fact.label}
                   </dt>
-                  <dd className="mt-4 font-serif text-xl leading-snug tracking-wide text-indigo">{fact.value}</dd>
+                  <dd className="mt-2.5 font-serif text-lg leading-snug tracking-wide text-indigo">{fact.value}</dd>
                 </Reveal>
               ))}
             </dl>

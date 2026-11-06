@@ -41,7 +41,7 @@ const heroSlidesField: MediaFieldDef = {
   key: 'slides',
   type: 'slides',
   label: 'Hero photographs',
-  hint: 'The slider at the top of the home page changes photo every 3 seconds. Use large landscape images (at least 2000 px wide).',
+  hint: 'The slider at the top of the home page changes photo every 3 seconds and names the sector of each photo’s project, so show one project per sector. Use large landscape images (at least 2000 px wide).',
 };
 
 export const navLinkKeys = ['home', 'about', 'portfolio', 'services', 'journal', 'contact'];
@@ -59,10 +59,11 @@ export const contentSections: SectionDef[] = [
     key: 'home.about',
     page: 'home',
     label: 'Philosophy & founder introduction',
-    description: 'The section introducing the studio, with two overlapping photos.',
+    description: 'The section introducing the studio, with two overlapping photos and a pair of photos below it.',
     media: [
       { key: 'primaryImage', type: 'image', label: 'Large photo', hint: 'Portrait format (4:5) works best.' },
       { key: 'secondaryImage', type: 'image', label: 'Small photo', hint: 'Square format works best.' },
+      { key: 'pair', type: 'images', label: 'Photo pair', hint: 'Two landscape photos (4:3) shown side by side below the section.' },
     ],
   },
   { key: 'home.why', page: 'home', label: 'Why Indigo', description: 'The numbered list of reasons to work with the studio.' },
@@ -103,7 +104,12 @@ export const contentSections: SectionDef[] = [
   { key: 'about.metrics', page: 'about', label: 'Client trust numbers', description: 'The animated counters (years, projects…).' },
 
   // Portfolio
-  { key: 'portfolio.hero', page: 'portfolio', label: 'Page title', description: 'The title and introduction at the top of the Portfolio page.' },
+  {
+    key: 'portfolio.hero',
+    page: 'portfolio',
+    label: 'Page title',
+    description: 'The Portfolio page opens straight onto the projects, so this title is not shown; search engines and screen readers still read it.',
+  },
   { key: 'portfolio', page: 'portfolio', label: 'Project grid labels', description: 'Filter and counter labels above the project grid.', exclude: ['hero'] },
   { key: 'project', page: 'portfolio', label: 'Project page labels', description: 'Headings and buttons used on every individual project page.' },
 
@@ -112,12 +118,13 @@ export const contentSections: SectionDef[] = [
   { key: 'services.grid', page: 'services', label: 'Services heading', description: 'Heading above the service cards. The cards are edited in Services & Process.' },
   { key: 'services.workflow', page: 'services', label: 'Process heading', description: 'Heading above the process timeline. The steps are edited in Services & Process.' },
   { key: 'services.deliverables', page: 'services', label: 'Deliverables heading', description: 'Heading beside the deliverables accordion.' },
-  { key: 'services.packages', page: 'services', label: 'Design packages', description: 'The three packages, the supervision fee and the comparison table.' },
+  { key: 'services.packages', page: 'services', label: 'Design packages', description: 'The three packages and the supervision fee.' },
+  { key: 'services.cta', page: 'services', label: 'Closing call to action', description: 'The compact “Let’s do your project” strip at the end of the Services page.' },
 
   // Blog
   { key: 'blog.hero', page: 'blog', label: 'Page title', description: 'The title and introduction at the top of the Blog page.' },
   { key: 'blog', page: 'blog', label: 'Article list labels', description: 'Labels around the featured article and article grid.', exclude: ['hero', 'newsletter'] },
-  { key: 'blog.newsletter', page: 'blog', label: 'Newsletter sign-up', description: 'The email sign-up band.' },
+  { key: 'blog.newsletter', page: 'blog', label: 'Newsletter sign-up', description: 'The email sign-up card on the home, contact and blog pages and below every article.' },
   { key: 'article', page: 'blog', label: 'Article page labels', description: 'Labels used on every article page.' },
 
   // Contact
@@ -142,7 +149,7 @@ export const contentSections: SectionDef[] = [
   { key: 'categories', page: 'shared', label: 'Project sectors', description: 'Names of the portfolio categories.' },
   { key: 'blogCategories', page: 'shared', label: 'Blog categories', description: 'Names of the blog categories.' },
   { key: 'common', page: 'shared', label: 'Common labels', description: 'Small labels reused across the site.' },
-  { key: 'hero', page: 'shared', label: 'Photo slider controls', description: 'Slider accessibility labels and the vertical “Follow us” text.' },
+  { key: 'hero', page: 'shared', label: 'Photo slider controls', description: 'Slider accessibility labels, the sector tabs label and the vertical “Follow us” text.' },
   { key: 'notFound', page: 'shared', label: 'Page not found (404)', description: 'Shown when a visitor opens a link that does not exist.' },
 ];
 
@@ -151,7 +158,11 @@ export const sectionsByKey = new Map(contentSections.map((section) => [section.k
 /** Built-in photographs for each section with media. */
 export const defaultMedia = {
   'home.hero': { slides: heroSlides.home },
-  'home.about': { primaryImage: pageImages.homeAboutPrimary as string, secondaryImage: pageImages.homeAboutSecondary as string },
+  'home.about': {
+    primaryImage: pageImages.homeAboutPrimary as string,
+    secondaryImage: pageImages.homeAboutSecondary as string,
+    pair: [...pageImages.homeAboutPair] as string[],
+  },
   'about.story': { image: pageImages.aboutStory as string },
   'about.craft': { images: [...pageImages.craft] as string[] },
   'about.materials': {

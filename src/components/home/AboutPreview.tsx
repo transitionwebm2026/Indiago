@@ -67,6 +67,25 @@ export function AboutPreview() {
           </Reveal>
         </div>
       </div>
+
+      {/* Two of the studio's projects, side by side across the width of the section. */}
+      <div className="container-luxe mt-20 grid gap-4 sm:grid-cols-2 md:gap-6 lg:mt-24">
+        {media.pair.slice(0, 2).map((photo, index) => (
+          <Reveal
+            key={`${photo}-${index}`}
+            delay={index * 0.12}
+            className="relative isolate aspect-[4/3] overflow-hidden rounded-[2rem] bg-linen-dark"
+          >
+            <Image
+              src={img(photo, 1200)}
+              alt=""
+              fill
+              sizes="(min-width: 1320px) 630px, (min-width: 640px) 50vw, 100vw"
+              className="object-cover transition-transform duration-1200 ease-luxe hover:scale-[1.04]"
+            />
+          </Reveal>
+        ))}
+      </div>
     </section>
   );
 }

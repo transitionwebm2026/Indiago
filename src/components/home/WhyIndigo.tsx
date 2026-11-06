@@ -1,8 +1,10 @@
 'use client';
 
 import { useLanguage } from '@/components/providers/LanguageProvider';
+import { ButtonLink } from '@/components/ui/Button';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { routes } from '@/lib/routes';
 import { pad } from '@/lib/utils';
 
 export function WhyIndigo() {
@@ -12,7 +14,14 @@ export function WhyIndigo() {
   return (
     <section className="section-y relative isolate overflow-hidden bg-indigo text-ivory">
       <div className="container-luxe">
-        <SectionHeading surface="dark" eyebrow={why.eyebrow} title={why.title} body={why.body} />
+        <SectionHeading surface="dark" eyebrow={why.eyebrow} title={why.title} body={why.body}>
+          {/* Sits under the heading and leads on to the full story of how the studio works. */}
+          <Reveal delay={0.24} className="mt-8">
+            <ButtonLink href={routes.about} variant="link-light" arrow>
+              {t.common.readMore}
+            </ButtonLink>
+          </Reveal>
+        </SectionHeading>
 
         <ol className="mt-16 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-y-14">
           {why.items.map((item, index) => (

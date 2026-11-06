@@ -14,17 +14,18 @@ export function MetricsSection() {
       <div className="container-luxe">
         <SectionHeading eyebrow={metrics.eyebrow} title={metrics.title} align="center" />
 
-        <dl className="mt-16 grid gap-4 sm:grid-cols-3">
+        {/* Three small cards in one row on every screen, held to a narrow width on large ones. */}
+        <dl className="mx-auto mt-12 grid max-w-4xl grid-cols-3 gap-2.5 sm:gap-4">
           {metrics.items.map((metric, index) => (
             <Reveal
               key={metric.label}
               delay={index * 0.12}
-              className="flex flex-col items-center card-frame rounded-3xl bg-white/70 px-6 py-12 text-center"
+              className="flex min-w-0 flex-col items-center card-frame rounded-2xl bg-white/70 px-2 py-5 text-center sm:px-5 sm:py-7"
             >
-              <dt className="order-2 mt-4 text-[0.68rem] font-medium uppercase tracking-ultra text-charcoal-soft">
+              <dt className="order-2 mt-2 text-[0.55rem] font-medium uppercase leading-snug tracking-luxe text-charcoal-soft sm:mt-3 sm:text-[0.62rem] sm:tracking-ultra">
                 {metric.label}
               </dt>
-              <dd className="order-1 font-serif text-6xl tracking-wide text-indigo md:text-7xl" dir="ltr">
+              <dd className="order-1 font-serif text-[1.6rem] tracking-normal text-indigo min-[420px]:text-3xl sm:text-5xl sm:tracking-wide" dir="ltr">
                 <Counter value={metric.value} suffix={metric.suffix} />
               </dd>
             </Reveal>

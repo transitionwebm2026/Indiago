@@ -14,14 +14,17 @@ const slide = (projectId: string, image?: string): HeroSlide => ({
 });
 
 /**
- * Three project photographs for the home hero (the only page with one), cycled every 3 seconds.
+ * The home hero (the only page with one), cycled every 3 seconds: one project per sector the studio
+ * serves, and the hero names the sector of each slide (from its project's category).
  * The hero fills the screen, so only photographs that stay clean at full size are used (several
- * project photos are upscaled from small originals and break up when shown this large).
+ * project photos, such as Department of Finance 02 and 03, are upscaled from small originals and
+ * break up when shown this large).
  */
 export const heroSlides = {
   home: [
-    slide('mynt-restaurant', '/images/projects/mynt-restaurant/02.jpg'),
+    slide('mynt-restaurant'),
     slide('sun-capital-residence'),
-    slide('sun-capital-residence', '/images/projects/sun-capital-residence/02.jpg'),
+    slide('department-of-finance'),
+    slide('al-borg-laboratories'),
   ],
 } satisfies Record<string, HeroSlide[]>;

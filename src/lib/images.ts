@@ -17,9 +17,11 @@ export const pageImages = {
   homeHero: '1611048267451-e6ed903d4a38',
   homeAboutPrimary: '1600607687939-ce8a6c25118c',
   homeAboutSecondary: '1616137466211-f939a420be84',
-  aboutStory: '1600573472550-8090b5e0745e',
-  // Site supervision against the drawings, the team aligned on one set of plans, finish samples checked.
-  craft: ['1772442198624-4fc4d7281e89', '1608303588026-884930af2559', '1664638413509-6aa486866f9a'],
+  // Two of the studio's own projects, side by side below the home page's philosophy section.
+  homeAboutPair: ['/images/projects/arabian-majlis/03.jpg', '/images/projects/sun-capital-residence/03.jpg'],
+  aboutStory: '/images/projects/mynt-restaurant/03.jpg',
+  // Site supervision on a fit-out, ceiling works and flooring installation.
+  craft: ['/images/services/fit-out.jpg', '/images/site/ceiling-works.jpg', '/images/site/flooring.jpg'],
   materials: {
     stone: '1566305977571-5666677c6e98',
     timber: '1600047508788-786f3865b4b9',

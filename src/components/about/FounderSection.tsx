@@ -16,16 +16,17 @@ export function FounderSection() {
 
   return (
     <section className="section-y bg-linen">
-      <div className="container-luxe grid items-center gap-16 lg:grid-cols-12 lg:gap-20">
-        <Reveal className="relative lg:col-span-5">
-          <div aria-hidden className="absolute -bottom-4 -end-4 top-4 start-4 rounded-[2rem] border border-champagne/60 sm:-bottom-6 sm:-end-6 sm:top-6 sm:start-6" />
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-indigo">
+      <div className="container-luxe grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
+        {/* A portrait-card no wider than a phone column, so it never dominates the section. */}
+        <Reveal className="relative mx-auto w-full max-w-[19rem] sm:max-w-xs lg:col-span-4 lg:max-w-none">
+          <div aria-hidden className="absolute -bottom-3 -end-3 top-3 start-3 rounded-[1.5rem] border border-champagne/60 sm:-bottom-4 sm:-end-4 sm:top-4 sm:start-4" />
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-indigo">
             {site.founder.portrait ? (
-              <Image src={site.founder.portrait} alt={`${name} — ${l(site.founder.role)}`} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover object-top" />
+              <Image src={site.founder.portrait} alt={`${name} — ${l(site.founder.role)}`} fill sizes="(min-width: 1024px) 30vw, 320px" className="object-cover object-top" />
             ) : (
               // Placeholder until a portrait is supplied (see site.founder.portrait).
               <div className="flex h-full flex-col items-center justify-center gap-6 text-center" role="img" aria-label={founder.portraitNote}>
-                <span className="font-serif text-[7rem] leading-none tracking-[0.08em] text-champagne" lang="en">
+                <span className="font-serif text-[5rem] leading-none tracking-[0.08em] text-champagne" lang="en">
                   {site.founder.initials}
                 </span>
                 <span aria-hidden className="h-px w-16 bg-champagne/50" />
@@ -35,7 +36,7 @@ export function FounderSection() {
           </div>
         </Reveal>
 
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-8">
           <Reveal>
             <Eyebrow>{founder.eyebrow}</Eyebrow>
           </Reveal>
@@ -50,9 +51,9 @@ export function FounderSection() {
             </Reveal>
           ))}
           <Reveal delay={0.26}>
-            <ul className="mt-10 grid gap-3 sm:grid-cols-3">
+            <ul className="mt-8 grid gap-2.5 sm:grid-cols-3">
               {founder.highlights.filter(Boolean).map((highlight, index) => (
-                <li key={`${highlight}-${index}`} className="flex items-start gap-3 card-frame rounded-2xl bg-ivory p-4 text-sm leading-relaxed text-indigo">
+                <li key={`${highlight}-${index}`} className="flex items-start gap-2.5 card-frame rounded-2xl bg-ivory px-4 py-3 text-[0.82rem] leading-relaxed text-indigo">
                   <span aria-hidden className="mt-2.5 h-1 w-1 shrink-0 rotate-45 bg-champagne" />
                   {highlight}
                 </li>

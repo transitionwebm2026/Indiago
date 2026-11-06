@@ -238,7 +238,7 @@ export function InquiryForm() {
     const body =
       result === 'whatsapp' ? form.successBodyWhatsapp : result === 'email' ? form.successBodyEmail : form.successBodyMailto;
     return (
-      <div ref={cardRef} className="card-frame scroll-mt-28 rounded-[2rem] bg-white/70 p-8 sm:p-12">
+      <div ref={cardRef} className="card-frame scroll-mt-28 rounded-[1.5rem] bg-white/70 p-6 sm:p-9">
         <m.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -270,7 +270,7 @@ export function InquiryForm() {
   const options = form.options;
 
   return (
-    <div ref={cardRef} className="card-frame scroll-mt-28 rounded-[2rem] bg-white/70 p-6 sm:p-10">
+    <div ref={cardRef} className="card-frame scroll-mt-28 rounded-[1.5rem] bg-white/70 p-5 sm:p-8">
       {/* Progress */}
       <div className="flex items-center justify-between gap-4 text-[0.64rem] font-medium uppercase tracking-luxe">
         <span className="text-champagne-800">

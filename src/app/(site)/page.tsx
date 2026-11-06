@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { NewsletterSignup } from '@/components/blog/NewsletterSignup';
 import { AboutPreview } from '@/components/home/AboutPreview';
 import { HomeHero } from '@/components/home/HomeHero';
 import { JournalPreview } from '@/components/home/JournalPreview';
@@ -23,6 +24,7 @@ export default function HomePage() {
       <PortfolioPreview />
       <ServicesPreview />
       <JournalPreview />
+      <NewsletterSignup />
       <CtaBanner interactive />
     </>
   );

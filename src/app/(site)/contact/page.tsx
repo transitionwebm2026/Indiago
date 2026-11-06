@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { NewsletterSignup } from '@/components/blog/NewsletterSignup';
 import { InquirySection } from '@/components/contact/InquirySection';
 import { StudioInfo } from '@/components/contact/StudioInfo';
 import { StudioMap } from '@/components/contact/StudioMap';
@@ -20,6 +21,7 @@ export default function ContactPage() {
       <InquirySection />
       <StudioInfo />
       <StudioMap />
+      <NewsletterSignup />
     </>
   );
 }

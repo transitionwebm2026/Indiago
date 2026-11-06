@@ -19,8 +19,8 @@ export function StudioMap() {
       <div className="container-luxe">
         <SectionHeading eyebrow={map.eyebrow} title={map.title} />
 
-        <Reveal delay={0.1} className="relative mt-14">
-          <div className="relative isolate aspect-[4/5] overflow-hidden card-frame rounded-[2rem] bg-linen-dark sm:aspect-[16/10] lg:aspect-[21/9]">
+        <Reveal delay={0.1} className="relative mt-10">
+          <div className="relative isolate aspect-square overflow-hidden card-frame rounded-[1.25rem] bg-linen-dark sm:aspect-[2/1] lg:aspect-[3/1]">
             <iframe
               title={map.mapTitle}
               src={site.mapsEmbedUrl}
@@ -29,18 +29,18 @@ export function StudioMap() {
               allowFullScreen
               className="absolute inset-0 h-full w-full border-0 [filter:grayscale(0.55)_sepia(0.18)_contrast(1.05)]"
             />
-            <div aria-hidden className="pointer-events-none absolute inset-0 rounded-[2rem] ring-1 ring-inset ring-indigo/10" />
+            <div aria-hidden className="pointer-events-none absolute inset-0 rounded-[1.25rem] ring-1 ring-inset ring-indigo/10" />
           </div>
 
-          <div className="relative -mt-16 mx-4 card-frame-dark rounded-3xl bg-indigo p-7 text-ivory sm:absolute sm:bottom-6 sm:start-6 sm:mx-0 sm:mt-0 sm:w-[22rem]">
-            <Logo className="h-11" />
-            <p className="mt-6 leading-relaxed text-ivory/80">{l(site.address)}</p>
+          <div className="relative -mt-12 mx-3 card-frame-dark rounded-2xl bg-indigo p-5 text-ivory sm:absolute sm:bottom-4 sm:start-4 sm:mx-0 sm:mt-0 sm:w-[18rem]">
+            <Logo className="h-9" />
+            <p className="mt-4 text-sm leading-relaxed text-ivory/80">{l(site.address)}</p>
             {site.phone && (
               <a href={site.phoneHref} dir="ltr" className="mt-2 inline-block text-sm text-champagne transition-colors hover:text-ivory">
                 {site.phone}
               </a>
             )}
-            <ButtonLink href={site.mapsDirectionsUrl} size="sm" className="mt-6 w-full">
+            <ButtonLink href={site.mapsDirectionsUrl} size="sm" className="mt-4 w-full">
               <Navigation aria-hidden className="h-3.5 w-3.5" strokeWidth={1.75} />
               {map.directions}
             </ButtonLink>

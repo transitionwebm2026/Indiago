@@ -8,6 +8,7 @@ import { useLanguage } from '@/components/providers/LanguageProvider';
 import { buttonClasses } from '@/components/ui/Button';
 import { useSite } from '@/lib/cms/hooks';
 import { EASE } from '@/lib/motion';
+import { SITE_CREDIT_ID } from './SiteCredit';
 
 /**
  * Fixed bottom-right launchers: a direct call button stacked above the
@@ -20,6 +21,30 @@ export function WhatsAppWidget() {
   // The call button's first entrance waits for the page to settle; later show/hide toggles are instant.
   const [callIntroDone, setCallIntroDone] = useState(false);
   const panelId = useId();
+  // How far the credit band at the foot of the page has scrolled into view: the launchers rise by
+  // that much, so they never sit on top of the credit button.
+  const [lift, setLift] = useState(0);
+
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const band = document.getElementById(SITE_CREDIT_ID);
+      const overlap = band ? Math.max(0, Math.round(window.innerHeight - band.getBoundingClientRect().top)) : 0;
+      setLift(overlap);
+    };
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+    };
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -29,7 +54,10 @@ export function WhatsAppWidget() {
   }, [open]);
 
   return (
-    <div className="fixed bottom-5 right-5 z-[60] flex flex-col items-end gap-4 sm:bottom-8 sm:right-8">
+    <div
+      className="fixed bottom-5 right-5 z-[60] flex flex-col items-end gap-4 sm:bottom-8 sm:right-8"
+      style={lift ? { transform: `translateY(-${lift}px)` } : undefined}
+    >
       <AnimatePresence>
         {open && (
           <m.div

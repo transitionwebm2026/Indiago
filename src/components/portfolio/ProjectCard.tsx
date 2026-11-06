@@ -33,7 +33,7 @@ export function ProjectCard({ project, onOpenGallery, className, aspect = 'aspec
         />
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-indigo/75 via-indigo/5 to-indigo/20 transition-opacity duration-700 group-hover:opacity-90"
+          className="absolute inset-0 bg-gradient-to-t from-indigo-950/55 via-transparent via-40% to-transparent opacity-60 transition-opacity duration-700 group-hover:opacity-100"
         />
 
         <ul className="absolute inset-x-5 top-5 flex flex-wrap gap-2">

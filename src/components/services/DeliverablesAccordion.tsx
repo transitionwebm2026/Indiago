@@ -19,19 +19,19 @@ export function DeliverablesAccordion() {
 
   return (
     <section className="section-y bg-ivory">
-      <div className="container-luxe grid gap-14 lg:grid-cols-12 lg:gap-20">
-        <div className="lg:col-span-4">
-          <SectionHeading eyebrow={deliverables.eyebrow} title={deliverables.title} body={deliverables.body} />
+      <div className="container-luxe grid gap-14 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-5">
+          <SectionHeading eyebrow={deliverables.eyebrow} title={deliverables.title} body={deliverables.body} size="lg" />
         </div>
 
-        <Reveal className="lg:col-span-8">
-          <ul className="space-y-3">
+        <Reveal className="lg:col-span-7">
+          <ul className="space-y-2">
             {stages.map((stage, index) => {
               const expanded = open === index;
               const panelId = `${baseId}-panel-${index}`;
               const buttonId = `${baseId}-button-${index}`;
               return (
-                <li key={`${stage.title.en}-${index}`} className="card-frame rounded-3xl bg-white/70 px-4 sm:px-7">
+                <li key={`${stage.title.en}-${index}`} className="card-frame rounded-2xl bg-white/70 px-4 sm:px-5">
                   <h3>
                     <button
                       id={buttonId}
@@ -39,7 +39,7 @@ export function DeliverablesAccordion() {
                       aria-expanded={expanded}
                       aria-controls={panelId}
                       onClick={() => setOpen(expanded ? null : index)}
-                      className="group flex w-full items-center gap-3 py-5 text-start sm:gap-6 sm:py-7"
+                      className="group flex w-full items-center gap-3 py-4 text-start sm:gap-4 sm:py-5"
                     >
                       <span
                         className={cn(
@@ -49,7 +49,7 @@ export function DeliverablesAccordion() {
                       >
                         {pad(index + 1)}
                       </span>
-                      <span className="min-w-0 flex-1 break-words font-serif text-xl tracking-wide text-indigo min-[400px]:text-2xl md:text-3xl">
+                      <span className="min-w-0 flex-1 break-words font-serif text-lg tracking-wide text-indigo sm:text-xl md:text-2xl">
                         {l(stage.title)}
                       </span>
                       <span className="hidden text-[0.62rem] font-medium uppercase tracking-luxe text-charcoal-muted sm:block">
@@ -58,13 +58,13 @@ export function DeliverablesAccordion() {
                       <span
                         aria-hidden
                         className={cn(
-                          'grid h-10 w-10 shrink-0 place-items-center rounded-full border transition-all duration-500 ease-luxe',
+                          'grid h-8 w-8 shrink-0 place-items-center rounded-full border transition-all duration-500 ease-luxe',
                           expanded
                             ? 'rotate-45 border-indigo bg-indigo text-champagne'
                             : 'border-indigo/20 text-indigo group-hover:border-indigo',
                         )}
                       >
-                        <Plus className="h-4 w-4" strokeWidth={1.5} />
+                        <Plus className="h-3.5 w-3.5" strokeWidth={1.5} />
                       </span>
                     </button>
                   </h3>
@@ -80,9 +80,9 @@ export function DeliverablesAccordion() {
                         transition={{ duration: 0.5, ease: EASE }}
                         className="overflow-hidden"
                       >
-                        <ul className="grid gap-3 pb-6 sm:grid-cols-2 sm:pb-8 md:ps-12">
+                        <ul className="grid gap-2 pb-4 sm:grid-cols-2 sm:pb-5 md:ps-8">
                           {stage.deliverables.map((item, itemIndex) => (
-                            <li key={`${item.en}-${itemIndex}`} className="flex items-start gap-3 rounded-2xl bg-linen px-4 py-3.5 text-sm text-indigo">
+                            <li key={`${item.en}-${itemIndex}`} className="flex items-start gap-2.5 rounded-xl bg-linen px-3.5 py-2.5 text-[0.82rem] text-indigo">
                               <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rotate-45 bg-champagne" />
                               {l(item)}
                             </li>

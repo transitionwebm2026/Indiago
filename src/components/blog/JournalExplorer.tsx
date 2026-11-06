@@ -45,7 +45,7 @@ export function JournalExplorer() {
           <FilterBar id="journal-filter" label={t.blog.filterLabel} options={options} value={filter} onChange={setFilter} />
         </div>
 
-        <m.div layout className="mt-14 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+        <m.div layout className="mt-10 grid gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-5 lg:gap-y-8 xl:grid-cols-4">
           <AnimatePresence mode="popLayout" initial={false}>
             {visible.map((post) => (
               <m.div
