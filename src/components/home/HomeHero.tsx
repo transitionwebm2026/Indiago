@@ -16,8 +16,9 @@ export function HomeHero() {
     <HeroShell slides={slides}>
       {/* Headline and actions only, so the photography carries the hero. The shade behind the copy is
           light so the photographs stay bright; a soft glow under the headline keeps it legible on pale photos.
-          On large screens the headline also scales with screen height, so the hero always fits one screen. */}
-      <h1 className="text-balance font-serif text-[2rem] leading-[1.08] tracking-wide text-ivory [text-shadow:0_1px_3px_rgba(23,18,44,0.4),0_2px_30px_rgba(23,18,44,0.6)] sm:text-[2.9rem] lg:text-[length:min(3.75rem,7svh)]">
+          On large screens the headline also scales with screen height, so the hero always fits one screen.
+          Its width is set in em so it breaks into the same short lines, one under another, at every size. */}
+      <h1 className="max-w-[10em] text-balance font-serif text-[2rem] leading-[1.08] tracking-wide text-ivory [text-shadow:0_1px_3px_rgba(23,18,44,0.4),0_2px_30px_rgba(23,18,44,0.6)] sm:text-[2.9rem] lg:text-[length:min(3.75rem,7svh)]">
         <Highlight text={hero.title} surface="dark" />
       </h1>
       <div className="mt-7 flex flex-col gap-2.5 sm:mt-9 sm:flex-row sm:flex-wrap sm:gap-3">
