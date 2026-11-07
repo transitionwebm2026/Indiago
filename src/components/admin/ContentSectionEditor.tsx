@@ -354,14 +354,23 @@ function MixedCells({ label, enList, arList, onChange }: { label: string; enList
 
 /* ----------------------------------------------------------------------------- Media */
 
-function MediaEditor({ fields, media, onChange, projects }: { fields: MediaFieldDef[]; media: PlainObject; onChange: (media: PlainObject) => void; projects: { slug: string; title: string }[] }) {
+interface MediaEditorProps {
+  fields: MediaFieldDef[];
+  media: PlainObject;
+  onChange: (media: PlainObject) => void;
+  legacyCaptions?: Record<string, Localized>;
+}
+
+function MediaEditor({ fields, media, onChange, legacyCaptions }: MediaEditorProps) {
   return (
     <div className="space-y-6">
       {fields.map((field) => {
         const current = media[field.key];
         const update = (next: unknown) => onChange({ ...media, [field.key]: next });
         if (field.type === 'slides') {
-          return <SlidesField key={field.key} label={field.label} hint={field.hint} value={(current as HeroSlide[]) ?? []} onChange={update} projects={projects} />;
+          return (
+            <SlidesField key={field.key} label={field.label} hint={field.hint} value={(current as HeroSlide[]) ?? []} onChange={update} legacyCaptions={legacyCaptions} />
+          );
         }
         if (field.type === 'images') {
           return <GalleryField key={field.key} label={field.label} hint={field.hint} folder="site" value={(current as string[]) ?? []} onChange={update} />;
@@ -377,7 +386,8 @@ function MediaEditor({ fields, media, onChange, projects }: { fields: MediaField
 interface ContentSectionEditorProps {
   section: SectionDef;
   row: ContentRow | undefined;
-  projects: { slug: string; title: string }[];
+  /** Sector names by project, for hero slides saved before captions were written by hand. */
+  legacyCaptions?: Record<string, Localized>;
   open: boolean;
   onToggle: () => void;
   onSaved: () => void;
@@ -386,7 +396,7 @@ interface ContentSectionEditorProps {
 const withoutExcluded = (value: unknown, exclude: string[] | undefined) =>
   exclude?.length && isPlainObject(value) ? Object.fromEntries(Object.entries(value).filter(([key]) => !exclude.includes(key))) : value;
 
-export function ContentSectionEditor({ section, row, projects, open, onToggle, onSaved }: ContentSectionEditorProps) {
+export function ContentSectionEditor({ section, row, legacyCaptions, open, onToggle, onSaved }: ContentSectionEditorProps) {
   const defaults = useMemo<SectionValue>(
     () => ({
       en: withoutExcluded(getPath(en, section.key), section.exclude),
@@ -479,7 +489,7 @@ export function ContentSectionEditor({ section, row, projects, open, onToggle, o
         <div className="border-t border-indigo/5 px-5 pb-5 pt-5 sm:px-6">
           {section.media && (
             <div className="mb-8">
-              <MediaEditor fields={section.media} media={value.media} onChange={(media) => setValue((current) => ({ ...current, media }))} projects={projects} />
+              <MediaEditor fields={section.media} media={value.media} onChange={(media) => setValue((current) => ({ ...current, media }))} legacyCaptions={legacyCaptions} />
             </div>
           )}
           <NodeEditor path={[]} template={defaults.en} value={value} set={set} label={section.label} depth={0} />

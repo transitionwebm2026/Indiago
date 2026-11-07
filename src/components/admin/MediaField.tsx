@@ -554,44 +554,52 @@ interface SlidesFieldProps {
   hint?: ReactNode;
   value: HeroSlide[];
   onChange: (value: HeroSlide[]) => void;
-  projects: { slug: string; title: string }[];
+  /** Sector names in both languages, by project, for slides saved before captions were written by hand. */
+  legacyCaptions?: Record<string, Localized>;
 }
 
-/** Hero photographs (or videos), each optionally captioned with the project it shows. */
-export function SlidesField({ label, hint, value, onChange, projects }: SlidesFieldProps) {
-  const update = (index: number, slide: HeroSlide) => onChange(value.map((item, i) => (i === index ? slide : item)));
+const emptyCaption: Localized = { en: '', ar: '' };
+
+/** Hero photographs (or videos), each with a caption written in English and Arabic. */
+export function SlidesField({ label, hint, value, onChange, legacyCaptions = {} }: SlidesFieldProps) {
+  // A slide saved before captions were written shows the sector it used to name, so editing it keeps that caption.
+  const slides = value.map((slide) => {
+    const caption = slide.caption ?? emptyCaption;
+    if (caption.en || caption.ar || !slide.projectId) return { ...slide, caption };
+    return { ...slide, caption: legacyCaptions[slide.projectId] ?? emptyCaption };
+  });
+  const commit = (next: HeroSlide[]) => onChange(next.map((slide) => ({ ...slide, projectId: '' })));
+  const update = (index: number, change: Partial<HeroSlide>) => commit(slides.map((item, i) => (i === index ? { ...item, ...change } : item)));
 
   return (
     <Field label={label} hint={hint}>
       <div className="space-y-3">
-        {value.map((slide, index) => (
+        {slides.map((slide, index) => (
           <div key={index} className="rounded-2xl border border-indigo/10 bg-linen/40 p-3">
             <div className="mb-2 flex items-center justify-between">
               <span className="text-sm font-medium text-indigo">Slide {index + 1}</span>
               <ListControls
                 index={index}
-                count={value.length}
+                count={slides.length}
                 noun="slide"
-                onMove={(to) => onChange(moveItem(value, index, to))}
-                onRemove={() => onChange(value.filter((_, i) => i !== index))}
+                onMove={(to) => commit(moveItem(slides, index, to))}
+                onRemove={() => commit(slides.filter((_, i) => i !== index))}
               />
             </div>
-            <div className="grid gap-3 lg:grid-cols-[1fr_16rem]">
-              <ImageField label="Photo or video" kind="media" folder="site" compact value={slide.image} onChange={(image) => update(index, { ...slide, image })} />
-              <Field label="Caption links to project" hint="Shows the project name on the slider." optional>
-                <Select value={slide.projectId} onChange={(event) => update(index, { ...slide, projectId: event.target.value })}>
-                  <option value="">No caption</option>
-                  {projects.map((project) => (
-                    <option key={project.slug} value={project.slug}>
-                      {project.title}
-                    </option>
-                  ))}
-                </Select>
-              </Field>
+            <div className="space-y-3">
+              <ImageField label="Photo or video" kind="media" folder="site" compact value={slide.image} onChange={(image) => update(index, { image })} />
+              <BilingualInput
+                label="Caption"
+                hint="A few words shown along the bottom of the slider (e.g. “Feel at home”)."
+                optional
+                placeholder={{ en: 'Feel at home', ar: 'اشعر وكأنك في بيتك' }}
+                value={slide.caption}
+                onChange={(caption) => update(index, { caption })}
+              />
             </div>
           </div>
         ))}
-        <AdminButton variant="secondary" size="sm" icon={Plus} onClick={() => onChange([...value, { projectId: '', image: '' }])}>
+        <AdminButton variant="secondary" size="sm" icon={Plus} onClick={() => commit([...slides, { image: '', caption: { ...emptyCaption }, projectId: '' }])}>
           Add slide
         </AdminButton>
       </div>

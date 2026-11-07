@@ -41,7 +41,7 @@ const heroSlidesField: MediaFieldDef = {
   key: 'slides',
   type: 'slides',
   label: 'Hero photographs',
-  hint: 'The slider at the top of the home page changes photo every 3 seconds and names the sector of each photo’s project, so show one project per sector. Use large landscape images (at least 2000 px wide).',
+  hint: 'The slider at the top of the home page changes photo every 3 seconds. Write a short caption for each photo in English and Arabic; the captions are shown in a row along the bottom of the slider. Use large landscape images (at least 2000 px wide).',
 };
 
 export const navLinkKeys = ['home', 'about', 'portfolio', 'services', 'journal', 'contact'];
@@ -149,7 +149,7 @@ export const contentSections: SectionDef[] = [
   { key: 'categories', page: 'shared', label: 'Project sectors', description: 'Names of the portfolio categories.' },
   { key: 'blogCategories', page: 'shared', label: 'Blog categories', description: 'Names of the blog categories.' },
   { key: 'common', page: 'shared', label: 'Common labels', description: 'Small labels reused across the site.' },
-  { key: 'hero', page: 'shared', label: 'Photo slider controls', description: 'Slider accessibility labels, the sector tabs label and the vertical “Follow us” text.' },
+  { key: 'hero', page: 'shared', label: 'Photo slider controls', description: 'Slider accessibility labels, the caption tabs label and the vertical “Follow us” text.' },
   { key: 'notFound', page: 'shared', label: 'Page not found (404)', description: 'Shown when a visitor opens a link that does not exist.' },
 ];
 

@@ -414,7 +414,6 @@ function FooterTab({ form, set }: TabProps) {
             key={rows.find((row) => row.section === 'footer')?.updated_at ?? 'default'}
             section={section}
             row={rows.find((row) => row.section === 'footer')}
-            projects={[]}
             open={open}
             onToggle={() => setOpen((value) => !value)}
             onSaved={() => {

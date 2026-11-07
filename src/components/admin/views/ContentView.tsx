@@ -6,6 +6,8 @@ import useSWR, { useSWRConfig } from 'swr';
 import { adminKeys, fetchAdminProjects, fetchContentRows, friendlyError } from '@/lib/cms/admin';
 import { cmsKeys } from '@/lib/cms/api';
 import { contentPages, contentSections, type ContentPage } from '@/lib/cms/sections';
+import { ar } from '@/lib/i18n/ar';
+import { en } from '@/lib/i18n/en';
 import { routes } from '@/lib/routes';
 import { ContentSectionEditor } from '../ContentSectionEditor';
 import { RequireInitialized } from '../ImportContent';
@@ -56,7 +58,13 @@ function SectionList({ page }: { page: ContentPage }) {
   const { data: projectRows } = useSWR(adminKeys.projects, fetchAdminProjects);
   const [openKey, setOpenKey] = useState<string | null>(null);
 
-  const projects = useMemo(() => (projectRows ?? []).map((row) => ({ slug: row.slug, title: row.title_en })), [projectRows]);
+  // Hero slides saved before captions were written by hand named a project and showed its sector.
+  const legacyCaptions = useMemo(() => {
+    const names = { en: en.categories as Record<string, string>, ar: ar.categories as Record<string, string> };
+    return Object.fromEntries(
+      (projectRows ?? []).filter((row) => row.category in names.en).map((row) => [row.slug, { en: names.en[row.category], ar: names.ar[row.category] }]),
+    );
+  }, [projectRows]);
   const sections = contentSections.filter((section) => section.page === page);
 
   if (error) return <p className="rounded-2xl bg-error/10 p-4 text-sm text-error">{friendlyError(error)}</p>;
@@ -83,7 +91,7 @@ function SectionList({ page }: { page: ContentPage }) {
             key={`${section.key}-${row?.updated_at ?? 'default'}`}
             section={section}
             row={row}
-            projects={projects}
+            legacyCaptions={legacyCaptions}
             open={openKey === section.key}
             onToggle={() => setOpenKey((current) => (current === section.key ? null : section.key))}
             onSaved={refresh}

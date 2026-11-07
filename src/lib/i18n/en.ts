@@ -43,7 +43,7 @@ export const en = {
     play: 'Play slideshow',
     goTo: 'Show image',
     follow: 'Follow us',
-    sectors: 'Sectors we design for',
+    sectors: 'Slider photos',
   },
   categories: {
     residential: 'Residential',

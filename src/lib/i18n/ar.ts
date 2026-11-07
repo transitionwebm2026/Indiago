@@ -46,7 +46,7 @@ export const ar: Dictionary = {
     play: 'تشغيل',
     goTo: 'الصورة',
     follow: 'تابعنا',
-    sectors: 'القطاعات التي نصمّم لها',
+    sectors: 'صور العرض',
   },
   categories: {
     residential: 'سكني',

@@ -2,17 +2,15 @@
 
 import Image from 'next/image';
 import { m } from 'framer-motion';
-import { ArrowRight, Pause, Play } from 'lucide-react';
+import { Pause, Play } from 'lucide-react';
 import { useEffect, useState, type ReactNode } from 'react';
 import { socialIcons } from '@/components/icons/SocialIcons';
 import { useLanguage } from '@/components/providers/LanguageProvider';
-import { Link } from '@/components/ui/Link';
 import { useProjects, useSite } from '@/lib/cms/hooks';
 import type { HeroSlide } from '@/lib/data/heroes';
 import { getProject } from '@/lib/data/projects';
 import { img, isVideo } from '@/lib/images';
 import { EASE, useEntranceAnimation } from '@/lib/motion';
-import { projectHref } from '@/lib/routes';
 import { cn, pad } from '@/lib/utils';
 
 /** Time each project photograph stays on screen. */
@@ -65,9 +63,9 @@ interface HeroShellProps {
 }
 
 /**
- * The home page's full-screen hero: an auto-advancing slider with one project photograph per sector
- * the studio serves. The copy sits straight on the photographs over a soft Deep Indigo shade, and a
- * row of sector tabs along the bottom names each slide's sector and shows its progress.
+ * The home page's full-screen hero: an auto-advancing slider of photographs. The copy sits straight
+ * on the photographs over a soft Deep Indigo shade, and a row of tabs along the bottom shows each
+ * slide's caption (written in the dashboard) and its progress.
  */
 export function HeroShell({ slides, children }: HeroShellProps) {
   const { t, l } = useLanguage();
@@ -101,7 +99,13 @@ export function HeroShell({ slides, children }: HeroShellProps) {
     return () => window.clearTimeout(timer);
   }, [index, paused, count]);
 
-  const current = getProject(slides[index]?.projectId ?? '', projects);
+  // A slide saved before captions were written by hand still names its project's sector.
+  const captions = slides.map((slide) => {
+    const written = slide.caption ? l(slide.caption).trim() : '';
+    if (written) return written;
+    const project = slide.projectId ? getProject(slide.projectId, projects) : undefined;
+    return project ? t.categories[project.category] : '';
+  });
 
   return (
     // Exactly one screen tall on every device; the copy and the sector tabs share the bottom of the photograph.
@@ -109,7 +113,6 @@ export function HeroShell({ slides, children }: HeroShellProps) {
       <div role="region" aria-roledescription="carousel" aria-label={t.hero.slider} className="absolute inset-0 -z-10">
         {slides.map((slide, slideIndex) => {
           const active = slideIndex === index;
-          const project = getProject(slide.projectId, projects);
           return (
             <div
               key={`${slide.image}-${slideIndex}`}
@@ -130,7 +133,7 @@ export function HeroShell({ slides, children }: HeroShellProps) {
               ) : (slideIndex === 0 || loadRest) && (
                 <Image
                   src={img(slide.image, 2400)}
-                  alt={project ? `${t.categories[project.category]} — ${l(project.title)}` : ''}
+                  alt={captions[slideIndex]}
                   fill
                   sizes="100vw"
                   priority={slideIndex === 0}
@@ -175,14 +178,13 @@ export function HeroShell({ slides, children }: HeroShellProps) {
             <div role="group" aria-label={t.hero.sectors} className="grid flex-1 grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-4 sm:gap-x-6">
               {slides.map((slide, slideIndex) => {
                 const active = slideIndex === index;
-                const project = getProject(slide.projectId, projects);
-                const sector = project ? t.categories[project.category] : pad(slideIndex + 1);
+                const caption = captions[slideIndex] || pad(slideIndex + 1);
                 return (
                   <button
                     key={`${slide.image}-${slideIndex}`}
                     type="button"
                     onClick={() => setIndex(slideIndex)}
-                    aria-label={`${t.hero.goTo} ${slideIndex + 1}: ${sector}`}
+                    aria-label={`${t.hero.goTo} ${slideIndex + 1}: ${caption}`}
                     aria-current={active}
                     className="group relative min-w-0 pb-1 pt-4 text-start"
                   >
@@ -197,28 +199,20 @@ export function HeroShell({ slides, children }: HeroShellProps) {
                         />
                       )}
                     </span>
+                    {/* Captions are written in the dashboard, so a longer one wraps instead of being cut off. */}
                     <span
                       className={cn(
-                        'block truncate text-[0.64rem] font-medium uppercase tracking-luxe transition-colors duration-300 [text-shadow:0_1px_10px_rgba(23,18,44,0.6)]',
+                        'block text-[0.64rem] font-medium uppercase leading-snug tracking-luxe transition-colors duration-300 [text-shadow:0_1px_10px_rgba(23,18,44,0.6)]',
                         active ? 'text-champagne' : 'text-ivory/80 group-hover:text-ivory',
                       )}
                     >
-                      {sector}
+                      {caption}
                     </span>
                   </button>
                 );
               })}
             </div>
 
-            {current && (
-              <Link
-                href={projectHref(current.id)}
-                className="hidden shrink-0 items-center gap-2 pb-1 text-[0.62rem] font-medium uppercase tracking-luxe text-ivory/80 transition-colors hover:text-champagne lg:inline-flex"
-              >
-                {t.common.viewProject}
-                <ArrowRight aria-hidden className="h-3.5 w-3.5 rtl:-scale-x-100" strokeWidth={1.5} />
-              </Link>
-            )}
             <button
               type="button"
               onClick={() => setPaused((value) => !value)}
