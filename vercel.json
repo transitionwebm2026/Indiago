@@ -9,8 +9,8 @@
     }
   ],
   "rewrites": [
-    { "source": "/portfolio/:slug/", "destination": "/portfolio/_/index.html" },
-    { "source": "/blog/:slug/", "destination": "/blog/_/index.html" }
+    { "source": "/portfolio/:slug/", "destination": "/portfolio/_/" },
+    { "source": "/blog/:slug/", "destination": "/blog/_/" }
   ],
   "headers": [
     {
