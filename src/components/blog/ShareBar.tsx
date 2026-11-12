@@ -14,10 +14,8 @@ const buttonClass =
 export function ShareBar({ path, title, className }: { path: string; title: string; className?: string }) {
   const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
-  const [url, setUrl] = useState(`${site.url}${path}`);
-
-  // Share from the domain the visitor is actually on, so the link always opens this site.
-  useEffect(() => setUrl(`${window.location.origin}${path}`), [path]);
+  // Always the site's own domain (indigoegy.com), whichever address the visitor reached the article on.
+  const url = `${site.url}${path}`;
 
   useEffect(() => {
     if (!copied) return;

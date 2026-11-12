@@ -141,9 +141,9 @@ and serving projects and articles created after the last build through their she
 
 ### Search engines
 
-- The site's address comes from the build: Vercel uses the project's production domain (the
-  custom domain once added, otherwise `indiago.vercel.app`), other builds use `https://indigoegy.com`.
-  Set `NEXT_PUBLIC_SITE_URL` to override it, e.g. to keep Vercel pointing at indigoegy.com.
+- The site's one address is `https://indigoegy.com` on every build (Vercel's included): canonical
+  URLs, Open Graph tags, the sitemap and the article share buttons all use it. `NEXT_PUBLIC_SITE_URL`
+  overrides it.
 - Every page has a canonical URL on that address, Open Graph and Twitter card tags,
   and `index, follow` robots tags (`/admin/` is `noindex`). Page titles and descriptions live in each
   `src/app/(site)/**/page.tsx`; the shared helper is `src/lib/seo.ts`.

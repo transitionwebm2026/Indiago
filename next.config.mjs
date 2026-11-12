@@ -1,11 +1,9 @@
 import { readFileSync } from 'node:fs';
 
-// The address the site is served from, used for canonical URLs, the sitemap and share images.
-// Vercel builds take the project's production domain (its custom domain once one is added, otherwise
-// the vercel.app address); other builds use indigoegy.com. NEXT_PUBLIC_SITE_URL overrides both.
-const productionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || (productionHost ? `https://${productionHost}` : 'https://indigoegy.com');
+// The site's one address, used for canonical URLs, the sitemap, share links and share images — on
+// every build, Vercel's included (its vercel.app addresses only redirect here; see vercel.json).
+// NEXT_PUBLIC_SITE_URL overrides it.
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://indigoegy.com';
 
 /**
  * The dashboard content saved by scripts/snapshot-cms.mjs just before `npm run build`, so the pages are
