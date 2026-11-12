@@ -1,6 +1,5 @@
 'use client';
 
-import { m } from 'framer-motion';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import type { Locale } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
@@ -10,8 +9,8 @@ const options: { code: Locale; label: string; name: string }[] = [
   { code: 'ar', label: 'AR', name: 'العربية' },
 ];
 
-/** EN / AR segmented switch. `id` keeps the sliding pill unique when rendered twice. */
-export function LanguageToggle({ id, className }: { id: string; className?: string }) {
+/** EN / AR segmented switch. `id` names where it sits (e.g. "menu"), for callers that render it twice. */
+export function LanguageToggle({ className }: { id: string; className?: string }) {
   const { locale, setLocale, t } = useLanguage();
 
   return (
@@ -35,13 +34,15 @@ export function LanguageToggle({ id, className }: { id: string; className?: stri
               active ? 'text-indigo' : 'text-ivory/70 hover:text-ivory',
             )}
           >
-            {active && (
-              <m.span
-                layoutId={`lang-pill-${id}`}
-                className="absolute inset-0 -z-10 rounded-full bg-champagne"
-                transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-              />
-            )}
+            {/* A CSS fade rather than a shared layout animation: those make the animation library measure
+                the whole page on every render, which slowed down changing page from the open menu. */}
+            <span
+              aria-hidden
+              className={cn(
+                'absolute inset-0 -z-10 rounded-full bg-champagne transition-[opacity,transform] duration-300 ease-luxe',
+                active ? 'scale-100 opacity-100' : 'scale-90 opacity-0',
+              )}
+            />
             <span className="sr-only">{option.name}</span>
             <span aria-hidden>{option.label}</span>
           </button>

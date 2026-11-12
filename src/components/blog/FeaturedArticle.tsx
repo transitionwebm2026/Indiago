@@ -37,7 +37,9 @@ export function FeaturedArticle() {
                 src={img(post.cover, 1400)}
                 alt={l(post.title)}
                 fill
-                sizes="(min-width: 1024px) 50vw, 100vw"
+                // The first photo on the Blog page: fetched first instead of lazily.
+                priority
+                sizes="(min-width: 1024px) 50vw, calc(100vw - 2.5rem)"
                 className="object-cover transition-transform duration-1200 ease-luxe group-hover:scale-[1.04]"
               />
               <span className="absolute start-3 top-3 rounded-full bg-champagne px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-luxe text-indigo">

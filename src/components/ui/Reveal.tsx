@@ -32,26 +32,28 @@ function observe(element: Element, show: () => void) {
  * Fades and lifts content into place the first time it scrolls into view.
  * The motion is a CSS animation (`.reveal` in globals.css), so the dozens of these on a page
  * add almost nothing to the work the browser does while the page starts up.
+ *
+ * Content is visible as rendered: whatever is on screen when a page opens (from a link or a fresh
+ * visit) shows at once, without waiting for JavaScript or an animation. Only content that starts
+ * below the fold is hidden — off screen, so unseen — until it scrolls in.
  */
 export function Reveal({ children, delay = 0, y = 24, className, style, ...rest }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [shown, setShown] = useState(false);
+  const [state, setState] = useState<'pending' | 'shown' | null>(null);
 
   useEffect(() => {
     const element = ref.current;
-    if (!element) return;
-    if (typeof IntersectionObserver === 'undefined') {
-      setShown(true);
-      return;
-    }
-    return observe(element, () => setShown(true));
+    if (!element || typeof IntersectionObserver === 'undefined') return;
+    if (element.getBoundingClientRect().top < window.innerHeight) return;
+    setState('pending');
+    return observe(element, () => setState('shown'));
   }, []);
 
   return (
     <div
       ref={ref}
       className={cn('reveal', className)}
-      data-shown={shown || undefined}
+      data-reveal={state ?? undefined}
       style={{ '--reveal-delay': `${delay}s`, '--reveal-y': `${y}px`, ...style } as CSSProperties}
       {...rest}
     >

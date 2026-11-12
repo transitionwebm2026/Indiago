@@ -1,9 +1,7 @@
 'use client';
 
-import { m } from 'framer-motion';
 import type { ReactNode } from 'react';
 import { useLanguage } from '@/components/providers/LanguageProvider';
-import { EASE, useEntranceAnimation } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 import { Eyebrow } from './Eyebrow';
 import { Highlight } from './Highlight';
@@ -31,7 +29,6 @@ interface PageHeaderProps {
  */
 export function PageHeader({ eyebrow, title, body, crumbs, size = 'md', className, children }: PageHeaderProps) {
   const { t } = useLanguage();
-  const animate = useEntranceAnimation();
   const trail: Crumb[] = [{ label: t.common.home, href: '/' }, ...(crumbs ?? [])];
 
   return (
@@ -40,12 +37,8 @@ export function PageHeader({ eyebrow, title, body, crumbs, size = 'md', classNam
       <div aria-hidden className="absolute -end-48 -top-56 -z-10 h-[34rem] w-[34rem] rounded-full border border-champagne/40" />
       <div aria-hidden className="absolute -end-24 -top-32 -z-10 h-[34rem] w-[34rem] rounded-full border border-champagne/25" />
 
-      <m.div
-        initial={animate ? { opacity: 0, y: 24 } : false}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: EASE }}
-        className="container-luxe pt-24 sm:pt-28 md:pt-32"
-      >
+      {/* No entrance animation: a page opened from a link shows its title at once. */}
+      <div className="container-luxe pt-24 sm:pt-28 md:pt-32">
         <nav aria-label="Breadcrumb">
           <ol className="flex flex-wrap items-center gap-2 text-[0.64rem] uppercase tracking-luxe text-charcoal-muted">
             {trail.map((crumb, index) => (
@@ -88,7 +81,7 @@ export function PageHeader({ eyebrow, title, body, crumbs, size = 'md', classNam
           <span className="h-1.5 w-1.5 rotate-45 bg-champagne" />
           <span className="h-px flex-1 bg-champagne/60" />
         </div>
-      </m.div>
+      </div>
     </section>
   );
 }

@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { m } from 'framer-motion';
 import { useEffect, useState, type ReactNode } from 'react';
 import { socialIcons } from '@/components/icons/SocialIcons';
 import { useLanguage } from '@/components/providers/LanguageProvider';
@@ -9,7 +8,6 @@ import { useProjects, useSite } from '@/lib/cms/hooks';
 import type { HeroSlide } from '@/lib/data/heroes';
 import { getProject } from '@/lib/data/projects';
 import { img, isVideo } from '@/lib/images';
-import { EASE, useEntranceAnimation } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
 /** Time each project photograph stays on screen. */
@@ -74,7 +72,6 @@ export function HeroShell({ slides, children }: HeroShellProps) {
   const [index, setIndex] = useState(0);
   // Later photographs load only after the page has, so they never compete with the first one.
   const [loadRest, setLoadRest] = useState(false);
-  const animate = useEntranceAnimation();
   const count = slides.length;
 
   useEffect(() => {
@@ -162,14 +159,7 @@ export function HeroShell({ slides, children }: HeroShellProps) {
 
       {/* Right padding keeps the copy clear of the social rail (on the right in both languages). */}
       <div className="container-luxe relative flex flex-1 flex-col justify-end pb-8 pt-32 md:justify-center md:pb-12 md:pt-36">
-        <m.div
-          initial={animate ? { opacity: 0, y: 32 } : false}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: EASE, delay: 0.15 }}
-          className="max-w-2xl pr-14 sm:pr-16 md:pr-0 rtl:md:pr-20 lg:max-w-3xl rtl:lg:pr-24"
-        >
-          {children(index, captions)}
-        </m.div>
+        <div className="max-w-2xl pr-14 sm:pr-16 md:pr-0 rtl:md:pr-20 lg:max-w-3xl rtl:lg:pr-24">{children(index, captions)}</div>
       </div>
     </section>
   );

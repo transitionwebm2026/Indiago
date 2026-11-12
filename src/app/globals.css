@@ -71,12 +71,12 @@
 
   /* Scroll-in reveal (components/ui/Reveal.tsx). An animation rather than a transition, so it never
      clashes with an element's own hover transitions. */
-  .reveal:not([data-shown]) {
+  .reveal[data-reveal='pending'] {
     opacity: 0;
     transform: translateY(var(--reveal-y, 24px));
   }
 
-  .reveal[data-shown] {
+  .reveal[data-reveal='shown'] {
     animation: reveal-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s) backwards;
   }
 }
@@ -115,11 +115,12 @@
     animation: none !important;
   }
 
-  .reveal:not([data-shown]) {
+  .reveal[data-reveal='pending'] {
+    opacity: 1;
     transform: none;
   }
 
-  .reveal[data-shown] {
+  .reveal[data-reveal='shown'] {
     animation-name: none;
   }
 }

@@ -1,6 +1,5 @@
 'use client';
 
-import { m } from 'framer-motion';
 import { useState } from 'react';
 import { WhatsAppIcon } from '@/components/icons/SocialIcons';
 import { useLanguage } from '@/components/providers/LanguageProvider';
@@ -64,13 +63,15 @@ export function CtaBanner({ interactive = false }: CtaBannerProps) {
                             active ? 'border-champagne text-indigo' : 'border-ivory/20 text-ivory/75 hover:border-ivory/50',
                           )}
                         >
-                          {active && (
-                            <m.span
-                              layoutId="cta-type"
-                              className="absolute inset-0 -z-10 rounded-full bg-champagne"
-                              transition={{ type: 'spring', stiffness: 400, damping: 34 }}
-                            />
-                          )}
+                          {/* A CSS fade rather than a shared layout animation, which would make the animation
+                              library measure the whole page whenever it re-renders. */}
+                          <span
+                            aria-hidden
+                            className={cn(
+                              'absolute inset-0 -z-10 rounded-full bg-champagne transition-[opacity,transform] duration-300 ease-luxe',
+                              active ? 'scale-100 opacity-100' : 'scale-90 opacity-0',
+                            )}
+                          />
                           {typeOptions[option]}
                         </button>
                       );

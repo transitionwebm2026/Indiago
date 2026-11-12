@@ -3,34 +3,36 @@
 import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { ComponentProps } from 'react';
+import { canPrefetch } from '@/lib/prefetch';
 
 type LinkProps = ComponentProps<typeof NextLink>;
 
 /**
- * next/link that fetches the next page only when the visitor shows intent (hover, focus or touch)
- * instead of for every link that scrolls into view, so a phone downloads just the page it opened.
- * Touch fires a moment before the tap completes, which is still a head start on the navigation.
+ * next/link that fetches the page it leads to as soon as the link scrolls into view (in idle time),
+ * so tapping it switches page at once. With Data Saver or on 2G only intent (hover, focus or touch)
+ * fetches it, so a phone on a costly connection downloads just the page it opens. Each page is a
+ * small static file, cached by the browser and the CDN.
  */
-export function Link({ href, onMouseEnter, onTouchStart, onFocus, ...rest }: LinkProps) {
+export function Link({ href, prefetch, onMouseEnter, onTouchStart, onFocus, ...rest }: LinkProps) {
   const router = useRouter();
-  const prefetch = () => {
-    if (typeof href === 'string' && href.startsWith('/')) router.prefetch(href);
+  const prefetchNow = () => {
+    if (typeof href === 'string' && href.startsWith('/')) router.prefetch(href.split('#')[0]);
   };
 
   return (
     <NextLink
       href={href}
-      prefetch={false}
+      prefetch={prefetch ?? (canPrefetch() ? undefined : false)}
       onMouseEnter={(event) => {
-        prefetch();
+        prefetchNow();
         onMouseEnter?.(event);
       }}
       onTouchStart={(event) => {
-        prefetch();
+        prefetchNow();
         onTouchStart?.(event);
       }}
       onFocus={(event) => {
-        prefetch();
+        prefetchNow();
         onFocus?.(event);
       }}
       {...rest}

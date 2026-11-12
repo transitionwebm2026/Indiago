@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { AnimatePresence, m } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useCallback, useEffect, useId, useRef, useState, type FocusEvent, type ReactNode } from 'react';
@@ -10,6 +10,7 @@ import { ButtonLink } from '@/components/ui/Button';
 import { Link } from '@/components/ui/Link';
 import { useSite, useSiteSettings } from '@/lib/cms/hooks';
 import { EASE } from '@/lib/motion';
+import { canPrefetch } from '@/lib/prefetch';
 import { routes } from '@/lib/routes';
 import type { NavLink } from '@/lib/site';
 import { cn, pad } from '@/lib/utils';
@@ -127,6 +128,34 @@ export function SiteMenu() {
   const close = useCallback(() => setOpen(false), []);
 
   useEffect(() => setOpen(false), [pathname]);
+
+  // The menu's pages sit in a closed panel, out of view, so their links can't fetch them as they
+  // appear. Fetch them once the current page has loaded, in idle time, so any choice in the menu
+  // (and the consultation button) opens at once.
+  const router = useRouter();
+  const pages = [...links.map((link) => link.href), routes.inquiry]
+    .filter((href) => href.startsWith('/'))
+    .map((href) => href.split('#')[0])
+    .join(' ');
+  useEffect(() => {
+    if (!canPrefetch()) return;
+    let timer = 0;
+    const run = () => {
+      for (const href of new Set(pages.split(' '))) router.prefetch(href);
+    };
+    const schedule = () => {
+      timer = window.setTimeout(() => {
+        if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(run, { timeout: 3000 });
+        else run();
+      }, 1500);
+    };
+    if (document.readyState === 'complete') schedule();
+    else window.addEventListener('load', schedule, { once: true });
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener('load', schedule);
+    };
+  }, [pages, router]);
 
   useEffect(() => {
     let lastY = window.scrollY;

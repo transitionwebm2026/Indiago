@@ -14,9 +14,11 @@ interface ProjectCardProps {
   onOpenGallery?: () => void;
   className?: string;
   aspect?: string;
+  /** "priority" for the photo that opens the page (fetched first), "eager" for others on the first screen. */
+  load?: 'priority' | 'eager';
 }
 
-export function ProjectCard({ project, onOpenGallery, className, aspect = 'aspect-[4/5]' }: ProjectCardProps) {
+export function ProjectCard({ project, onOpenGallery, className, aspect = 'aspect-[4/5]', load }: ProjectCardProps) {
   const { t, l } = useLanguage();
   const title = l(project.title);
   const tags = [t.categories[project.category], l(project.location)];
@@ -28,6 +30,8 @@ export function ProjectCard({ project, onOpenGallery, className, aspect = 'aspec
           src={img(project.cover, 1200)}
           alt={title}
           fill
+          priority={load === 'priority'}
+          loading={load === 'eager' ? 'eager' : undefined}
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           className="object-cover transition-transform duration-1200 ease-luxe group-hover:scale-[1.06]"
         />
