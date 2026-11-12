@@ -4,7 +4,7 @@ import { SiteMenu } from './SiteMenu';
 import { WhatsAppWidget } from './WhatsAppWidget';
 
 /**
- * The floating menu button and the WhatsApp launcher around every public page (the admin dashboard
+ * The menu bar (logo and menu lines) and the WhatsApp launcher around every public page (the admin dashboard
  * has its own shell). There is no header bar and no full footer: each page ends with a slim band
  * that carries only the website credit.
  */

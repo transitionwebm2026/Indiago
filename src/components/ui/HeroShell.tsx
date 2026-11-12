@@ -154,6 +154,8 @@ export function HeroShell({ slides, children }: HeroShellProps) {
           aria-hidden
           className="absolute inset-0 bg-gradient-to-t from-indigo-950/75 via-indigo-950/25 via-40% to-transparent to-70% md:bg-gradient-to-r md:from-indigo-950/60 md:via-indigo-950/20 md:via-35% md:to-transparent md:to-60% rtl:md:bg-gradient-to-l"
         />
+        {/* A soft shade along the top keeps the menu bar's logo and lines legible on bright photographs. */}
+        <div aria-hidden className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-indigo-950/50 to-transparent sm:h-44" />
       </div>
 
       <SocialRail label={t.footer.follow} title={t.hero.follow} />

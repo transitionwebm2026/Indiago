@@ -8,7 +8,7 @@ import { socialIcons } from '@/components/icons/SocialIcons';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 import { ButtonLink } from '@/components/ui/Button';
 import { Link } from '@/components/ui/Link';
-import { useSite } from '@/lib/cms/hooks';
+import { useSite, useSiteSettings } from '@/lib/cms/hooks';
 import { EASE } from '@/lib/motion';
 import { routes } from '@/lib/routes';
 import type { NavLink } from '@/lib/site';
@@ -43,22 +43,71 @@ function NavAnchor({ link, active, className, onClick, children }: NavAnchorProp
   );
 }
 
-/** Three lines that fold into a cross while the menu is open; the shorter middle line stretches on hover. */
+/** Three thin, equal lines that fold into a cross while the menu is open. */
 function MenuIcon({ open }: { open: boolean }) {
-  const line = 'absolute h-[1.5px] rounded-full bg-current transition-[transform,opacity,width] duration-500 ease-luxe';
+  const line = 'absolute inset-x-0 h-[1.5px] rounded-full bg-current transition-[transform,opacity] duration-500 ease-luxe';
   return (
-    <span aria-hidden className="relative block h-[14px] w-5">
-      <span className={cn(line, 'inset-x-0 top-0', open && 'translate-y-[6.25px] rotate-45')} />
-      <span className={cn(line, 'end-0 top-[6.25px] w-3 group-hover:w-5', open && 'w-5 opacity-0')} />
-      <span className={cn(line, 'inset-x-0 bottom-0', open && '-translate-y-[6.25px] -rotate-45')} />
+    <span aria-hidden className="relative block h-[13px] w-[26px]">
+      <span className={cn(line, 'top-0', open && 'translate-y-[5.75px] rotate-45')} />
+      <span className={cn(line, 'top-[5.75px]', open && 'opacity-0')} />
+      <span className={cn(line, 'bottom-0', open && '-translate-y-[5.75px] -rotate-45')} />
+    </span>
+  );
+}
+
+/** "light" draws the bar in Champagne and Ivory for dark surfaces; "dark" draws it in Deep Indigo for light ones. */
+type Tone = 'light' | 'dark';
+
+/**
+ * Reads the first solid background under the middle of the bar. Photographs sit on dark sections
+ * (the hero is Deep Indigo underneath), so they count as dark surfaces.
+ */
+function surfaceTone(bar: HTMLElement): Tone {
+  const under = document.elementsFromPoint(window.innerWidth / 2, bar.offsetHeight / 2).find((el) => !bar.contains(el));
+  for (let el: Element | null = under ?? null; el; el = el.parentElement) {
+    const [r = 0, g = 0, b = 0, a = 1] = getComputedStyle(el).backgroundColor.match(/[\d.]+/g)?.map(Number) ?? [];
+    if (a < 0.5) continue;
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b < 140 ? 'light' : 'dark';
+  }
+  return 'dark'; // The page itself is Ivory.
+}
+
+/**
+ * The logo in its own Champagne on the bar's Deep Indigo background, and recoloured through a mask
+ * elsewhere: Ivory straight on a photograph, Deep Indigo on a light surface. A logo uploaded as a
+ * JPEG has no transparency to mask, so it is always shown as it is.
+ */
+function BarLogo({ color }: { color: 'champagne' | 'ivory' | 'indigo' }) {
+  const { logo } = useSiteSettings();
+  const src = logo || '/logo.png';
+  const tintable = !/\.jpe?g(\?|$)/i.test(src);
+  const tinted = tintable && color !== 'champagne';
+  const mask = `url("${src}") center / contain no-repeat`;
+
+  return (
+    <span className="relative block">
+      <Logo className={cn('h-10 transition-opacity duration-500 sm:h-11 lg:h-12', tinted && 'opacity-0')} />
+      {tintable && (
+        <span
+          aria-hidden
+          className={cn(
+            'absolute inset-0 transition-[opacity,background-color] duration-500',
+            color === 'indigo' ? 'bg-indigo' : 'bg-ivory',
+            tinted ? 'opacity-100' : 'opacity-0',
+          )}
+          style={{ WebkitMask: mask, mask }}
+        />
+      )}
     </span>
   );
 }
 
 /**
- * The site's only navigation: a round button fixed to the top corner on the reading end (right in
- * English, left in Arabic). Pressing it drops a panel down beneath it with the page links, the
- * language switch, the consultation button and the studio's contact details.
+ * The site's only navigation, a bar fixed to the top of the page: the logo at the start (centred
+ * from lg up) and three thin lines at the end, straight on the page with no background at the top.
+ * Its colours follow the surface underneath; once the page scrolls it takes a frosted background,
+ * steps out of the way while scrolling down and comes back on the way up. The lines drop a panel
+ * down with the page links, the language switch, the consultation button and the contact details.
  */
 export function SiteMenu() {
   const { t, l } = useLanguage();
@@ -68,11 +117,49 @@ export function SiteMenu() {
   const pathname = usePathname() ?? '/';
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const barRef = useRef<HTMLElement>(null);
   const panelId = useId();
+  // Before the first measurement: the home page opens on its dark hero, every other page on Ivory.
+  const [tone, setTone] = useState<Tone>(pathname === '/' ? 'light' : 'dark');
+  const [scrolled, setScrolled] = useState(false);
+  const [tucked, setTucked] = useState(false);
 
   const close = useCallback(() => setOpen(false), []);
 
   useEffect(() => setOpen(false), [pathname]);
+
+  useEffect(() => {
+    let lastY = window.scrollY;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      if (Math.abs(y - lastY) > 6) {
+        setTucked(y > lastY && y > 120);
+        lastY = y;
+      }
+      if (barRef.current) setTone(surfaceTone(barRef.current));
+    };
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+    update();
+    // Sections fading in after a route change can change the surface without a scroll.
+    const settle = window.setTimeout(update, 600);
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(settle);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+    };
+  }, [pathname]);
+
+  // With the panel open the bar is always the Deep Indigo one, above the dimmed page.
+  const light = open || tone === 'light';
+  const solid = open || scrolled;
 
   // While the panel is open the page behind it stays still. The scrollbar's space stays reserved, so
   // neither the page nor this button jumps sideways. Escape closes it and hands focus back to the button.
@@ -96,7 +183,7 @@ export function SiteMenu() {
   }, [open]);
 
   // Tabbing past the last item in the panel closes it, so keyboard focus never hides behind the backdrop.
-  const onBlur = (event: FocusEvent<HTMLDivElement>) => {
+  const onBlur = (event: FocusEvent<HTMLElement>) => {
     const next = event.relatedTarget as Node | null;
     if (next && !event.currentTarget.contains(next)) setOpen(false);
   };
@@ -135,24 +222,49 @@ export function SiteMenu() {
         )}
       </AnimatePresence>
 
-      <div
+      <header
+        ref={barRef}
         onBlur={onBlur}
-        className="fixed end-4 top-4 z-[70] flex flex-col items-end gap-3 sm:end-6 sm:top-6 lg:end-8 lg:top-8"
+        className={cn(
+          'fixed inset-x-0 top-0 z-[70] transition-[transform,background-color,box-shadow] duration-500 ease-luxe focus-within:translate-y-0',
+          tucked && !open && '-translate-y-full',
+          // At the top of the page the bar is only its logo and lines, so clicks pass through the space between them.
+          solid ? 'backdrop-blur-md' : 'pointer-events-none',
+          solid && (light ? 'bg-indigo/90 shadow-[0_14px_34px_-18px_rgba(23,18,44,0.7)]' : 'bg-ivory/90 shadow-[0_10px_30px_-20px_rgba(23,18,44,0.45)]'),
+        )}
       >
-        <button
-          ref={buttonRef}
-          type="button"
-          onClick={() => setOpen((value) => !value)}
-          aria-expanded={open}
-          aria-controls={panelId}
-          aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
-          className={cn(
-            'group grid h-12 w-12 place-items-center rounded-full border bg-indigo/90 shadow-[0_14px_34px_-14px_rgba(23,18,44,0.75)] backdrop-blur-md transition-colors duration-300 sm:h-14 sm:w-14',
-            open ? 'border-champagne text-champagne' : 'border-champagne/40 text-ivory hover:border-champagne hover:text-champagne',
-          )}
-        >
-          <MenuIcon open={open} />
-        </button>
+        <div className="relative flex h-20 items-center justify-between px-6 sm:h-24 sm:px-8 lg:px-12">
+          <Link
+            href={routes.home}
+            onClick={close}
+            aria-label={`${site.name} — ${t.nav.home}`}
+            className={cn(
+              'pointer-events-auto shrink-0 lg:absolute lg:left-1/2 lg:-translate-x-1/2',
+              light && !solid && 'drop-shadow-[0_1px_10px_rgba(23,18,44,0.45)]',
+            )}
+          >
+            <BarLogo color={!light ? 'indigo' : solid ? 'champagne' : 'ivory'} />
+          </Link>
+
+          <button
+            ref={buttonRef}
+            type="button"
+            onClick={() => setOpen((value) => !value)}
+            aria-expanded={open}
+            aria-controls={panelId}
+            aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
+            className={cn(
+              'pointer-events-auto -me-2.5 ms-auto grid h-11 w-11 place-items-center transition-colors duration-300',
+              open
+                ? 'text-champagne'
+                : light
+                  ? 'text-ivory drop-shadow-[0_1px_8px_rgba(23,18,44,0.5)] hover:text-champagne'
+                  : 'text-indigo hover:text-champagne-700',
+            )}
+          >
+            <MenuIcon open={open} />
+          </button>
+        </div>
 
         <AnimatePresence>
           {open && (
@@ -169,17 +281,15 @@ export function SiteMenu() {
               }}
               exit={{ opacity: 0, y: -8, transition: { duration: 0.25, ease: EASE } }}
               transition={{ duration: 0.55, ease: EASE }}
-              className="relative isolate w-[min(23rem,calc(100vw-2rem))] overflow-hidden rounded-[1.75rem] border border-champagne/25 bg-indigo text-ivory shadow-[0_30px_70px_-24px_rgba(23,18,44,0.85)]"
+              className="absolute end-4 top-full isolate mt-2 w-[min(23rem,calc(100vw-2rem))] overflow-hidden rounded-[1.75rem] border border-champagne/25 bg-indigo text-ivory shadow-[0_30px_70px_-24px_rgba(23,18,44,0.85)] sm:end-6 lg:end-8"
             >
               {/* Two fine arcs in the corner, the same motif as the page headers and the closing banner. */}
               <div aria-hidden className="pointer-events-none absolute -end-28 -top-28 -z-10 h-72 w-72 rounded-full border border-champagne/15" />
               <div aria-hidden className="pointer-events-none absolute -end-14 -top-14 -z-10 h-72 w-72 rounded-full border border-champagne/10" />
 
               <div className="max-h-[calc(100svh-6.5rem)] overflow-y-auto overscroll-contain p-5 sm:max-h-[calc(100svh-8.5rem)] sm:p-6">
-                <div className="flex items-center justify-between gap-4 border-b border-ivory/10 pb-5">
-                  <Link href={routes.home} onClick={close} aria-label={`${site.name} — ${t.nav.home}`} className="shrink-0">
-                    <Logo className="h-9" />
-                  </Link>
+                {/* The logo already sits in the bar right above, so the panel opens on the language switch. */}
+                <div className="flex items-center justify-end border-b border-ivory/10 pb-5">
                   <LanguageToggle id="menu" />
                 </div>
 
@@ -277,7 +387,7 @@ export function SiteMenu() {
             </m.div>
           )}
         </AnimatePresence>
-      </div>
+      </header>
     </>
   );
 }
