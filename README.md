@@ -135,9 +135,11 @@ the Inter font there (a path bug in Next); a Linux build such as Vercel's includ
 
 ### Deploying to Vercel
 
-Vercel builds every push to `main`. `.htaccess` doesn't apply there; `vercel.json` does the same jobs:
-the security headers, a year's caching for `/_img`, the `www.indigoegy.com` → `indigoegy.com` redirect,
-and serving projects and articles created after the last build through their shell pages.
+The live site is the Hostinger upload at `https://indigoegy.com`. Vercel still builds every push to
+`main`, but `vercel.json` sends every `*.vercel.app` address to the same page on indigoegy.com with a
+301, so old shared links land on the domain. (Should the domain ever move to Vercel, remove that
+redirect: `vercel.json` already does what `.htaccess` does there — the security headers, a year's
+caching for `/_img`, the `www` redirect and the shell pages for content added after the last build.)
 
 ### Search engines
 

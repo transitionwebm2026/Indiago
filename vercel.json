@@ -3,6 +3,12 @@
   "redirects": [
     {
       "source": "/:path*",
+      "has": [{ "type": "host", "value": ".*\\.vercel\\.app" }],
+      "destination": "https://indigoegy.com/:path*",
+      "statusCode": 301
+    },
+    {
+      "source": "/:path*",
       "has": [{ "type": "host", "value": "www.indigoegy.com" }],
       "destination": "https://indigoegy.com/:path*",
       "permanent": true
