@@ -21,10 +21,14 @@ Without Supabase credentials the website runs exactly as before on its built-in 
 
 ### How it works
 
-- Every page is still pre-rendered as static HTML with the built-in content, so the site is fast,
-  SEO-friendly and hostable anywhere.
-- In the browser, each section then loads its live content from Supabase and swaps it in. Returning
-  visitors get the latest content straight from their browser cache, then a fresh copy.
+- Every page is still pre-rendered as static HTML, so the site is fast, SEO-friendly and hostable
+  anywhere. Just before each `npm run build`, `scripts/snapshot-cms.mjs` saves the dashboard's
+  current content, and the pages are pre-rendered with it, so visitors see the dashboard's photos
+  and text from the first paint. (Without Supabase credentials, or if Supabase can't be reached
+  during the build, the built-in content is used instead.)
+- In the browser, each section then loads its live content from Supabase and swaps in anything
+  that changed after the build. Returning visitors get the latest content straight from their
+  browser cache, then a fresh copy.
 - **Supabase Realtime** pushes every save to open pages, so changes appear for all visitors within
   seconds — no rebuild, no upload.
 - Projects and articles created in the dashboard after the last build are served by a shell page
@@ -57,13 +61,16 @@ Without Supabase credentials the website runs exactly as before on its built-in 
 7. **Open `https://indigoegy.com/admin/`**, sign in, and click **Import website content**. Every
    project, article, service, process step and studio detail is copied into the dashboard.
 
-After this, the only reason to rebuild is code changes — content never needs one.
+After this, content changes go live without a rebuild.
 
-Good to know: the static HTML itself always carries the built-in content; CMS content is applied in
-the browser a moment after the page loads. Google renders JavaScript and indexes the live content,
-but social-media link previews (Open Graph) and the sitemap use the built-in content and titles.
-First-time visitors may glimpse the built-in text for a split second before an edited version
-replaces it; returning visitors see the edited version immediately from their browser cache.
+Good to know: the static HTML carries the dashboard content as it was at the last build. Anything
+edited after that is applied in the browser a moment after the page loads, so first-time visitors
+may glimpse the earlier version for a split second until the next build. To rebuild automatically
+after every save on Vercel: Vercel → Project → Settings → Git → **Deploy Hooks** → create one for
+`main`, then Supabase → Database → **Webhooks** → create a webhook on `site_settings`,
+`site_content`, `projects`, `blog_posts`, `services` and `process_steps` (insert, update, delete)
+that sends a `POST` to that hook URL. Social-media link previews (Open Graph) and the sitemap use
+the built-in titles.
 
 ### The dashboard
 

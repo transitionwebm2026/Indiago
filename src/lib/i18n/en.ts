@@ -75,7 +75,7 @@ export const en = {
     why: {
       eyebrow: 'Why Indigo',
       // Non-breaking spaces keep each two-word phrase on one line.
-      title: '“On time, on standards…”',
+      title: 'On time. On standard. *On vision.*',
       body: 'We approach every space with unwavering devotion to quality, combining global standards with the authenticity, warmth and artistry that define Egypt.',
       items: [
         {

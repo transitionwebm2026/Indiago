@@ -5,6 +5,7 @@
   "description": "Indigo Interiors — luxury interior architecture studio website (Next.js static export).",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/snapshot-cms.mjs",
     "build": "next build",
     "preview": "npx --yes serve@14 out",
     "images": "node scripts/optimize-images.mjs",

@@ -10,15 +10,17 @@ import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { cmsKeys, fetchContent, fetchPost, fetchPosts, fetchProjects, fetchServices, fetchSettings, fetchSteps } from './api';
 import { buildMedia } from './content';
 import type { MediaMap, MediaSection } from './sections';
+import { snapshotFor } from './snapshot';
 import type { ContentRow } from './types';
 
 /**
  * Client hooks that hydrate the static pages with live CMS content.
  *
- * Every page is pre-rendered with the built-in content, and the first client render
- * matches it exactly. Straight after hydration these hooks switch to the content
- * cached from the visitor's last visit, then to fresh data from Supabase — and
- * Realtime (see CmsProvider) refreshes it whenever the studio saves a change.
+ * Every page is pre-rendered with the dashboard content saved at build time (see ./snapshot),
+ * or the built-in content when the build had none, and the first client render matches it
+ * exactly. Straight after hydration these hooks switch to the content cached from the
+ * visitor's last visit, then to fresh data from Supabase — and Realtime (see CmsProvider)
+ * refreshes it whenever the studio saves a change.
  */
 
 const noopSubscribe = () => () => {};
@@ -37,7 +39,8 @@ function useCmsData<T>(key: string | null, fetcher: () => Promise<T | null>) {
   const active = hydrated && isSupabaseConfigured && key !== null;
   const { data, error } = useSWR<T | null>(active ? key : null, fetcher);
   return {
-    data: active ? data : undefined,
+    // The content saved at build time stands in until the cached or live copy arrives.
+    data: active && data !== undefined ? data : snapshotFor<T>(key),
     /** No answer yet: not hydrated, or the first request is still in flight. */
     pending: isSupabaseConfigured && (!hydrated || (data === undefined && !error)),
   };

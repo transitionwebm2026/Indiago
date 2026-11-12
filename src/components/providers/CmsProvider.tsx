@@ -3,22 +3,34 @@
 import { useEffect, type ReactNode } from 'react';
 import { SWRConfig, useSWRConfig, type Cache } from 'swr';
 import { cmsKeys } from '@/lib/cms/api';
+import { snapshotVersion } from '@/lib/cms/snapshot';
 import { isRealtimeEnabled, isSupabaseConfigured, loadSupabase } from '@/lib/supabase/config';
 
-const CACHE_KEY = 'indigo-cms-cache-v1';
+const CACHE_KEY = 'indigo-cms-cache-v2';
+
+interface SavedCache {
+  version: string;
+  entries: [string, unknown][];
+}
 
 /**
  * SWR cache that remembers public CMS responses between visits, so returning visitors
  * see the latest content the moment the page hydrates. Only "cms:" keys are stored —
  * never admin data such as inquiries.
+ *
+ * The cache is kept per build: a copy saved before the current build can be older than the
+ * content the pages were pre-rendered with, and would briefly bring back the old content.
  */
 function persistentCache(): Cache {
   const map = new Map<string, unknown>();
   if (typeof window === 'undefined') return map as Cache;
 
   try {
-    const saved = JSON.parse(window.localStorage.getItem(CACHE_KEY) ?? '[]') as [string, unknown][];
-    for (const [key, data] of saved) map.set(key, { data });
+    window.localStorage.removeItem('indigo-cms-cache-v1');
+    const saved = JSON.parse(window.localStorage.getItem(CACHE_KEY) ?? 'null') as SavedCache | null;
+    if (saved?.version === snapshotVersion && Array.isArray(saved.entries)) {
+      for (const [key, data] of saved.entries) map.set(key, { data });
+    }
   } catch {
     // Unreadable or blocked storage: start with an empty cache.
   }
@@ -27,9 +39,10 @@ function persistentCache(): Cache {
     try {
       const entries = [...map.entries()]
         .filter(([key]) => key.startsWith('cms:'))
-        .map(([key, state]) => [key, (state as { data?: unknown } | undefined)?.data] as const)
+        .map(([key, state]) => [key, (state as { data?: unknown } | undefined)?.data] as [string, unknown])
         .filter(([, data]) => data !== undefined);
-      window.localStorage.setItem(CACHE_KEY, JSON.stringify(entries));
+      const saved: SavedCache = { version: snapshotVersion, entries };
+      window.localStorage.setItem(CACHE_KEY, JSON.stringify(saved));
     } catch {
       // Quota exceeded or private mode — the cache is a convenience only.
     }
