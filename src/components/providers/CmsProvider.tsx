@@ -70,9 +70,10 @@ function RealtimeSync() {
     if (!isSupabaseConfigured || !isRealtimeEnabled) return;
 
     let cancelled = false;
+    let timer = 0;
     let disconnect: (() => void) | null = null;
-    // Connect once the page has settled, so the socket never competes with the first paint.
-    const timer = window.setTimeout(async () => {
+
+    const connect = async () => {
       const supabase = await loadSupabase();
       if (!supabase || cancelled) return;
       const channel = supabase.channel('cms-live');
@@ -83,10 +84,23 @@ function RealtimeSync() {
       }
       channel.subscribe();
       disconnect = () => void supabase.removeChannel(channel);
-    }, 2000);
+    };
+
+    // supabase-js (~50 KB gzipped) is only needed for this connection, so it loads a few seconds
+    // after the page has finished loading, in idle time, and never competes with the first paint
+    // or the first taps. The content itself is read without it (see lib/cms/api.ts).
+    const schedule = () => {
+      timer = window.setTimeout(() => {
+        if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(() => void connect(), { timeout: 3000 });
+        else void connect();
+      }, 4000);
+    };
+    if (document.readyState === 'complete') schedule();
+    else window.addEventListener('load', schedule, { once: true });
 
     return () => {
       cancelled = true;
+      window.removeEventListener('load', schedule);
       window.clearTimeout(timer);
       disconnect?.();
     };

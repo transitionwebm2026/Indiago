@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from 'next';
 import { IBM_Plex_Sans_Arabic, Inter, Noto_Naskh_Arabic } from 'next/font/google';
 import type { ReactNode } from 'react';
+import { preconnect } from 'react-dom';
 import { CmsProvider } from '@/components/providers/CmsProvider';
 import { LanguageProvider } from '@/components/providers/LanguageProvider';
 import { shareImage, siteDescription as description } from '@/lib/seo';
 import { site } from '@/lib/site';
+import { isSupabaseConfigured, supabaseUrl } from '@/lib/supabase/config';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
@@ -110,6 +112,13 @@ const organizationJsonLd = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  // Every page reads its content from Supabase and shows photos uploaded there, so the connections
+  // open while the HTML is still arriving: one for the content requests (CORS), one for the photos.
+  if (isSupabaseConfigured) {
+    preconnect(supabaseUrl, { crossOrigin: 'anonymous' });
+    preconnect(supabaseUrl);
+  }
+
   return (
     <html
       lang="en"

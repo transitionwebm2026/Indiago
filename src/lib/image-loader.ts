@@ -3,12 +3,24 @@
 import type { ImageLoaderProps } from 'next/image';
 import variants from './image-variants.json';
 
-const copies: Record<string, { base: string; widths: number[] }> = variants;
+type Copies = Record<string, { base: string; widths: number[] }>;
+
+/** Copies of the dashboard's photos made at build time by scripts/snapshot-cms.mjs (inlined by next.config.mjs). */
+function dashboardCopies(): Copies {
+  try {
+    return JSON.parse(process.env.CMS_IMAGES || '{}') as Copies;
+  } catch {
+    return {};
+  }
+}
+
+const copies: Copies = { ...variants, ...dashboardCopies() };
 
 /**
  * A static export has no image server, so next/image builds its srcset through this loader.
- * Local photos come from the WebP copies made by `npm run images`; Unsplash resizes its own.
- * Anything else (dashboard uploads, files without copies) is served as it is.
+ * Local photos come from the WebP copies made by `npm run images`, and photos uploaded in the
+ * dashboard from the copies made at build time; Unsplash resizes its own. Anything else (uploads
+ * made since the last build, files without copies) is served as it is.
  */
 export default function imageLoader({ src, width, quality }: ImageLoaderProps) {
   const copy = copies[src];

@@ -58,10 +58,19 @@ export function ArticleView({ post, related }: { post: Post; related: PostSummar
 
       <div className="bg-ivory">
         <div className="container-luxe pt-12 md:pt-20">
+          {/* The cover is the largest thing on screen when an article opens (its LCP), so it loads first
+              and paints with the HTML instead of waiting for JavaScript to fade it in. */}
           {post.cover && (
-            <Reveal className="relative aspect-[16/10] overflow-hidden rounded-[2rem] bg-linen-dark md:aspect-[16/8]">
-              <Image src={img(post.cover, 2000)} alt={title} fill sizes="(min-width: 1320px) 1240px, 100vw" className="object-cover" />
-            </Reveal>
+            <div className="relative aspect-[16/10] overflow-hidden rounded-[2rem] bg-linen-dark md:aspect-[16/8]">
+              <Image
+                src={img(post.cover, 2000)}
+                alt={title}
+                fill
+                priority
+                sizes="(min-width: 1320px) 1240px, calc(100vw - 2.5rem)"
+                className="object-cover"
+              />
+            </div>
           )}
         </div>
 
@@ -95,7 +104,8 @@ export function ArticleView({ post, related }: { post: Post; related: PostSummar
                   </div>
                 </div>
               ) : (
-                <p className="text-balance font-serif text-xl leading-snug tracking-wide text-indigo">
+                // At this size the usual light-surface Champagne (700) is short of AA contrast on Linen; 800 meets it.
+                <p className="text-balance font-serif text-xl leading-snug tracking-wide text-indigo [&_em]:text-champagne-800">
                   <Highlight text={t.cta.title} />
                 </p>
               )}

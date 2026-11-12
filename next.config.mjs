@@ -13,21 +13,24 @@ const siteUrl =
  * the built-in content rather than a snapshot left over from an earlier build.
  */
 function cmsSnapshot(phase) {
-  if (phase !== 'phase-production-build') return '';
+  if (phase !== 'phase-production-build') return { snapshot: '', images: '' };
   try {
-    return readFileSync(new URL('./.cms-snapshot.json', import.meta.url), 'utf8');
+    // The photo copies' list goes to the image loader on its own, so it doesn't need the content.
+    const { images = {}, ...snapshot } = JSON.parse(readFileSync(new URL('./.cms-snapshot.json', import.meta.url), 'utf8'));
+    return { snapshot: JSON.stringify(snapshot), images: JSON.stringify(images) };
   } catch {
-    return '';
+    return { snapshot: '', images: '' };
   }
 }
 
 /** @type {(phase: string) => import('next').NextConfig} */
 export default function nextConfig(phase) {
+  const cms = cmsSnapshot(phase);
   return {
     // Plain HTML/CSS/JS in out/ for Hostinger's static hosting — no Node.js server needed.
     output: 'export',
     // Inlined at build time, so server-rendered pages and the browser see the same values.
-    env: { NEXT_PUBLIC_SITE_URL: siteUrl, CMS_SNAPSHOT: cmsSnapshot(phase) },
+    env: { NEXT_PUBLIC_SITE_URL: siteUrl, CMS_SNAPSHOT: cms.snapshot, CMS_IMAGES: cms.images },
     trailingSlash: true,
     experimental: {
       // The stylesheet (~15 KB gzipped) goes into each page's HTML, so the first paint doesn't wait

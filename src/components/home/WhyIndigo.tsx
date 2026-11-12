@@ -19,6 +19,8 @@ export function WhyIndigo() {
           <Reveal delay={0.24} className="mt-8">
             <ButtonLink href={routes.about} variant="link-light" arrow>
               {t.common.readMore}
+              {/* "Read more" alone doesn't say where it leads; screen readers and search engines get the section's name too. */}
+              <span className="sr-only">: {why.eyebrow}</span>
             </ButtonLink>
           </Reveal>
         </SectionHeading>

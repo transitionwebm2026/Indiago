@@ -133,6 +133,12 @@ No Node.js server is needed — the browser talks to Supabase, WhatsApp and Web3
 compresses text files. Building on Windows works, but Next.js 15 skips the `<link rel="preload">` for
 the Inter font there (a path bug in Next); a Linux build such as Vercel's includes it.
 
+### Deploying to Vercel
+
+Vercel builds every push to `main`. `.htaccess` doesn't apply there; `vercel.json` does the same jobs:
+the security headers, a year's caching for `/_img`, the `www.indigoegy.com` → `indigoegy.com` redirect,
+and serving projects and articles created after the last build through their shell pages.
+
 ### Search engines
 
 - The site's address comes from the build: Vercel uses the project's production domain (the
@@ -141,7 +147,9 @@ the Inter font there (a path bug in Next); a Linux build such as Vercel's includ
 - Every page has a canonical URL on that address, Open Graph and Twitter card tags,
   and `index, follow` robots tags (`/admin/` is `noindex`). Page titles and descriptions live in each
   `src/app/(site)/**/page.tsx`; the shared helper is `src/lib/seo.ts`.
-- `/sitemap.xml`, `/robots.txt` and `/manifest.webmanifest` are generated at build time.
+- `/sitemap.xml`, `/robots.txt` and `/manifest.webmanifest` are generated at build time. The sitemap,
+  the project and article pages and their titles and share cards follow the dashboard's content as it
+  was at the build (`src/lib/cms/build-content.ts`), so new or renamed items are indexed after the next build.
 - **Google Search Console:** add the property, choose **HTML tag**, put the `content` value in
   `GOOGLE_SITE_VERIFICATION` (`.env.local`, and in Vercel if you deploy there), rebuild and upload,
   then click **Verify** and submit `https://indigoegy.com/sitemap.xml`.
@@ -191,6 +199,10 @@ A static site has no image server, so after adding or replacing a photo in `publ
 `npm run images`. It writes WebP copies in several widths to `public/_img/` (listed in
 `src/lib/image-variants.json`), and phones then download a small copy instead of the full photo.
 Commit both. A photo without copies still works — it is just served full size.
+
+Photos uploaded in the dashboard get the same copies automatically at every build
+(`scripts/snapshot-cms.mjs` writes them to `public/_img/cms/`, which isn't committed). A photo
+uploaded after the last build is served as uploaded until the next one.
 
 ## Language (EN / AR)
 

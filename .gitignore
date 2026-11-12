@@ -5,8 +5,9 @@
 /.next/
 /out/
 
-# dashboard content saved for the build (scripts/snapshot-cms.mjs)
+# dashboard content and photo copies made for the build (scripts/snapshot-cms.mjs)
 /.cms-snapshot.json
+/public/_img/cms/
 
 # env files
 .env*.local
