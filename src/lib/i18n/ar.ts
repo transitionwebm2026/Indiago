@@ -42,11 +42,7 @@ export const ar: Dictionary = {
   },
   hero: {
     slider: 'صور من مشاريعنا',
-    pause: 'إيقاف مؤقت',
-    play: 'تشغيل',
-    goTo: 'الصورة',
     follow: 'تابعنا',
-    sectors: 'صور العرض',
   },
   categories: {
     residential: 'سكني',

@@ -5,7 +5,7 @@ import { getProject } from './projects';
 export interface HeroSlide {
   /** Image ID or /public path — see lib/images.ts */
   image: string;
-  /** Short text naming the photograph, listed under the hero copy; written in the dashboard. */
+  /** Short text shown as the hero headline while the photograph is on screen; written in the dashboard. */
   caption: Localized;
   /**
    * Slides saved before captions were written by hand named a project instead and showed its

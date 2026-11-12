@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { m } from 'framer-motion';
-import { Pause, Play } from 'lucide-react';
 import { useEffect, useState, type ReactNode } from 'react';
 import { socialIcons } from '@/components/icons/SocialIcons';
 import { useLanguage } from '@/components/providers/LanguageProvider';
@@ -11,7 +10,7 @@ import type { HeroSlide } from '@/lib/data/heroes';
 import { getProject } from '@/lib/data/projects';
 import { img, isVideo } from '@/lib/images';
 import { EASE, useEntranceAnimation } from '@/lib/motion';
-import { cn, pad } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 /** Time each project photograph stays on screen. */
 export const SLIDE_INTERVAL = 3000;
@@ -58,20 +57,21 @@ function SocialRail({ label, title }: { label: string; title: string }) {
 
 interface HeroShellProps {
   slides: HeroSlide[];
-  /** The hero copy, set directly on the photographs. */
-  children: ReactNode;
+  /**
+   * The hero copy, set directly on the photographs. It is given the photograph on screen and every
+   * slide's caption (written in the dashboard), so the headline can change with the photograph.
+   */
+  children: (active: number, captions: string[]) => ReactNode;
 }
 
 /**
  * The home page's full-screen hero: an auto-advancing slider of photographs. The copy sits straight
- * on the photographs over a soft Deep Indigo shade, and a row of tabs along the bottom shows each
- * slide's caption (written in the dashboard) and its progress.
+ * on the photographs over a soft Deep Indigo shade.
  */
 export function HeroShell({ slides, children }: HeroShellProps) {
   const { t, l } = useLanguage();
   const projects = useProjects();
   const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
   // Later photographs load only after the page has, so they never compete with the first one.
   const [loadRest, setLoadRest] = useState(false);
   const animate = useEntranceAnimation();
@@ -92,12 +92,11 @@ export function HeroShell({ slides, children }: HeroShellProps) {
     if (index >= count && count > 0) setIndex(0);
   }, [index, count]);
 
-  // Restarting the timer on every index change also resets it after a manual jump.
   useEffect(() => {
-    if (paused || count < 2) return;
+    if (count < 2) return;
     const timer = window.setTimeout(() => setIndex((current) => (current + 1) % count), SLIDE_INTERVAL);
     return () => window.clearTimeout(timer);
-  }, [index, paused, count]);
+  }, [index, count]);
 
   // A slide saved before captions were written by hand still names its project's sector.
   const captions = slides.map((slide) => {
@@ -108,7 +107,7 @@ export function HeroShell({ slides, children }: HeroShellProps) {
   });
 
   return (
-    // Exactly one screen tall on every device; the copy and the sector tabs share the bottom of the photograph.
+    // Exactly one screen tall on every device; on phones the copy sits at the bottom of the photograph.
     <section className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-indigo text-ivory">
       <div role="region" aria-roledescription="carousel" aria-label={t.hero.slider} className="absolute inset-0 -z-10">
         {slides.map((slide, slideIndex) => {
@@ -167,67 +166,9 @@ export function HeroShell({ slides, children }: HeroShellProps) {
           transition={{ duration: 1, ease: EASE, delay: 0.15 }}
           className="max-w-2xl pr-14 sm:pr-16 md:pr-0 rtl:md:pr-20 lg:max-w-3xl rtl:lg:pr-24"
         >
-          {children}
+          {children(index, captions)}
         </m.div>
       </div>
-
-      {count > 1 && (
-        <div className="container-luxe relative pb-6 md:pb-8">
-          {/* Right padding keeps the tabs clear of the social rail and, on phones, of the fixed call/WhatsApp buttons. */}
-          <div className="flex items-end gap-4 pr-16 sm:gap-6 lg:pr-20">
-            <div role="group" aria-label={t.hero.sectors} className="grid flex-1 grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-4 sm:gap-x-6">
-              {slides.map((slide, slideIndex) => {
-                const active = slideIndex === index;
-                const caption = captions[slideIndex] || pad(slideIndex + 1);
-                return (
-                  <button
-                    key={`${slide.image}-${slideIndex}`}
-                    type="button"
-                    onClick={() => setIndex(slideIndex)}
-                    aria-label={`${t.hero.goTo} ${slideIndex + 1}: ${caption}`}
-                    aria-current={active}
-                    className="group relative min-w-0 pb-1 pt-4 text-start"
-                  >
-                    <span aria-hidden className="absolute inset-x-0 top-0 h-[2px] overflow-hidden rounded-full bg-ivory/25">
-                      {active && (
-                        <m.span
-                          key={`${index}-${paused}`}
-                          className="absolute inset-0 origin-left rounded-full bg-champagne rtl:origin-right"
-                          initial={{ scaleX: paused ? 1 : 0 }}
-                          animate={{ scaleX: 1 }}
-                          transition={{ duration: paused ? 0 : SLIDE_INTERVAL / 1000, ease: 'linear' }}
-                        />
-                      )}
-                    </span>
-                    {/* Captions are written in the dashboard, so a longer one wraps instead of being cut off. */}
-                    <span
-                      className={cn(
-                        'block text-[0.64rem] font-medium uppercase leading-snug tracking-luxe transition-colors duration-300 [text-shadow:0_1px_10px_rgba(23,18,44,0.6)]',
-                        active ? 'text-champagne' : 'text-ivory/80 group-hover:text-ivory',
-                      )}
-                    >
-                      {caption}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setPaused((value) => !value)}
-              aria-label={paused ? t.hero.play : t.hero.pause}
-              className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-ivory/25 text-ivory transition-colors hover:border-champagne hover:bg-champagne hover:text-indigo"
-            >
-              {paused ? (
-                <Play aria-hidden className="h-3.5 w-3.5" strokeWidth={2} />
-              ) : (
-                <Pause aria-hidden className="h-3.5 w-3.5" strokeWidth={2} />
-              )}
-            </button>
-          </div>
-        </div>
-      )}
     </section>
   );
 }

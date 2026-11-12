@@ -39,11 +39,7 @@ export const en = {
   },
   hero: {
     slider: 'Featured project photography',
-    pause: 'Pause slideshow',
-    play: 'Play slideshow',
-    goTo: 'Show image',
     follow: 'Follow us',
-    sectors: 'Slider photos',
   },
   categories: {
     residential: 'Residential',
