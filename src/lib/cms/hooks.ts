@@ -34,15 +34,24 @@ export function useHydrated() {
   );
 }
 
+/*
+ * Re-rendering: the content saved at build time is SWR's fallback, so when the live copy matches it
+ * (the usual case) SWR keeps the same object and nothing re-renders while the page is still loading.
+ * `pending` and `settled` are getters for the same reason: SWR only re-renders a component for the
+ * request finishing if that component actually reads them (the project and article pages do).
+ */
 function useCmsData<T>(key: string | null, fetcher: () => Promise<T | null>) {
   const hydrated = useHydrated();
   const active = hydrated && isSupabaseConfigured && key !== null;
-  const { data, error } = useSWR<T | null>(active ? key : null, fetcher);
+  const snapshot = snapshotFor<T>(key);
+  const swr = useSWR<T | null>(active ? key : null, fetcher, snapshot === undefined ? undefined : { fallbackData: snapshot });
   return {
     // The content saved at build time stands in until the cached or live copy arrives.
-    data: active && data !== undefined ? data : snapshotFor<T>(key),
+    data: active ? (swr.data === undefined ? snapshot : swr.data) : snapshot,
     /** No answer yet: not hydrated, or the first request is still in flight. */
-    pending: isSupabaseConfigured && (!hydrated || (data === undefined && !error)),
+    get pending() {
+      return isSupabaseConfigured && (!hydrated || swr.isLoading);
+    },
   };
 }
 
@@ -51,17 +60,27 @@ function useCmsData<T>(key: string | null, fetcher: () => Promise<T | null>) {
  * row exists), so a freshly created, still-empty database never blanks the website.
  */
 function useCmsStatus() {
-  const { data, pending } = useCmsData(cmsKeys.settings, fetchSettings);
-  return { settings: data ?? null, live: Boolean(data), pending };
+  const result = useCmsData(cmsKeys.settings, fetchSettings);
+  const data = result.data;
+  return {
+    settings: data ?? null,
+    live: Boolean(data),
+    get pending() {
+      return result.pending;
+    },
+  };
 }
 
 /** Live data once the CMS is initialised, the built-in data otherwise. */
 function useLive<T>(key: string, fetcher: () => Promise<T | null>, builtIn: T) {
   const status = useCmsStatus();
-  const { data, pending } = useCmsData(key, fetcher);
+  const result = useCmsData(key, fetcher);
+  const data = result.data;
   return {
     value: status.live && data != null ? data : builtIn,
-    settled: !status.pending && (!status.live || !pending),
+    get settled() {
+      return !status.pending && (!status.live || !result.pending);
+    },
   };
 }
 
@@ -93,8 +112,13 @@ export function useMedia(section?: MediaSection) {
 }
 
 export function useProjectList() {
-  const { value, settled } = useLive(cmsKeys.projects, fetchProjects, builtInProjects);
-  return { projects: value, settled };
+  const live = useLive(cmsKeys.projects, fetchProjects, builtInProjects);
+  return {
+    projects: live.value,
+    get settled() {
+      return live.settled;
+    },
+  };
 }
 
 export function useProjects(): Project[] {
@@ -102,8 +126,13 @@ export function useProjects(): Project[] {
 }
 
 export function usePostList() {
-  const { value, settled } = useLive(cmsKeys.posts, fetchPosts, builtInSummaries);
-  return { posts: value, settled };
+  const live = useLive(cmsKeys.posts, fetchPosts, builtInSummaries);
+  return {
+    posts: live.value,
+    get settled() {
+      return live.settled;
+    },
+  };
 }
 
 export function usePosts(): PostSummary[] {
@@ -116,12 +145,18 @@ export function usePosts(): PostSummary[] {
  */
 export function usePost(slug: string | null, builtIn?: Post) {
   const status = useCmsStatus();
-  const { data, pending } = useCmsData(slug ? cmsKeys.post(slug) : null, () => (slug ? fetchPost(slug) : Promise.resolve(null)));
+  const result = useCmsData(slug ? cmsKeys.post(slug) : null, () => (slug ? fetchPost(slug) : Promise.resolve(null)));
+  const data = result.data;
 
   let post: Post | undefined = builtIn?.slug === slug ? builtIn : undefined;
   if (status.live && data !== undefined && data !== null) post = data === false ? undefined : data;
 
-  return { post, settled: !status.pending && (!status.live || !pending) };
+  return {
+    post,
+    get settled() {
+      return !status.pending && (!status.live || !result.pending);
+    },
+  };
 }
 
 export function useServices(): Service[] {

@@ -38,9 +38,15 @@ export function HomeHero() {
                     key={slideIndex}
                     aria-hidden={!current}
                     // The old headline fades out first, then the new one rises in with its photograph.
+                    // Hidden headlines keep a trace of opacity rather than 0: browsers only skip text at
+                    // exactly 0, so every headline counts as painted with the page. At 0 each one would count
+                    // as new content when it fades in, and the page's load time (LCP) would be timed from
+                    // whichever later headline is largest, seconds after the page had actually loaded.
                     className={cn(
                       'self-end transition-[opacity,transform] ease-out [grid-area:1/1]',
-                      current ? 'opacity-100 delay-300 duration-700' : 'opacity-0 duration-300 motion-safe:translate-y-3',
+                      current
+                        ? 'opacity-100 delay-300 duration-700'
+                        : 'pointer-events-none select-none opacity-[0.001] duration-300 motion-safe:translate-y-3',
                     )}
                   >
                     <Highlight text={title} surface="dark" />

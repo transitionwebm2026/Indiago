@@ -14,7 +14,10 @@ import { ArticleView } from './ArticleView';
 export function ArticleRoute({ slug, builtIn }: { slug: string; builtIn?: Post }) {
   const { t, l } = useLanguage();
   const resolved = useRouteSlug(slug);
-  const { post, settled } = usePost(resolved, builtIn);
+  // `settled` is read only when there's no article to show: reading it re-renders the page when the
+  // live copy finishes loading, which a pre-rendered article doesn't need.
+  const live = usePost(resolved, builtIn);
+  const post = live.post;
   const posts = usePosts();
 
   useDocumentTitle(slug === SHELL_SLUG && post ? `${l(post.title)} · ${t.brand}` : null);
@@ -22,7 +25,7 @@ export function ArticleRoute({ slug, builtIn }: { slug: string; builtIn?: Post }
   if (!post) {
     return (
       <RouteStatus
-        state={settled && resolved ? 'missing' : 'loading'}
+        state={live.settled && resolved ? 'missing' : 'loading'}
         eyebrow={t.nav.journal}
         loading={t.article.loading}
         title={t.article.missingTitle}

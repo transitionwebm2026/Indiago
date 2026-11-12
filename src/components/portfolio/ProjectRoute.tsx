@@ -11,7 +11,10 @@ import { ProjectDetail } from './ProjectDetail';
 export function ProjectRoute({ slug }: { slug: string }) {
   const { t, l } = useLanguage();
   const id = useRouteSlug(slug);
-  const { projects, settled } = useProjectList();
+  // `settled` is read only when there's no project to show: reading it re-renders the page when the
+  // live copy finishes loading, which a pre-rendered project doesn't need.
+  const list = useProjectList();
+  const projects = list.projects;
   const project = id ? getProject(id, projects) : undefined;
 
   useDocumentTitle(slug === SHELL_SLUG && project ? `${l(project.title)} · ${t.brand}` : null);
@@ -19,7 +22,7 @@ export function ProjectRoute({ slug }: { slug: string }) {
   if (!project) {
     return (
       <RouteStatus
-        state={settled && id ? 'missing' : 'loading'}
+        state={list.settled && id ? 'missing' : 'loading'}
         eyebrow={t.nav.portfolio}
         loading={t.project.loading}
         title={t.project.missingTitle}
